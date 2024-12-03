@@ -3,4 +3,47 @@
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
+    <NotFound>
+        <div class="not-found-container">
+            <h1>Oops! Page Not Found</h1>
+            <p>Sorry, the page you are looking for does not exist. Please check the URL or go back to the homepage.</p>
+            <a href="/home" class="back-home-link">Go Back to Homepage</a>
+        </div>
+    </NotFound>
 </Router>
+
+<style>
+    .not-found-container {
+        text-align: center;
+        padding: 50px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: 0 auto;
+        font-family: Arial, sans-serif;
+    }
+
+    .not-found-container h1 {
+        font-size: 2.5em;
+            color: #FC8425;
+        margin-bottom: 20px;
+    }
+
+    .not-found-container p {
+        font-size: 1.2em;
+        color: #555;
+        margin-bottom: 30px;
+    }
+
+    .back-home-link {
+        font-size: 1.2em;
+        color: #1F9298;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .back-home-link:hover {
+        text-decoration: underline;
+    }
+</style>

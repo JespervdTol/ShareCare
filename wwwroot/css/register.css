@@ -1,0 +1,96 @@
+﻿/* Container for centering the register box */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f9f9f9;
+    padding: 20px;
+}
+
+/* Styling for the register box */
+.register-box {
+    width: 100%;
+    max-width: 400px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Title and subtitle styling */
+.register-title {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #1F9298;
+}
+
+.register-subtitle {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-field {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    background-color: #f9f9f9;
+}
+
+    .input-field:focus {
+        border-color: #1F9298; /* Highlight color on focus */
+    }
+
+/* Register button styling */
+.register-btn {
+    background-color: #FC8425; /* Orange button */
+    color: white;
+    border: none;
+    padding: 12px 0;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .register-btn:hover {
+        background-color: #e0731e; /* Darker orange on hover */
+    }
+
+/* Message styling */
+.message {
+    margin-top: 15px;
+    font-size: 14px;
+    color: red;
+}
+
+/* Link to login page */
+.login-link {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+    .login-link a {
+        color: #1F9298;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }

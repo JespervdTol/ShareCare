@@ -7,6 +7,9 @@
     <base href="/" />
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="css/login.css" />
+    <link rel="stylesheet" href="css/register.css" />
+    <link rel="stylesheet" href="css/loadingscreen.css" />
     <link rel="stylesheet" href="ShareCare.styles.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
 </head>
@@ -15,7 +18,14 @@
 
     <div class="status-bar-safe-area"></div>
 
-    <div id="app">Loading...</div>
+    <div id="app">
+        <div id="loading-screen">
+            <div class="loading-container">
+                <div class="spinner"></div>
+                <p>Loading, please wait...</p>
+            </div>
+        </div>
+    </div>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
