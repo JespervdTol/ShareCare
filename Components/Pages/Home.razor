@@ -1,5 +1,87 @@
 ﻿@page "/home"
+@using Microsoft.AspNetCore.Components.Authorization
+@inject UserService UserService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthStateProvider
 
-<h1>Hello!</h1>
+<div class="welcome-section">
+    <h2>Welcome <span class="firstname">@FirstName</span>!</h2>
+    <p>What do you want to do?</p>
+</div>
 
-Welcome to the ShareCare app.
+<div class="grid-container">
+    <div class="grid-item" @onclick="NavigateToHouseRules">
+        <i class="icon-placeholder"></i>
+        <p>House Rules</p>
+    </div>
+    <div class="grid-item" @onclick="NavigateToComplaints">
+        <i class="icon-placeholder"></i>
+        <p>Complaints & Issues</p>
+    </div>
+    <div class="grid-item" @onclick="NavigateToEvents">
+        <i class="icon-placeholder"></i>
+        <p>Events</p>
+    </div>
+    <div class="grid-item" @onclick="NavigateToPendingPayments">
+        <i class="icon-placeholder"></i>
+        <p>Pending Payments</p>
+    </div>
+    <div class="grid-item" @onclick="NavigateToOpenTasks">
+        <i class="icon-placeholder"></i>
+        <p>Open Tasks</p>
+    </div>
+    <div class="grid-item" @onclick="NavigateToCleaningSchedule">
+        <i class="icon-placeholder"></i>
+        <p>Cleaning Schedule</p>
+    </div>
+</div>
+
+@code {
+    private string FirstName = string.Empty;
+    private bool IsAuthenticated = false;
+    private bool IsLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            System.Diagnostics.Debug.WriteLine($"IsAuthenticated: {user.Identity.IsAuthenticated}, Username: {user.Identity.Name}");
+
+            if (user.Identity.IsAuthenticated)
+            {
+                IsAuthenticated = true;
+                var username = user.Identity.Name;
+                System.Diagnostics.Debug.WriteLine($"Fetching user data for username: {username}");
+                var person = await UserService.GetLoggedInUser(username);
+
+                if (person != null)
+                {
+                    FirstName = person.FirstName;
+                    System.Diagnostics.Debug.WriteLine($"Fetched FirstName: {FirstName}");
+                }
+                else
+                {
+                    FirstName = "User";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private void NavigateToHouseRules() => NavigationManager.NavigateTo("/house-rules");
+    private void NavigateToComplaints() => NavigationManager.NavigateTo("/complaints");
+    private void NavigateToEvents() => NavigationManager.NavigateTo("/events");
+    private void NavigateToPendingPayments() => NavigationManager.NavigateTo("/pending-payments");
+    private void NavigateToOpenTasks() => NavigationManager.NavigateTo("/open-tasks");
+    private void NavigateToCleaningSchedule() => NavigationManager.NavigateTo("/cleaning-schedule");
+}
