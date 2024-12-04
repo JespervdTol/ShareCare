@@ -4,26 +4,37 @@ using MySql.Data.MySqlClient;
 using BCrypt.Net;
 using Org.BouncyCastle.Crypto.Generators;
 using ShareCare.Services;
+using ShareCare.Module;
+using Microsoft.AspNetCore.Components.Authorization;
 
 public class UserService
 {
     private readonly DatabaseService _databaseService;
+    private readonly CustomAuthenticationStateProvider _authenticationStateProvider;
 
-    public UserService(DatabaseService databaseService)
+    public UserService(DatabaseService databaseService, CustomAuthenticationStateProvider authenticationStateProvider)
     {
         _databaseService = databaseService;
+        _authenticationStateProvider = authenticationStateProvider;
     }
 
-    public async Task<bool> RegisterUser(string username, string email, string password)
+    public async Task<bool> RegisterUser(Account account, Person person)
     {
-        var hashedPassword = HashPassword(password);
+        var hashedPassword = HashPassword(account.Password);
 
-        const string query = "INSERT INTO user (username, email, password) VALUES (@Username, @Email, @Password)";
+        const string query = @"
+        INSERT INTO user (username, email, password, firstname, intersertion, lastname, date_of_birth) 
+        VALUES (@Username, @Email, @Password, @FirstName, @Intersertion, @LastName, @DateOfBirth)";
+
         var parameters = new MySqlParameter[]
         {
-            new MySqlParameter("@Username", username),
-            new MySqlParameter("@Email", email),
-            new MySqlParameter("@Password", hashedPassword)
+        new MySqlParameter("@Username", account.Username),
+        new MySqlParameter("@Email", person.Email),
+        new MySqlParameter("@Password", hashedPassword),
+        new MySqlParameter("@FirstName", person.FirstName),
+        new MySqlParameter("@Intersertion", person.Intersertion),
+        new MySqlParameter("@LastName", person.LastName),
+        new MySqlParameter("@DateOfBirth", person.DateOfBirth.ToString("yyyy-MM-dd"))
         };
 
         try
@@ -43,7 +54,7 @@ public class UserService
         const string query = "SELECT password FROM user WHERE username = @Username";
         var parameters = new MySqlParameter[]
         {
-            new MySqlParameter("@Username", username)
+        new MySqlParameter("@Username", username)
         };
 
         try
@@ -52,7 +63,11 @@ public class UserService
             if (result != null)
             {
                 string storedHash = result.ToString();
-                return VerifyPassword(password, storedHash);
+                if (VerifyPassword(password, storedHash))
+                {
+                    _authenticationStateProvider.MarkUserAsAuthenticated(username);
+                    return true;
+                }
             }
             return false;
         }
@@ -60,6 +75,43 @@ public class UserService
         {
             Console.WriteLine($"Error during login: {ex.Message}");
             return false;
+        }
+    }
+
+    public async Task<Person> GetLoggedInUser(string username)
+    {
+        const string query = "SELECT firstname, intersertion, lastname, email, date_of_birth FROM user WHERE username = @Username";
+        var parameters = new MySqlParameter[]
+        {
+        new MySqlParameter("@Username", username)
+        };
+
+        try
+        {
+            var dataTable = await _databaseService.ExecuteQueryAsync(query, parameters);
+            if (dataTable.Rows.Count > 0)
+            {
+                var row = dataTable.Rows[0];
+
+                DateOnly dateOfBirth = DateOnly.MinValue;
+                string dateOfBirthString = row["date_of_birth"].ToString();
+
+                return new Person
+                {
+                    FirstName = row["firstname"].ToString(),
+                    Intersertion = row["intersertion"].ToString(),
+                    LastName = row["lastname"].ToString(),
+                    Email = row["email"].ToString(),
+                    DateOfBirth = dateOfBirth
+                };
+            }
+
+            return null;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error fetching logged-in user: {ex.Message}");
+            return null;
         }
     }
 

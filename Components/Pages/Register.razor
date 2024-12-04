@@ -1,4 +1,5 @@
 ﻿@page "/register"
+@using ShareCare.Module
 @inject UserService UserService
 @inject NavigationManager NavigationManager
 
@@ -13,8 +14,28 @@
         </div>
 
         <div class="input-container">
+            <label for="firstName">First Name:</label>
+            <input id="firstName" class="input-field" @bind="FirstName" placeholder="Enter your first name" />
+        </div>
+
+        <div class="input-container">
+            <label for="intersertion">Intersertion:</label>
+            <input id="intersertion" class="input-field" @bind="Intersertion" placeholder="Enter your intersertion" />
+        </div>
+
+        <div class="input-container">
+            <label for="lastName">Last Name:</label>
+            <input id="lastName" class="input-field" @bind="LastName" placeholder="Enter your last name" />
+        </div>
+
+        <div class="input-container">
             <label for="email">Email:</label>
             <input id="email" class="input-field" @bind="Email" type="email" placeholder="Enter your email" />
+        </div>
+
+        <div class="input-container">
+            <label for="dateOfBirth">Date of Birth:</label>
+            <input id="dateOfBirth" class="input-field" @bind="DateOfBirth" type="date" />
         </div>
 
         <div class="input-container">
@@ -24,7 +45,7 @@
 
         <button class="register-btn" @onclick="RegisterUser">Register</button>
 
-        @if (Message != null)
+        @if (!string.IsNullOrEmpty(Message))
         {
             <p class="message">@Message</p>
         }
@@ -37,13 +58,33 @@
 
 @code {
     private string Username;
+    private string FirstName;
+    private string Intersertion;
+    private string LastName;
     private string Email;
+    private DateTime DateOfBirth;
     private string Password;
     private string Message;
 
-    private async Task RegisterUser()
+    private async System.Threading.Tasks.Task RegisterUser()
     {
-        var success = await UserService.RegisterUser(Username, Email, Password);
+        var account = new Account
+            {
+                Username = Username,
+                Password = Password
+            };
+
+        var person = new Person
+            {
+                FirstName = FirstName,
+                Intersertion = Intersertion,
+                LastName = LastName,
+                Email = Email,
+                DateOfBirth = DateOnly.FromDateTime(DateOfBirth)
+            };
+
+        var success = await UserService.RegisterUser(account, person);
+
         if (success)
         {
             Message = "Registration successful!";
