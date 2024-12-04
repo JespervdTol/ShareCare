@@ -1,121 +1,184 @@
-﻿#login-page {
-    font-family: 'Arial', sans-serif;
+﻿:root {
+    --dark-cyan: #1f9298;
+    --timberwolf: #cccdc8;
+    --davy-gray: #545455;
+    --hooker-green: #5e8685;
+
+    --orange: #FC8425;
+    --peach: #FDC090;
+    --light-orange: #FEDABE;
+    --anti-flash-white: #EFEFEF;
+    --white-smoke: #f5f5f5;
 }
 
-    #login-page .login-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #f9f9f9;
-        padding: 20px;
-    }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FFFFFF;
+    overflow: hidden;
+}
 
-    #login-page .login-box {
-        width: 100%;
-        max-width: 400px;
-        background-color: white;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
+#login-page {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.design-corner {
+    position: absolute;
+    width: 50vh;
+    height: 30vh; 
+    border-radius: 5em; 
+    z-index: -1;
+    transform: rotate(30deg); 
+}
+.top-right-light {
+    background-color: var(--light-orange);
+    top: -22vh;
+    right: -12vh;
+}
+.top-right-dark {
+    background-color: var(--peach);
+    top: -25vh;
+    right: -15vh;
+}
+.bottom-left-light {
+    background-color: var(--light-orange);
+    bottom: -22vh; 
+    left: -12vh;
+}
+.bottom-left-dark {
+    background-color: var(--peach);
+    bottom: -25vh; 
+    left: -15vh;
+}
 
-    #login-page .logo-container {
-        margin-bottom: 20px;
-    }
+.logo {
+    position: absolute;
+    top: 0.5em;
+    left: 0em;
+    width: 12em;
+    z-index: 2;
+}
 
-    #login-page .logo {
-        width: 80px;
-        height: 80px;
-    }
+.text-container {
+    text-align: left; 
+    width: 17.5em; 
+    z-index: 2;
+    margin-bottom: 1em;
+}
+.login-title {
+    font-size: 2.5em; 
+    font-weight: 900; 
+    color: black;
+    margin-top: 1em;
+}
+.login-subtitle {
+    font-size: 1em; 
+    font-weight: 500;
+    color: black;
+    margin-top: 0.3em;
+}
 
-    #login-page .login-title {
-        font-size: 26px;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em !important;
+    z-index: 2;
+}
+.input-field {
+    width: 17.5em;
+    height: 2.5em;
+    border: 1em solid rgb(76, 76, 76);
+    border-radius: 0.3em;
+    padding: 0 0.5em;
+    font-size: 0.9em;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
 
-    #login-page .login-subtitle {
-        font-size: 16px;
-        color: #777;
-        margin-bottom: 20px;
-    }
+.remember-forgot-container { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    width: 17.5em; 
+    margin: -0.5em 0 3em 0; 
+    z-index: 2; 
+}
+.remember-me { 
+    display: flex; 
+    align-items: center; 
+    font-size: 0.9em; 
+    font-weight: 400;
+    color: black; 
+}
+.remember-me input {
+    margin-right: 0.5em;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+.remember-me input[type="checkbox"] {
+    accent-color: var(--orange); 
+    width: 1.2em; 
+    height: 1.2em;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 1px solid var(--davy-gray);
+    border-radius: 0.2em;
+    position: relative;
+}
+.remember-me input[type="checkbox"]:checked {
+    background-color: var(--orange);
+    border-color: var(--orange);
+}
+.remember-me input[type="checkbox"]:checked::before {
+    content: "\2714"; 
+    color: white;
+    font-weight: 400;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.forgot-password {
+    font-size: 0.9em; 
+    font-weight: 400; 
+    color: black;
+    text-decoration: none;
+    z-index: 2;
+}
+.forgot-password a {
+    color: var(--dark-cyan);
+    text-decoration: none;
+}
 
-    #login-page .input-container {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        margin-bottom: 20px;
-    }
+.login-btn {
+    width: 17.5em;
+    height: 2.5em;
+    background-color: var(--orange);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 2em;
+    font-size: 1em;
+    font-weight: 900;
+    cursor: pointer;
+    z-index: 2;
+}
 
-    #login-page .input-field {
-        padding: 12px;
-        font-size: 16px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        outline: none;
-        width: 100%;
-        background-color: #f9f9f9;
-    }
-
-        #login-page .input-field:focus {
-            border-color: #ffa500;
-        }
-
-    #login-page .forgot-password {
-        margin-bottom: 15px;
-        text-align: left;
-    }
-
-        #login-page .forgot-password a {
-            font-size: 14px;
-            color: #1F9298;
-            text-decoration: none;
-        }
-
-            #login-page .forgot-password a:hover {
-                text-decoration: underline;
-            }
-
-    #login-page .login-btn {
-        background-color: #FC8425;
-        color: white;
-        border: none;
-        padding: 12px 0;
-        width: 100%;
-        font-size: 18px;
-        font-weight: bold;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-        #login-page .login-btn:hover {
-            background-color: #ff8c00;
-        }
-
-    #login-page .register {
-        margin-top: 20px;
-    }
-
-        #login-page .register p {
-            font-size: 14px;
-            color: #777;
-        }
-
-        #login-page .register a {
-            color: #FC8425;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-            #login-page .register a:hover {
-                text-decoration: underline;
-            }
-
-    #login-page .message {
-        margin-top: 20px;
-        color: red;
-        font-size: 14px;
-    }
+.register {
+    margin-top: 3em;
+    z-index: 2;
+}
+.register p {
+    font-size: 1em;
+    font-weight: 500;
+    color: black;
+}
+.register a {
+    color: var(--orange);
+    text-decoration: none;
+    font-weight: 900;
+}
