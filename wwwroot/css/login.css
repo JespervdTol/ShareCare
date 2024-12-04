@@ -1,0 +1,121 @@
+﻿#login-page {
+    font-family: 'Arial', sans-serif;
+}
+
+    #login-page .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f9f9f9;
+        padding: 20px;
+    }
+
+    #login-page .login-box {
+        width: 100%;
+        max-width: 400px;
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    #login-page .logo-container {
+        margin-bottom: 20px;
+    }
+
+    #login-page .logo {
+        width: 80px;
+        height: 80px;
+    }
+
+    #login-page .login-title {
+        font-size: 26px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    #login-page .login-subtitle {
+        font-size: 16px;
+        color: #777;
+        margin-bottom: 20px;
+    }
+
+    #login-page .input-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    #login-page .input-field {
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        outline: none;
+        width: 100%;
+        background-color: #f9f9f9;
+    }
+
+        #login-page .input-field:focus {
+            border-color: #ffa500;
+        }
+
+    #login-page .forgot-password {
+        margin-bottom: 15px;
+        text-align: left;
+    }
+
+        #login-page .forgot-password a {
+            font-size: 14px;
+            color: #1F9298;
+            text-decoration: none;
+        }
+
+            #login-page .forgot-password a:hover {
+                text-decoration: underline;
+            }
+
+    #login-page .login-btn {
+        background-color: #FC8425;
+        color: white;
+        border: none;
+        padding: 12px 0;
+        width: 100%;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        #login-page .login-btn:hover {
+            background-color: #ff8c00;
+        }
+
+    #login-page .register {
+        margin-top: 20px;
+    }
+
+        #login-page .register p {
+            font-size: 14px;
+            color: #777;
+        }
+
+        #login-page .register a {
+            color: #FC8425;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+            #login-page .register a:hover {
+                text-decoration: underline;
+            }
+
+    #login-page .message {
+        margin-top: 20px;
+        color: red;
+        font-size: 14px;
+    }

@@ -1,0 +1,56 @@
+﻿@page "/"
+@inject UserService UserService
+@inject NavigationManager NavigationManager
+
+<div id="login-page">
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo-container">
+                <img src="../Resources/Images/sharecare_logo.png" alt="ShareCare Logo" class="logo" />
+            </div>
+
+            <h3 class="login-title">Login</h3>
+            <p class="login-subtitle">Please sign in to continue</p>
+
+            <div class="input-container">
+                <input @bind="Username" placeholder="email" type="email" class="input-field" />
+                <input @bind="Password" placeholder="password" type="password" class="input-field" />
+            </div>
+
+            <div class="forgot-password">
+                <a href="#">Forgot password?</a>
+            </div>
+
+            <button @onclick="LoginUser" class="login-btn">Login</button>
+
+            <div class="register">
+                <p>New user? <a href="/register">Sign up</a></p>
+            </div>
+
+            @if (Message != null)
+            {
+                <p class="message">@Message</p>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private string Username;
+    private string Password;
+    private string Message;
+
+    private async Task LoginUser()
+    {
+        var success = await UserService.LoginUser(Username, Password);
+        if (success)
+        {
+            Message = "Login successful!";
+            NavigationManager.NavigateTo("/home");
+        }
+        else
+        {
+            Message = "Invalid username or password.";
+        }
+    }
+}
