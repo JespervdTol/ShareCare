@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -45,5 +46,59 @@ namespace ShareCare.Services
 
             return tasks;
         }
+
+        public async Task<bool> DeleteTaskAsync(int taskId)
+        {
+            var query = "DELETE FROM task WHERE id = @TaskId";
+            var parameters = new MySqlParameter[]
+            {
+                new MySqlParameter("@TaskId", taskId)
+            };
+
+            var rowsAffected = await _databaseService.ExecuteNonQueryAsync(query, parameters);
+            return rowsAffected > 0;
+        }
+
+        public async Task<bool> AddTaskAsync(int TaskTypeID, string summary, DateTime date, int userId)
+        {
+            var query = @"
+                INSERT INTO task (type_id, summary, date, user_id) 
+                VALUES (@TaskTypeID, @Summary, @Date, @UserId)";
+
+            var parameters = new MySqlParameter[]
+            {
+                new MySqlParameter("@TaskTypeID", TaskTypeID),
+                new MySqlParameter("@Summary", summary),
+                new MySqlParameter("@Date", date),
+                new MySqlParameter("@UserId", userId)
+            };
+
+            var rowsAffected = await _databaseService.ExecuteNonQueryAsync(query, parameters);
+            return rowsAffected > 0;
+        }
+
+
+        public async Task<List<TaskType>> GetTaskTypesAsync()
+        {
+            var query = "SELECT id, name FROM task_type";
+
+            var parameters = new List<MySqlParameter>();
+
+            var dataTable = await _databaseService.ExecuteQueryAsync(query, parameters.ToArray());
+
+            var taskTypes = new List<TaskType>();
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                taskTypes.Add(new TaskType
+                {
+                    TaskTypeID = (int)row["id"],
+                    Name = row["name"].ToString()
+                });
+            }
+
+            return taskTypes;
+        }
+
     }
 }

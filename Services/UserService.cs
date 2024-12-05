@@ -18,6 +18,36 @@ public class UserService
         _authenticationStateProvider = authenticationStateProvider;
     }
 
+    public async Task<List<Person>> GetUsersAsync()
+    {
+        const string query = "SELECT id, firstname, intersertion, lastname, email FROM user";
+
+        try
+        {
+            var dataTable = await _databaseService.ExecuteQueryAsync(query);
+            var persons = new List<Person>();
+
+            foreach (System.Data.DataRow row in dataTable.Rows)
+            {
+                persons.Add(new Person
+                {
+                    PersonID = Convert.ToInt32(row["id"]),
+                    FirstName = row["firstname"].ToString(),
+                    Intersertion = row["intersertion"].ToString(),
+                    LastName = row["lastname"].ToString(),
+                    Email = row["email"].ToString()
+                });
+            }
+
+            return persons;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching persons: {ex.Message}");
+            return new List<Person>();
+        }
+    }
+
     public async Task<bool> RegisterUser(Account account, Person person)
     {
         var hashedPassword = HashPassword(account.Password);
