@@ -30,9 +30,9 @@
         <i class="icon-placeholder"></i>
         <p>Open Tasks</p>
     </div>
-    <div class="grid-item" @onclick="NavigateToCleaningSchedule">
+    <div class="grid-item" @onclick="NavigateToCalender">
         <i class="icon-placeholder"></i>
-        <p>Cleaning Schedule</p>
+        <p>Calender</p>
     </div>
 </div>
 
@@ -83,5 +83,5 @@
     private void NavigateToEvents() => NavigationManager.NavigateTo("/events");
     private void NavigateToPendingPayments() => NavigationManager.NavigateTo("/pending-payments");
     private void NavigateToOpenTasks() => NavigationManager.NavigateTo("/open-tasks");
-    private void NavigateToCleaningSchedule() => NavigationManager.NavigateTo("/cleaning-schedule");
+    private void NavigateToCalender() => NavigationManager.NavigateTo("/calender");
 }

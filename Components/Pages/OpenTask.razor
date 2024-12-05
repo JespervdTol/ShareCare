@@ -1,0 +1,48 @@
+﻿@page "/open-tasks"
+@using ShareCare.Services
+@using ShareCare.Module
+@inject TaskService TaskService
+
+<h3>Open Tasks</h3>
+
+@if (tasks == null)
+{
+        <p><em>Loading...</em></p>
+}
+else if (tasks.Count == 0)
+{
+        <p>No open tasks available.</p>
+}
+else
+{
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Person</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var task in tasks)
+            {
+                        <tr>
+                            <td>@task.Summary</td>
+                            <td>@task.Type</td>
+                            <td>@task.Date.ToString("yyyy-MM-dd")</td>
+                            <td>@task.Person</td>
+                        </tr>
+            }
+            </tbody>
+        </table>
+}
+
+@code {
+    private List<ShareCare.Module.Task> tasks;
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        tasks = await TaskService.GetOpenTasksAsync();
+    }
+}

@@ -28,13 +28,13 @@ public class UserService
 
         var parameters = new MySqlParameter[]
         {
-        new MySqlParameter("@Username", account.Username),
-        new MySqlParameter("@Email", person.Email),
-        new MySqlParameter("@Password", hashedPassword),
-        new MySqlParameter("@FirstName", person.FirstName),
-        new MySqlParameter("@Intersertion", person.Intersertion),
-        new MySqlParameter("@LastName", person.LastName),
-        new MySqlParameter("@DateOfBirth", person.DateOfBirth.ToString("yyyy-MM-dd"))
+            new MySqlParameter("@Username", account.Username),
+            new MySqlParameter("@Email", person.Email),
+            new MySqlParameter("@Password", hashedPassword),
+            new MySqlParameter("@FirstName", person.FirstName),
+            new MySqlParameter("@Intersertion", person.Intersertion),
+            new MySqlParameter("@LastName", person.LastName),
+            new MySqlParameter("@DateOfBirth", person.DateOfBirth.ToString("yyyy-MM-dd"))
         };
 
         try
@@ -54,7 +54,7 @@ public class UserService
         const string query = "SELECT password FROM user WHERE username = @Username";
         var parameters = new MySqlParameter[]
         {
-        new MySqlParameter("@Username", username)
+            new MySqlParameter("@Username", username)
         };
 
         try
@@ -78,12 +78,26 @@ public class UserService
         }
     }
 
+    public async Task<bool> LogoutUser()
+    {
+        try
+        {
+            _authenticationStateProvider.MarkUserAsLoggedOut();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error during logout: {ex.Message}");
+            return false;
+        }
+    }
+
     public async Task<Person> GetLoggedInUser(string username)
     {
         const string query = "SELECT firstname, intersertion, lastname, email, date_of_birth FROM user WHERE username = @Username";
         var parameters = new MySqlParameter[]
         {
-        new MySqlParameter("@Username", username)
+            new MySqlParameter("@Username", username)
         };
 
         try

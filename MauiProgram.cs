@@ -34,6 +34,7 @@ namespace ShareCare
                 provider.GetRequiredService<CustomAuthenticationStateProvider>());
 
             builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<TaskService>();
 
             return builder.Build();
         }
