@@ -58,10 +58,11 @@ body {
 }
 
 .logo {
+    display: flex;
     position: absolute;
-    top: 0.5em;
-    left: 0em;
-    width: 12em;
+    top: 7vh;
+    left: 8vh;
+    scale: 4;
     z-index: 2;
 }
 
@@ -72,7 +73,7 @@ body {
     margin-bottom: 1em;
 }
 .login-title {
-    font-size: 2.5em; 
+    font-size: 2em; 
     font-weight: 900; 
     color: black;
     margin-top: 1em;
@@ -81,18 +82,18 @@ body {
     font-size: 1em; 
     font-weight: 500;
     color: black;
-    margin-top: 0.3em;
 }
 
 .input-container {
     display: flex;
     flex-direction: column;
-    gap: 1.5em !important;
+    gap: 1em !important;
     z-index: 2;
+    width: 17.5em;
 }
 .input-field {
     width: 17.5em;
-    height: 2.5em;
+    height: 3em;
     border: 1em solid rgb(76, 76, 76);
     border-radius: 0.3em;
     padding: 0 0.5em;
@@ -111,7 +112,7 @@ body {
 .remember-me { 
     display: flex; 
     align-items: center; 
-    font-size: 0.9em; 
+    font-size: 0.8em; 
     font-weight: 400;
     color: black; 
 }
@@ -144,7 +145,7 @@ body {
     transform: translate(-50%, -50%);
 }
 .forgot-password {
-    font-size: 0.9em; 
+    font-size: 0.8em; 
     font-weight: 400; 
     color: black;
     text-decoration: none;
