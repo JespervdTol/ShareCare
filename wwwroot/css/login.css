@@ -16,10 +16,9 @@ body {
     margin: 0;
     padding: 0;
     background-color: #FFFFFF;
-    overflow: hidden;
 }
 
-#login-page {
+#login-page, #register-page  {
     position: relative;
     width: 100%;
     height: 100vh;
@@ -66,19 +65,19 @@ body {
     z-index: 2;
 }
 
-.text-container {
+.text-container, .register-container {
     text-align: left; 
     width: 17.5em; 
     z-index: 2;
     margin-bottom: 1em;
 }
-.login-title {
+.login-title, .register-title {
     font-size: 2em; 
     font-weight: 900; 
     color: black;
     margin-top: 1em;
 }
-.login-subtitle {
+.login-subtitle, .register-subtitle {
     font-size: 1em; 
     font-weight: 500;
     color: black;
@@ -89,16 +88,16 @@ body {
     flex-direction: column;
     gap: 1em !important;
     z-index: 2;
-    width: 17.5em;
+    margin-bottom: 0.9em;
 }
 .input-field {
-    width: 17.5em;
+    width: 19.5em;
     height: 3em;
-    border: 1em solid rgb(76, 76, 76);
+    border: 1px solid #ccc;
     border-radius: 0.3em;
     padding: 0 0.5em;
     font-size: 0.9em;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .remember-forgot-container { 
@@ -156,7 +155,7 @@ body {
     text-decoration: none;
 }
 
-.login-btn {
+.login-btn, .register-btn {
     width: 17.5em;
     height: 2.5em;
     background-color: var(--orange);
@@ -169,17 +168,25 @@ body {
     z-index: 2;
 }
 
-.register {
+.register, .login-link {
     margin-top: 3em;
     z-index: 2;
 }
-.register p {
+.register p, .login-link p {
     font-size: 1em;
     font-weight: 500;
     color: black;
 }
-.register a {
+.register a, .login-link a {
     color: var(--orange);
     text-decoration: none;
     font-weight: 900;
 }
+
+
+.message {
+    text-align: center;
+    color: red;
+    margin-top: 10px;
+}
+
