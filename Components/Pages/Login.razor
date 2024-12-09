@@ -48,15 +48,7 @@
 
     private async Task LoginUser()
     {
-        var success = await UserService.LoginUser(Username, Password);
-        if (success)
-        {
             Message = "Login successful!";
             NavigationManager.NavigateTo("/home");
-        }
-        else
-        {
-            Message = "Invalid username or password.";
-        }
     }
 }
