@@ -11,28 +11,29 @@
 
 <div class="grid-container">
     <div class="grid-item" @onclick="NavigateToHouseRules">
-        <i class="icon-placeholder"></i>
-        <p>House Rules</p>
+
+        <div class="icon">📚</div>
+        <div class="text">House Rules</div>
     </div>
     <div class="grid-item" @onclick="NavigateToComplaints">
-        <i class="icon-placeholder"></i>
-        <p>Complaints & Issues</p>
+        <div class="icon">⚠️</div>
+        <div class="text">Complaints</div>
     </div>
     <div class="grid-item" @onclick="NavigateToEvents">
-        <i class="icon-placeholder"></i>
-        <p>Events</p>
+        <div class="icon">📅</div>
+        <div class="text">Events</div>
     </div>
     <div class="grid-item" @onclick="NavigateToPendingPayments">
-        <i class="icon-placeholder"></i>
-        <p>Pending Payments</p>
+        <div class="icon">💸</div>
+        <div class="text">Payments</div>
     </div>
     <div class="grid-item" @onclick="NavigateToOpenTasks">
-        <i class="icon-placeholder"></i>
-        <p>Open Tasks</p>
+        <div class="icon">✅</div>
+        <div class="text">Tasks</div>
     </div>
     <div class="grid-item" @onclick="NavigateToCalender">
-        <i class="icon-placeholder"></i>
-        <p>Calender</p>
+        <div class="icon">📆</div>
+        <div class="text">Calendar</div>
     </div>
 </div>
 
@@ -83,5 +84,7 @@
     private void NavigateToEvents() => NavigationManager.NavigateTo("/events");
     private void NavigateToPendingPayments() => NavigationManager.NavigateTo("/pending-payments");
     private void NavigateToOpenTasks() => NavigationManager.NavigateTo("/open-tasks");
-    private void NavigateToCalender() => NavigationManager.NavigateTo("/calender");
+    private void NavigateToCalender() => NavigationManager.NavigateTo("/calendar");
 }
+
+

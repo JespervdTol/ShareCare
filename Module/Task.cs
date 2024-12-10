@@ -13,5 +13,7 @@ namespace ShareCare.Module
         public string Summary { get; set; }
         public DateTime Date { get; set; }
         public string Person { get; set; }
+        public string BuildingName { get; set; }
+        public string RoomName { get; set; }
     }
 }

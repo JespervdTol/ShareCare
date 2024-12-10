@@ -2,47 +2,198 @@
 @using ShareCare.Services
 @using ShareCare.Module
 @inject TaskService TaskService
+@inject UserService UserService
 
 <h3>Open Tasks</h3>
 
+<button class="btn btn-primary" @onclick="ShowTaskFormModal">
+    Add New Task
+</button>
+
+<div class="new-task-modal @modalVisibleClass">
+    <div class="new-task-form">
+        <button class="close-modal-btn" @onclick="HideTaskFormModal">&times;</button>
+
+        <h4>Create New Task</h4>
+        
+        <label>Task Type:</label>
+        <select @bind="selectedTaskTypeId" class="form-select">
+            <option value="0" selected disabled>Select a task type</option>
+            @if (taskTypes != null && taskTypes.Count > 0)
+            {
+                @foreach (var taskType in taskTypes)
+                {
+                    <option value="@taskType.TaskTypeID">@taskType.Name</option>
+                }
+            }
+            else
+            {
+                <option disabled>No task types available</option>
+            }
+        </select>
+
+        <label>Summary:</label>
+        <input type="text" @bind="taskSummary" class="form-input" placeholder="Enter task summary" />
+
+       <label>Date:</label>
+        <input type="date" @bind="taskDate" class="form-input" min="@DateTime.Now.ToString("dd-MM-yyyy")" />
+
+        <label>Assign To:</label>
+        <select @bind="selectedPersonId" class="form-select">
+            <option value="0" selected disabled>Select a person</option>
+            @if (persons != null && persons.Count > 0)
+            {
+                @foreach (var person in persons)
+                {
+                    <option value="@person.PersonID">@person.FirstName @person.LastName</option>
+                }
+            }
+            else
+            {
+                <option disabled>No persons available</option>
+            }
+        </select>
+
+        <label>Room:</label>
+        <select @bind="selectedRoomId" class="form-select">
+            <option value="0" selected disabled>Select a room</option>
+            @if (rooms != null && rooms.Count > 0)
+            {
+                @foreach (var room in rooms)
+                {
+                    <option value="@room.RoomID">@room.Name</option>
+                }
+            }
+            else
+            {
+                <option disabled>No rooms available</option>
+            }
+        </select>
+
+        <button class="btn btn-primary" @onclick="CreateTask">Create Task</button>
+        <button class="btn btn-secondary" @onclick="HideTaskFormModal">Cancel</button>
+    </div>
+</div>
+
 @if (tasks == null)
 {
-        <p><em>Loading...</em></p>
+    <p><em>Loading...</em></p>
 }
 else if (tasks.Count == 0)
 {
-        <p>No open tasks available.</p>
+    <p>No open tasks available.</p>
 }
 else
 {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Date</th>
-                    <th>Person</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach (var task in tasks)
+    <div class="task-cards">
+        @foreach (var task in tasks)
+        {
+            @if (task != null)
             {
-                        <tr>
-                            <td>@task.Summary</td>
-                            <td>@task.Type</td>
-                            <td>@task.Date.ToString("yyyy-MM-dd")</td>
-                            <td>@task.Person</td>
-                        </tr>
+                <div class="task-card">
+                    <div class="task-header">
+                        <h4>@task.Type</h4>
+                        <p><strong>@task.Date.ToString("yyyy-MM-dd")</strong></p>
+                    </div>
+                    <p><strong>Summary:</strong> @task.Summary</p>
+                    <p><strong>Assigned to:</strong> @task.Person</p>
+                    <p><strong>Room:</strong> @task.RoomName</p>
+                    <button class="btn btn-danger" @onclick="() => RemoveTask(task.TaskID)">Done</button>
+                </div>
             }
-            </tbody>
-        </table>
+        }
+    </div>
 }
 
 @code {
     private List<ShareCare.Module.Task> tasks;
+    private List<TaskType> taskTypes;
+    private List<Person> persons;
+    private List<Room> rooms;
+    private int selectedTaskTypeId = 0;
+    private string taskSummary = string.Empty;
+    private DateTime taskDate = DateTime.Now;
+    private int selectedPersonId = 0;
+    private int selectedRoomId = 0;
+
+    private bool isTaskFormVisible = false;
+    private string modalVisibleClass => isTaskFormVisible ? "active" : "";
 
     protected override async System.Threading.Tasks.Task OnInitializedAsync()
     {
-        tasks = await TaskService.GetOpenTasksAsync();
+        try
+        {
+            tasks = await TaskService.GetOpenTasksAsync();
+            taskTypes = await TaskService.GetTaskTypesAsync();
+            persons = await UserService.GetUsersAsync();
+            var buildings = await TaskService.GetBuildingsAsync();
+            rooms = new List<Room>();
+            foreach (var building in buildings)
+            {
+                rooms.AddRange(building.Rooms);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error during initialization: {ex.Message}");
+        }
+    }
+
+    private async System.Threading.Tasks.Task RemoveTask(int taskId)
+    {
+        try
+        {
+            var success = await TaskService.DeleteTaskAsync(taskId);
+            if (success)
+            {
+                tasks = await TaskService.GetOpenTasksAsync();
+            }
+            else
+            {
+                Console.WriteLine("Failed to delete the task.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error removing task: {ex.Message}");
+        }
+    }
+
+    private async System.Threading.Tasks.Task CreateTask()
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(taskSummary) || selectedPersonId == 0 || selectedTaskTypeId == 0 || selectedRoomId == 0)
+            {
+                Console.WriteLine("Please fill out all fields.");
+                return;
+            }
+
+            var success = await TaskService.AddTaskAsync(selectedTaskTypeId, taskSummary, taskDate, selectedPersonId, selectedRoomId);
+            if (success)
+            {
+                tasks = await TaskService.GetOpenTasksAsync();
+                Console.WriteLine("Task created successfully.");
+                HideTaskFormModal();
+            }
+            else
+            {
+                Console.WriteLine("Failed to create the task.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error creating task: {ex.Message}");
+        }
+    }
+
+    private void ShowTaskFormModal()
+    {
+        isTaskFormVisible = true;
+    }
+
+    private void HideTaskFormModal()
+    {
+        isTaskFormVisible = false;
     }
 }
