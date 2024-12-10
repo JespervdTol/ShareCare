@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">ShareCare</a>
+        <img src="resources/images/logo.svg" alt="ShareCare Logo" class="logo" />
     </div>
 </div>
 
@@ -24,9 +24,30 @@
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <NavLink class="nav-link" href="" @onclick="Logout">
                 <span class="bi bi-box-arrow-left" aria-hidden="true"></span> Log out
             </NavLink>
         </div>
     </nav>
 </div>
+
+@code {
+    [Inject]
+    private UserService UserService { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    private async Task Logout()
+    {
+        var success = await UserService.LogoutUser();
+        if (success)
+        {
+            NavigationManager.NavigateTo("/", true);
+        }
+        else
+        {
+            Console.WriteLine("Logout failed.");
+        }
+    }
+}

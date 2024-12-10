@@ -1,49 +1,82 @@
 ﻿@page "/register"
+@using ShareCare.Module
 @inject UserService UserService
 @inject NavigationManager NavigationManager
 
-<div class="register-container">
-    <div class="register-box">
-        <h3 class="register-title">Create Your Account</h3>
-        <p class="register-subtitle">Join us and enjoy amazing features!</p>
+<div id="register-page">
+    <div class="design-corner top-right-light"></div>
+    <div class="design-corner top-right-dark"></div>
+    <div class="design-corner bottom-left-light"></div>
+    <div class="design-corner bottom-left-dark"></div>
 
-        <div class="input-container">
-            <label for="username">Username:</label>
-            <input id="username" class="input-field" @bind="Username" placeholder="Enter your username" />
-        </div>
+    <div class="form-scroll-container">
+        <div class="register-container">
+            <h1 class="register-title">Create Your Account</h1>
+            <p class="register-subtitle">We are happy to have you join us!</p>
 
-        <div class="input-container">
-            <label for="email">Email:</label>
-            <input id="email" class="input-field" @bind="Email" type="email" placeholder="Enter your email" />
-        </div>
+            <div class="input-container">
+                <h2 class="section-title">Account Information</h2>
+                <input id="username" class="input-field" @bind="Username" placeholder="Username *" required/>
+                <input id="password" class="input-field" @bind="Password" type="password" placeholder="Password *" required/>
 
-        <div class="input-container">
-            <label for="password">Password:</label>
-            <input id="password" class="input-field" @bind="Password" type="password" placeholder="Enter your password" />
-        </div>
+                <h2 class="section-title">Personal Information</h2>
+                <input id="firstName" class="input-field" @bind="FirstName" placeholder="First name *" required/>
+                <input id="intersertion" class="input-field" @bind="Intersertion" placeholder="Prefix"/>
+                <input id="lastName" class="input-field" @bind="LastName" placeholder="Last name *" required/>
+                <input id="email" class="input-field" @bind="Email" type="email" placeholder="Email *" required/>
+                <input id="dateOfBirth" class="input-field" @bind="DateOfBirth" type="date" max="@DateTime.Today.ToString("yyyy-MM-dd")" required/>
 
-        <button class="register-btn" @onclick="RegisterUser">Register</button>
+                <!-- Required field notice -->
+                <div class="required-field"><a>*This field is required</a></div>
 
-        @if (Message != null)
-        {
-            <p class="message">@Message</p>
-        }
+                <!-- Register button -->
+                <button class="register-btn" @onclick="RegisterUser">Register</button>
 
-        <div class="login-link">
-            <p>Already have an account? <a href="/">Log in here</a></p>
+                <!-- Message display -->
+                @if (!string.IsNullOrEmpty(Message))
+                {
+                    <p class="message">@Message</p>
+                }
+
+                <!-- Login link -->
+                <div class="login-link">
+                    <p>Already have an account? <a href="/">Login</a></p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+
 @code {
     private string Username;
+    private string FirstName;
+    private string Intersertion;
+    private string LastName;
     private string Email;
+    private DateTime DateOfBirth = DateTime.Today;
     private string Password;
     private string Message;
 
-    private async Task RegisterUser()
+    private async System.Threading.Tasks.Task RegisterUser()
     {
-        var success = await UserService.RegisterUser(Username, Email, Password);
+        var account = new Account
+            {
+                Username = Username,
+                Password = Password
+            };
+
+        var person = new Person
+            {
+                FirstName = FirstName,
+                Intersertion = Intersertion,
+                LastName = LastName,
+                Email = Email,
+                DateOfBirth = DateOnly.FromDateTime(DateOfBirth)
+            };
+
+        var success = await UserService.RegisterUser(account, person);
+
         if (success)
         {
             Message = "Registration successful!";

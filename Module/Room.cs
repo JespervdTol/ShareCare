@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace ShareCare.Module
 {
-    public class Account
+    public class Room
     {
-        public int AccountID { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public int RoomID { get; set; }
+        public string Name { get; set; }
+        public int BuildingID { get; set; }
     }
+
 }

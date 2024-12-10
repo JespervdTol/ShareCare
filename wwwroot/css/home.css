@@ -1,0 +1,90 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fde4d2;
+    padding: 10px 20px;
+    border-bottom: 2px solid #faa37e;
+}
+
+.logo {
+    height: 40px;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Welcome Section */
+.welcome-section {
+    text-align: center;
+    padding: 20px;
+}
+
+    .welcome-section .firstname {
+        color: #f57a00;
+        font-weight: bold;
+    }
+
+/* Grid Container */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 20px;
+}
+
+.grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: 2px solid #faa37e;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+    .grid-item i.icon-placeholder {
+        display: block;
+        width: 50px;
+        height: 50px;
+        background-color: black;
+        border-radius: 50%;
+        margin-bottom: 10px;
+    }
+
+/* Footer */
+.footer {
+    text-align: center;
+    background-color: #fde4d2;
+    padding: 20px;
+    border-top: 2px solid #faa37e;
+}
+
+.navigation-dots {
+    margin-top: 10px;
+}
+
+.dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    background-color: gray;
+    border-radius: 50%;
+}
