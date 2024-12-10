@@ -3,7 +3,6 @@
 @inject NavigationManager NavigationManager
 
 <div id="login-page">
-
     <div class="design-corner top-right-light"></div>
     <div class="design-corner top-right-dark"></div>
 
@@ -18,39 +17,54 @@
     </div>
 
     <div class="input-container">
-        <input @bind="Username" placeholder="Username" type="Username" class="input-field" />
-        <input @bind="Password" placeholder="Password" type="Password" class="input-field" />
-    </div>
-     
-     <div class="remember-forgot-container"> 
-        <label class="remember-me"> <input type="checkbox" /> Remember me </label> 
-            <label class="forgot-password"> <a href="#">Forgot password?</a> </label> 
+        <input @bind="Username" placeholder="Username" type="text" class="input-field" autofocus />
+        <input @bind="Password" placeholder="Password" type="password" class="input-field" />
     </div>
 
-    <button @onclick="LoginUser" class="login-btn">Login</button>
+    <div class="remember-forgot-container">
+        <label class="remember-me">
+            <input @bind="RememberMe" type="checkbox" /> Remember me
+        </label>
+        <label class="forgot-password"> <a href="#">Forgot password?</a> </label>
+    </div>
+
+    <button @onclick="LoginUser" class="login-btn" disabled="@IsLoading">
+        <span>Login</span>
+    </button>
 
     <div class="register">
         <p>New user? <a href="/register">Sign up</a></p>
     </div>
 
+    @if (Message != null)
+    {
+        <p class="message">@Message</p>
+    }
 </div>
-
-@if (Message != null)
-{
-    <p class="message">@Message</p>
-}
-
 
 @code {
     private string Username;
     private string Password;
     private string Message;
+    private bool RememberMe;
+    private bool IsLoading = false;
 
     private async Task LoginUser()
     {
+        if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
+        {
+            Message = "Please enter both username and password.";
+            return;
+        }
+
+        IsLoading = true;
+
         var success = await UserService.LoginUser(Username, Password);
         if (success)
         {
+            if (RememberMe)
+            {
+            }
             Message = "Login successful!";
             NavigationManager.NavigateTo("/home");
         }
@@ -58,5 +72,7 @@
         {
             Message = "Invalid username or password.";
         }
+
+        IsLoading = false;
     }
 }
