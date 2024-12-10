@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace ShareCare.Module
 {
-    internal class Task
+    public class Task
     {
         public int TaskID { get; set; }
-        public string? Name { get; set; }
-        public DateOnly Date { get; set; }
+        public string Type { get; set; }
+        public string Summary { get; set; }
+        public DateTime Date { get; set; }
+        public string Person { get; set; }
+        public string BuildingName { get; set; }
+        public string RoomName { get; set; }
     }
 }

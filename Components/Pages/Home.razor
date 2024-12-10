@@ -1,9 +1,17 @@
 ﻿@page "/home"
+@using Microsoft.AspNetCore.Components.Authorization
+@inject UserService UserService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthStateProvider
 
-<h1>Hello!</h1>
+<div class="welcome-section">
+    <h2>Welcome <span class="firstname">@FirstName</span>!</h2>
+    <p>What do you want to do?</p>
+</div>
 
 <div class="grid-container">
     <div class="grid-item" @onclick="NavigateToHouseRules">
+
         <div class="icon">📚</div>
         <div class="text">House Rules</div>
     </div>
@@ -28,7 +36,6 @@
         <div class="text">Calendar</div>
     </div>
 </div>
-
 
 @code {
     private string FirstName = string.Empty;
@@ -79,4 +86,5 @@
     private void NavigateToOpenTasks() => NavigationManager.NavigateTo("/open-tasks");
     private void NavigateToCalender() => NavigationManager.NavigateTo("/calendar");
 }
+
 

@@ -3,48 +3,68 @@
 @inject NavigationManager NavigationManager
 
 <div id="login-page">
-    <div class="login-container">
-        <div class="login-box">
-            <div class="logo-container">
-                <img src="../Resources/Images/sharecare_logo.png" alt="ShareCare Logo" class="logo" />
-            </div>
+    <div class="design-corner top-right-light"></div>
+    <div class="design-corner top-right-dark"></div>
 
-            <h3 class="login-title">Login</h3>
-            <p class="login-subtitle">Please sign in to continue</p>
+    <div class="design-corner bottom-left-light"></div>
+    <div class="design-corner bottom-left-dark"></div>
 
-            <div class="input-container">
-                <input @bind="Username" placeholder="email" type="email" class="input-field" />
-                <input @bind="Password" placeholder="password" type="password" class="input-field" />
-            </div>
+    <img src="resources/images/logo2.svg" alt="ShareCare Logo" class="logo" />
 
-            <div class="forgot-password">
-                <a href="#">Forgot password?</a>
-            </div>
-
-            <button @onclick="LoginUser" class="login-btn">Login</button>
-
-            <div class="register">
-                <p>New user? <a href="/register">Sign up</a></p>
-            </div>
-
-            @if (Message != null)
-            {
-                <p class="message">@Message</p>
-            }
-        </div>
+    <div class="text-container">
+        <h1 class="login-title">Login</h1>
+        <p class="login-subtitle">Please sign in to continue</p>
     </div>
+
+    <div class="input-container">
+        <input @bind="Username" placeholder="Username" type="text" class="input-field" autofocus />
+        <input @bind="Password" placeholder="Password" type="password" class="input-field" />
+    </div>
+
+    <div class="remember-forgot-container">
+        <label class="remember-me">
+            <input @bind="RememberMe" type="checkbox" /> Remember me
+        </label>
+        <label class="forgot-password"> <a href="#">Forgot password?</a> </label>
+    </div>
+
+    <button @onclick="LoginUser" class="login-btn" disabled="@IsLoading">
+        <span>Login</span>
+    </button>
+
+    <div class="register">
+        <p>New user? <a href="/register">Sign up</a></p>
+    </div>
+
+    @if (Message != null)
+    {
+        <p class="message">@Message</p>
+    }
 </div>
 
 @code {
     private string Username;
     private string Password;
     private string Message;
+    private bool RememberMe;
+    private bool IsLoading = false;
 
     private async Task LoginUser()
     {
+        if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
+        {
+            Message = "Please enter both username and password.";
+            return;
+        }
+
+        IsLoading = true;
+
         var success = await UserService.LoginUser(Username, Password);
         if (success)
         {
+            if (RememberMe)
+            {
+            }
             Message = "Login successful!";
             NavigationManager.NavigateTo("/home");
         }
@@ -52,5 +72,7 @@
         {
             Message = "Invalid username or password.";
         }
+
+        IsLoading = false;
     }
 }
