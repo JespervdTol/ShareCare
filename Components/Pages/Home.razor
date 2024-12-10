@@ -2,4 +2,81 @@
 
 <h1>Hello!</h1>
 
-Welcome to the ShareCare app.
+<div class="grid-container">
+    <div class="grid-item" @onclick="NavigateToHouseRules">
+        <div class="icon">📚</div>
+        <div class="text">House Rules</div>
+    </div>
+    <div class="grid-item" @onclick="NavigateToComplaints">
+        <div class="icon">⚠️</div>
+        <div class="text">Complaints</div>
+    </div>
+    <div class="grid-item" @onclick="NavigateToEvents">
+        <div class="icon">📅</div>
+        <div class="text">Events</div>
+    </div>
+    <div class="grid-item" @onclick="NavigateToPendingPayments">
+        <div class="icon">💸</div>
+        <div class="text">Payments</div>
+    </div>
+    <div class="grid-item" @onclick="NavigateToOpenTasks">
+        <div class="icon">✅</div>
+        <div class="text">Tasks</div>
+    </div>
+    <div class="grid-item" @onclick="NavigateToCalender">
+        <div class="icon">📆</div>
+        <div class="text">Calendar</div>
+    </div>
+</div>
+
+
+@code {
+    private string FirstName = string.Empty;
+    private bool IsAuthenticated = false;
+    private bool IsLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            System.Diagnostics.Debug.WriteLine($"IsAuthenticated: {user.Identity.IsAuthenticated}, Username: {user.Identity.Name}");
+
+            if (user.Identity.IsAuthenticated)
+            {
+                IsAuthenticated = true;
+                var username = user.Identity.Name;
+                System.Diagnostics.Debug.WriteLine($"Fetching user data for username: {username}");
+                var person = await UserService.GetLoggedInUser(username);
+
+                if (person != null)
+                {
+                    FirstName = person.FirstName;
+                    System.Diagnostics.Debug.WriteLine($"Fetched FirstName: {FirstName}");
+                }
+                else
+                {
+                    FirstName = "User";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private void NavigateToHouseRules() => NavigationManager.NavigateTo("/house-rules");
+    private void NavigateToComplaints() => NavigationManager.NavigateTo("/complaints");
+    private void NavigateToEvents() => NavigationManager.NavigateTo("/events");
+    private void NavigateToPendingPayments() => NavigationManager.NavigateTo("/pending-payments");
+    private void NavigateToOpenTasks() => NavigationManager.NavigateTo("/open-tasks");
+    private void NavigateToCalender() => NavigationManager.NavigateTo("/calendar");
+}
+
