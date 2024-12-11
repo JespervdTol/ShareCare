@@ -4,38 +4,58 @@
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthStateProvider
 
-<div class="welcome-section">
-    <h2>Welcome <span class="firstname">@FirstName</span>!</h2>
-    <p>What do you want to do?</p>
-</div>
 
-<div class="grid-container">
-    <div class="grid-item" @onclick="NavigateToHouseRules">
+    <div class="welcome-section">
+        <h2>Welcome <span class="firstname">@FirstName</span>!</h2>
+        <p>What do you want to do?</p>
+    </div>
 
-        <div class="icon">📚</div>
-        <div class="text">House Rules</div>
+    <div class="grid-container">
+        <div class="grid-item" @onclick="NavigateToHouseRules">
+            <div class="icon">📚</div>
+            <div class="text">House Rules</div>
+        </div>
+        <div class="grid-item" @onclick="NavigateToComplaints">
+            <div class="icon">⚠️</div>
+            <div class="text">Complaints</div>
+        </div>
+        <div class="grid-item" @onclick="NavigateToEvents">
+            <div class="icon">📅</div>
+            <div class="text">Events</div>
+        </div>
+        <div class="grid-item" @onclick="NavigateToPendingPayments">
+            <div class="icon">💸</div>
+            <div class="text">Payments</div>
+        </div>
+        <div class="grid-item" @onclick="NavigateToOpenTasks">
+            <div class="icon">✅</div>
+            <div class="text">Tasks</div>
+        </div>
+        <div class="grid-item" @onclick="NavigateToCalender">
+            <div class="icon">📆</div>
+            <div class="text">Calendar</div>
+        </div>
     </div>
-    <div class="grid-item" @onclick="NavigateToComplaints">
-        <div class="icon">⚠️</div>
-        <div class="text">Complaints</div>
-    </div>
-    <div class="grid-item" @onclick="NavigateToEvents">
-        <div class="icon">📅</div>
-        <div class="text">Events</div>
-    </div>
-    <div class="grid-item" @onclick="NavigateToPendingPayments">
-        <div class="icon">💸</div>
-        <div class="text">Payments</div>
-    </div>
-    <div class="grid-item" @onclick="NavigateToOpenTasks">
-        <div class="icon">✅</div>
-        <div class="text">Tasks</div>
-    </div>
-    <div class="grid-item" @onclick="NavigateToCalender">
-        <div class="icon">📆</div>
-        <div class="text">Calendar</div>
-    </div>
-</div>
+
+    <footer>
+        <h3>Contact us!</h3>
+        <div class="footer-icons">
+            <a href="https://www.facebook.com" target="_blank" aria-label="Facebook">
+                <i class="bi bi-facebook"></i>
+            </a>
+            <a href="https://www.twitter.com" target="_blank" aria-label="Twitter">
+                <i class="bi bi-twitter"></i>
+            </a>
+            <a href="https://www.instagram.com" target="_blank" aria-label="Instagram">
+                <i class="bi bi-instagram"></i>
+            </a>
+            <a href="https://www.linkedin.com" target="_blank" aria-label="LinkedIn">
+                <i class="bi bi-linkedin"></i>
+            </a>
+        </div>
+    </footer>
+
+
 
 @code {
     private string FirstName = string.Empty;
