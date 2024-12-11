@@ -51,28 +51,7 @@
 
     private async Task LoginUser()
     {
-        if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
-        {
-            Message = "Please enter both username and password.";
-            return;
-        }
-
-        IsLoading = true;
-
-        var success = await UserService.LoginUser(Username, Password);
-        if (success)
-        {
-            if (RememberMe)
-            {
-            }
             Message = "Login successful!";
             NavigationManager.NavigateTo("/home");
-        }
-        else
-        {
-            Message = "Invalid username or password.";
-        }
-
-        IsLoading = false;
     }
 }
