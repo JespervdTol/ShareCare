@@ -1,0 +1,196 @@
+﻿/* Reset default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 24px;
+    color: #FF7043;
+}
+
+.calendar {
+    width: 100%;
+    max-width: 100%;
+    margin: 20px 0;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Navigation bar */
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #FF7043; /* Orange for background */
+    color: #fff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+    .navigation button {
+        background-color: transparent;
+        border: none;
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+        .navigation button:hover {
+            opacity: 0.7;
+        }
+
+    .navigation span {
+        font-size: 18px;
+    }
+
+/* Days container for vertical layout with scroll */
+.days {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 15px;
+    max-height: 600px; /* Set max height to enable scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Each day block styling (horizontal row) */
+.day {
+    display: grid;
+    grid-template-columns: 1fr 3fr; /* Date and day on the left, tasks on the right */
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    justify-items: center;
+}
+
+    /* Date and Day on the left */
+    .day .date {
+        text-align: left;
+        padding-right: 10px;
+    }
+
+        /* Style for date - Day Number (e.g. 16) */
+        .day .date .date-day {
+            font-size: 22px;
+            font-weight: bold;
+            color: #FF7043; /* Orange color for date */
+        }
+
+        /* Style for month (e.g. Dec) */
+        .day .date .date-month {
+            font-size: 14px;
+            color: #333;
+            font-weight: normal;
+        }
+
+        /* Style for Day of the Week (e.g. MON) */
+        .day .date .day-of-week {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+    /* Tasks on the right */
+    .day .tasks {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-left: 10px;
+        text-align: left;
+    }
+
+        .day .tasks p {
+            font-size: 14px;
+            color: #777;
+            margin: 5px 0;
+        }
+
+        /* Task block style */
+        .day .tasks .task {
+            background-color: #f1f1f1;
+            padding: 8px 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between; /* Align summary and user horizontally */
+            align-items: center;
+        }
+
+            /* Task summary and user side by side */
+            .day .tasks .task .summary {
+                font-size: 14px;
+                color: #333;
+                margin-right: 10px; /* Space between summary and user */
+                flex-grow: 1; /* Allow summary to take remaining space */
+            }
+
+            .day .tasks .task .user {
+                font-size: 12px;
+                color: #999;
+                white-space: nowrap; /* Prevent overflow */
+            }
+
+        /* Empty task slot (when no tasks) */
+        .day .tasks p {
+            color: #bbb;
+            text-align: center;
+        }
+
+/* Button and Task Styling */
+button {
+    font-size: 14px;
+    padding: 8px 15px;
+    background-color: #FF7043; /* Orange color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+    button:hover {
+        background-color: #E64A19;
+    }
+
+/* Responsive adjustments for small screens */
+@media (max-width: 600px) {
+    .calendar {
+        width: 100%; /* Full-width on small screens */
+    }
+
+    .day .date {
+        font-size: 12px;
+    }
+
+    .day .tasks p {
+        font-size: 12px;
+    }
+
+    /* Adjust the task summary and user side by side layout */
+    .day .tasks .task {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+        .day .tasks .task .summary,
+        .day .tasks .task .user {
+            max-width: 100%;
+            padding-left: 0;
+        }
+}
