@@ -1,0 +1,101 @@
+﻿@page "/calendar"
+
+@using ShareCare.Services
+@inject TaskService TaskService
+@using System.Globalization
+
+<h3>Cleaning Schedule</h3>
+<div class="calendar">
+    <div class="navigation">
+        <button @onclick="PrevWeek">‹</button>
+        <span>Week @currentWeek</span>
+        <button @onclick="NextWeek">›</button>
+    </div>
+
+    <div class="days">
+        @foreach (var day in weekDays)
+        {
+            <div class="day">
+                <div class="date">
+                    <strong class="date-day">@day.Date.ToString("dd")</strong>
+                    <span class="date-month">@day.Date.ToString("MMM")</span>
+                    <span class="day-of-week">@day.Date.ToString("ddd")</span>
+                </div>
+                <div class="tasks">
+                    @if (day.Tasks.Any())
+                    {
+                        @foreach (var task in day.Tasks)
+                        {
+                            <div class="task">
+                                <p>@task.Summary</p>
+                                <span class="user">@task.Person</span>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>No tasks</p>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private int currentWeek;
+    private DateTime startOfWeek;
+    private List<DayInfo> weekDays = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        startOfWeek = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Monday);
+        currentWeek = GetWeekOfYear(startOfWeek);
+
+        await LoadTasks();
+    }
+
+    private async Task LoadTasks()
+    {
+        weekDays.Clear();
+        var tasks = await TaskService.GetTasksForWeekAsync(startOfWeek);
+
+        for (int i = 0; i < 7; i++)
+        {
+            var date = startOfWeek.AddDays(i);
+            weekDays.Add(new DayInfo
+                {
+                    Date = date,
+                    Tasks = tasks.Where(t => t.Date.Date == date).ToList()
+                });
+        }
+    }
+
+    private async Task PrevWeek()
+    {
+        startOfWeek = startOfWeek.AddDays(-7);
+        currentWeek = GetWeekOfYear(startOfWeek);
+        await LoadTasks();
+    }
+
+    private async Task NextWeek()
+    {
+        startOfWeek = startOfWeek.AddDays(7);
+        currentWeek = GetWeekOfYear(startOfWeek);
+        await LoadTasks();
+    }
+
+    private int GetWeekOfYear(DateTime date)
+    {
+        var cultureInfo = new CultureInfo("nl-NL");
+        var calendar = cultureInfo.Calendar;
+        var dateTimeFormat = cultureInfo.DateTimeFormat;
+        return calendar.GetWeekOfYear(date, dateTimeFormat.CalendarWeekRule, dateTimeFormat.FirstDayOfWeek);
+    }
+
+    private class DayInfo
+    {
+        public DateTime Date { get; set; }
+        public List<ShareCare.Module.Task> Tasks { get; set; } = new();
+    }
+}

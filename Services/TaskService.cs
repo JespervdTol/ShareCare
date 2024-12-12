@@ -149,5 +149,46 @@ namespace ShareCare.Services
 
             return buildings;
         }
+
+        public async Task<List<ShareCare.Module.Task>> GetTasksForWeekAsync(DateTime startDate)
+        {
+            var query = @"
+                SELECT t.id AS TaskId, tt.name AS TaskType, t.summary AS TaskSummary, t.date AS TaskDate, 
+                       CONCAT(u.firstname, ' ', u.lastname) AS Person,
+                       b.name AS BuildingName, r.name AS RoomName
+                FROM task t
+                JOIN task_type tt ON t.type_id = tt.id
+                JOIN user u ON t.user_id = u.id
+                LEFT JOIN building b ON t.building_id = b.id
+                LEFT JOIN room r ON t.room_id = r.id
+                WHERE t.date BETWEEN @StartDate AND @EndDate
+                ORDER BY t.date";
+
+            var parameters = new MySqlParameter[]
+            {
+                new MySqlParameter("@StartDate", startDate),
+                new MySqlParameter("@EndDate", startDate.AddDays(6))
+            };
+
+            var dataTable = await _databaseService.ExecuteQueryAsync(query, parameters);
+
+            var tasks = new List<ShareCare.Module.Task>();
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                tasks.Add(new ShareCare.Module.Task
+                {
+                    TaskID = (int)row["TaskId"],
+                    Type = row["TaskType"].ToString(),
+                    Summary = row["TaskSummary"].ToString(),
+                    Date = (DateTime)row["TaskDate"],
+                    Person = row["Person"].ToString(),
+                    BuildingName = row["BuildingName"]?.ToString(),
+                    RoomName = row["RoomName"]?.ToString()
+                });
+            }
+
+            return tasks;
+        }
     }
 }
