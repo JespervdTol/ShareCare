@@ -1,11 +1,13 @@
 .page {
-    position: relative;
-    display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Ensure column layout for consistency */
+    padding: 0;             /* Remove any padding applied globally */
+    margin: 0;
 }
 
 main {
-    flex: 1;
+    flex: 2;
+    width: 100%;
+    height: 100%;
 }
 
 
