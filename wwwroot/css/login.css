@@ -11,14 +11,13 @@
 }
 
 #login-page {
-    position: relative;
-    width: 100%;
+    position: fixed;
+    width: 90%;
     height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
 }
 
 .design-corner {
@@ -26,13 +25,13 @@
     width: 50vh;
     height: 30vh;
     border-radius: 5em;
-    z-index: 1; /* Zorg dat het zichtbaar blijft */
+    z-index: 1;
     transform: rotate(30deg);
 }
 
 .top-right-light {
     background-color: var(--light-orange);
-    top: -15vh; /* Pas de positie aan */
+    top: -15vh; 
     right: -10vh;
 }
 

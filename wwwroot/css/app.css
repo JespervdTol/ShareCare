@@ -15,7 +15,7 @@ html, body {
     margin: 0;
     padding: 0;
     overflow-y: auto;
-    overflow-x: hidden; /* Prevent horizontal scrolling caused by overflow */
+    overflow-x: hidden;
     background-color: var(--white-smoke);
 }
 
