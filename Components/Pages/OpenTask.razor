@@ -4,77 +4,78 @@
 @inject TaskService TaskService
 @inject UserService UserService
 
-<h3>Open <span>Tasks</span></h3>
+<div class="opentasks-scrollable"> 
+    <h3>Open <span>Tasks</span></h3>
 
-<button class="btn btn-primary" @onclick="ShowTaskFormModal">
-    Add New Task
-</button>
+    <button class="btn btn-primary" @onclick="ShowTaskFormModal">
+        Add New Task
+    </button>
 
-<div class="new-task-modal @modalVisibleClass">
-    <div class="new-task-form">
-        <button class="close-modal-btn" @onclick="HideTaskFormModal">&times;</button>
+    <div class="new-task-modal @modalVisibleClass">
+        <div class="new-task-form">
+            <button class="close-modal-btn" @onclick="HideTaskFormModal">&times;</button>
 
-        <h4>Create New Task</h4>
-        
-        <label>Task Type:</label>
-        <select @bind="selectedTaskTypeId" class="form-select">
-            <option value="0" selected disabled>Select a task type</option>
-            @if (taskTypes != null && taskTypes.Count > 0)
-            {
-                @foreach (var taskType in taskTypes)
+            <h4>Create New Task</h4>
+            
+            <label>Task Type:</label>
+            <select @bind="selectedTaskTypeId" class="form-select">
+                <option value="0" selected disabled>Select a task type</option>
+                @if (taskTypes != null && taskTypes.Count > 0)
                 {
-                    <option value="@taskType.TaskTypeID">@taskType.Name</option>
+                    @foreach (var taskType in taskTypes)
+                    {
+                        <option value="@taskType.TaskTypeID">@taskType.Name</option>
+                    }
                 }
-            }
-            else
-            {
-                <option disabled>No task types available</option>
-            }
-        </select>
-
-        <label>Summary:</label>
-        <input type="text" @bind="taskSummary" class="form-input" placeholder="Enter task summary" />
-
-       <label>Date:</label>
-        <input type="date" @bind="taskDate" class="form-input" min="@DateTime.Now.ToString("dd-MM-yyyy")" />
-
-        <label>Assign To:</label>
-        <select @bind="selectedPersonId" class="form-select">
-            <option value="0" selected disabled>Select a person</option>
-            @if (persons != null && persons.Count > 0)
-            {
-                @foreach (var person in persons)
+                else
                 {
-                    <option value="@person.PersonID">@person.FirstName @person.LastName</option>
+                    <option disabled>No task types available</option>
                 }
-            }
-            else
-            {
-                <option disabled>No persons available</option>
-            }
-        </select>
+            </select>
 
-        <label>Room:</label>
-        <select @bind="selectedRoomId" class="form-select">
-            <option value="0" selected disabled>Select a room</option>
-            @if (rooms != null && rooms.Count > 0)
-            {
-                @foreach (var room in rooms)
+            <label>Summary:</label>
+            <input type="text" @bind="taskSummary" class="form-input" placeholder="Enter task summary" />
+
+        <label>Date:</label>
+            <input type="date" @bind="taskDate" class="form-input" min="@DateTime.Now.ToString("dd-MM-yyyy")" />
+
+            <label>Assign To:</label>
+            <select @bind="selectedPersonId" class="form-select">
+                <option value="0" selected disabled>Select a person</option>
+                @if (persons != null && persons.Count > 0)
                 {
-                    <option value="@room.RoomID">@room.Name</option>
+                    @foreach (var person in persons)
+                    {
+                        <option value="@person.PersonID">@person.FirstName @person.LastName</option>
+                    }
                 }
-            }
-            else
-            {
-                <option disabled>No rooms available</option>
-            }
-        </select>
+                else
+                {
+                    <option disabled>No persons available</option>
+                }
+            </select>
 
-        <button class="btn btn-primary" @onclick="CreateTask">Create Task</button>
-        <button class="btn btn-secondary" @onclick="HideTaskFormModal">Cancel</button>
+            <label>Room:</label>
+            <select @bind="selectedRoomId" class="form-select">
+                <option value="0" selected disabled>Select a room</option>
+                @if (rooms != null && rooms.Count > 0)
+                {
+                    @foreach (var room in rooms)
+                    {
+                        <option value="@room.RoomID">@room.Name</option>
+                    }
+                }
+                else
+                {
+                    <option disabled>No rooms available</option>
+                }
+            </select>
+
+            <button class="btn btn-primary" @onclick="CreateTask">Create Task</button>
+            <button class="btn btn-secondary" @onclick="HideTaskFormModal">Cancel</button>
+        </div>
     </div>
 </div>
-
 @if (tasks == null)
 {
     <p><em>Loading...</em></p>
@@ -98,7 +99,7 @@ else
                     <p><strong>Summary:</strong> @task.Summary</p>
                     <p><strong>Assigned to:</strong> @task.Person</p>
                     <p><strong>Room:</strong> @task.RoomName</p>
-                    <button class="btn btn-danger" @onclick="() => RemoveTask(task.TaskID)">Done</button>
+                    <button class="btn btn-done" @onclick="() => RemoveTask(task.TaskID)">Done</button>
                 </div>
             }
         }

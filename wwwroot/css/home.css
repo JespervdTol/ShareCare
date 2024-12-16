@@ -15,7 +15,7 @@
     padding: 1em;
 }
 
-h2 {
+.welcome-section h2 {
     color: #343a40;
     margin-top: 0.5em;
     text-align: center; 
@@ -24,7 +24,7 @@ h2 {
     color: black;
     text-shadow: 3px 2px var(--timberwolf);
 }
-h2 span {
+.welcome-section h2 span {
     color: var(--orange);
 }
 
@@ -62,53 +62,21 @@ h2 span {
         color: #333;
     }
 
-  /* Footer styling */
 footer {
-    background-color: var(--peach); /* Peach background */
-    text-align: center; /* Center text */
-    padding: 2em 1em; /* Padding for spacing */
-    height: 5rem; /* Set height, but adjust content accordingly */
-    width: 100%; /* Full width */
+    text-align: center;
 }
-
 footer h3 {
-    font-size: 1em;
-    color: black;
-    margin: 0; /* Remove margin to avoid spacing issues */
-    font-weight: bold;
-    text-shadow: 2px 1px var(--timberwolf);
-}
-
-/* Icons container */
-.footer-icons {
-    display: flex;
-    justify-content: center;
-    gap: 1em; /* Spacing between icons */
-    margin-top: 1em;
-}
-
-/* Styling for individual icon links */
-.footer-icons a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.5em; /* Larger icons for mobile */
-    height: 1.5em;
-    background-color: var(--light-orange);
     color: var(--davy-gray);
-    font-size: 1.5em; /* Icon size */
-    border-radius: 50%; /* Round shape */
-    text-decoration: none; /* No underline */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease;
+    font-size: 1.5em; 
+    margin: 2.5em 0 0.5em 0;
 }
-
-/* Pressed effect on touch devices */
-.footer-icons a:active {
-    transform: scale(0.95);
+.footer-icons {
+    display: flex; 
+    justify-content: center; 
+    gap: 3em; 
 }
-.footer-icons i {
-    scale: 0.8;
+.footer-icons a {
+    color: var(--davy-gray); 
+    font-size: 1.5em; 
+    text-shadow: 0 0 5px var(--light-orange), 0 0 10px var(--light-orange); 
 }
-
-

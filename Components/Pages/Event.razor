@@ -1,0 +1,229 @@
+﻿@page "/events"
+@using ShareCare.Services
+@using ShareCare.Module
+@inject EventService EventService
+@inject UserService UserService
+
+<div class="openevents-scrollable">
+    <h3>Open <span>Events</span></h3>
+
+    <button class="btn btn-primary" @onclick="ShowEventFormModal">
+        Add New Event
+    </button>
+
+    <div class="new-event-modal @modalVisibleClass">
+        <div class="new-event-form">
+            <button class="close-modal-btn" @onclick="HideEventFormModal">&times;</button>
+
+            <h4>Create New Event</h4>
+
+            <label>Summary:</label>
+            <input type="text" @bind="eventSummary" class="form-input" placeholder="Enter event summary" />
+
+            <label>Date:</label>
+            <input type="date" @bind="eventDate" class="form-input" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+
+            <label>Start Time:</label>
+            <input type="time" @bind="eventStartTime" class="form-input" />
+
+            <label>End Time:</label>
+            <input type="time" @bind="eventEndTime" class="form-input" />
+
+            <label>Assign To:</label>
+            <select multiple @onchange="OnPersonSelectionChanged" class="form-select">
+                @if (persons != null && persons.Count > 0)
+                {
+                    @foreach (var person in persons)
+                    {
+                                <option value="@person.PersonID">@person.FirstName @person.LastName</option>
+                    }
+                }
+                else
+                {
+                        <option disabled>No persons available</option>
+                }
+            </select>
+
+            <label>Select Rooms:</label>
+            <select multiple @onchange="OnRoomSelectionChanged" class="form-select">
+                @if (rooms != null && rooms.Count > 0)
+                {
+                    @foreach (var room in rooms)
+                    {
+                                <option value="@room.RoomID">@room.Name</option>
+                    }
+                }
+                else
+                {
+                        <option disabled>No rooms available</option>
+                }
+            </select>
+
+            <button class="btn btn-primary" @onclick="CreateEvent">Create Event</button>
+            <button class="btn btn-secondary" @onclick="HideEventFormModal">Cancel</button>
+        </div>
+    </div>
+</div>
+
+@if (events == null)
+{
+        <p><em>Loading...</em></p>
+}
+else if (events.Count == 0)
+{
+        <p>No open events available.</p>
+}
+else
+{
+        <div class="event-cards">
+        @foreach (var eventItem in events)
+        {
+            @if (eventItem != null)
+            {
+                            <div class="event-card">
+                                <div class="event-header">
+                                    <h4>@eventItem.Summary</h4>
+                                    <p><strong>@eventItem.Date.ToString("yyyy-MM-dd")</strong></p>
+                                    <p><strong>@eventItem.StartTime.ToString(@"hh\:mm") - @eventItem.EndTime.ToString(@"hh\:mm")</strong></p>
+                                </div>
+                                <p><strong>Assigned to:</strong></p>
+                                <ul>
+                        @foreach (var person in eventItem.Persons)
+                        {
+                                            <li>@person.FirstName @person.LastName</li>
+                        }
+                                </ul>
+                                <p><strong>Rooms:</strong></p>
+                                <ul>
+                        @foreach (var room in eventItem.Rooms)
+                        {
+                                            <li>@room.Name</li>
+                        }
+                                </ul>
+                                <button class="btn btn-done" @onclick="() => RemoveEvent(eventItem.EventID)">Done</button>
+                            </div>
+            }
+        }
+        </div>
+}
+
+@code {
+    private List<ShareCare.Module.Event> events;
+    private List<Person> persons;
+    private List<Room> rooms;
+    private List<int> selectedPersonIds = new List<int>();
+    private List<int> selectedRoomIds = new List<int>();
+    private string eventSummary = string.Empty;
+    private DateTime eventDate = DateTime.Now;
+    private TimeOnly eventStartTime = new TimeOnly(9, 0, 0);
+    private TimeOnly eventEndTime = new TimeOnly(17, 0, 0);
+
+    private bool isEventFormVisible = false;
+    private string modalVisibleClass => isEventFormVisible ? "active" : "";
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        try
+        {
+            events = await EventService.GetEventsAsync();
+            persons = await UserService.GetUsersAsync();
+            rooms = await EventService.GetRoomsAsync();
+
+            Console.WriteLine($"Loaded {persons?.Count ?? 0} persons, {rooms?.Count ?? 0} rooms.");
+
+            if (persons == null || persons.Count == 0)
+            {
+                Console.WriteLine("No persons found.");
+            }
+
+            if (rooms == null || rooms.Count == 0)
+            {
+                Console.WriteLine("No rooms found.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error during initialization: {ex.Message}");
+        }
+    }
+
+    private async System.Threading.Tasks.Task RemoveEvent(int eventId)
+    {
+        try
+        {
+            var success = await EventService.DeleteEventAsync(eventId);
+            if (success)
+            {
+                events = await EventService.GetEventsAsync();
+            }
+            else
+            {
+                Console.WriteLine("Failed to delete the event.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error removing event: {ex.Message}");
+        }
+    }
+
+    private async System.Threading.Tasks.Task CreateEvent()
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(eventSummary) || !selectedPersonIds.Any() || !selectedRoomIds.Any())
+            {
+                Console.WriteLine("Please fill out all fields.");
+                return;
+            }
+
+            var success = await EventService.AddEventAsync(eventSummary, eventDate, eventStartTime, eventEndTime, selectedPersonIds, selectedRoomIds);
+            if (success)
+            {
+                events = await EventService.GetEventsAsync();
+                Console.WriteLine("Event created successfully.");
+                HideEventFormModal();
+            }
+            else
+            {
+                Console.WriteLine("Failed to create the event.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error creating event: {ex.Message}");
+        }
+    }
+
+    private void ShowEventFormModal()
+    {
+        isEventFormVisible = true;
+    }
+
+    private void HideEventFormModal()
+    {
+        isEventFormVisible = false;
+    }
+
+    private void OnPersonSelectionChanged(ChangeEventArgs e)
+    {
+        var selectedOptions = e.Value as IEnumerable<string>;
+
+        if (selectedOptions != null)
+        {
+            selectedPersonIds = selectedOptions.Select(option => int.Parse(option)).ToList();
+            Console.WriteLine($"Selected persons: {string.Join(", ", selectedPersonIds)}");
+        }
+    }
+
+    private void OnRoomSelectionChanged(ChangeEventArgs e)
+    {
+        var selectedOptions = e.Value as IEnumerable<string>;
+
+        if (selectedOptions != null)
+        {
+            selectedRoomIds = selectedOptions.Select(option => int.Parse(option)).ToList();
+            Console.WriteLine($"Selected rooms: {string.Join(", ", selectedRoomIds)}");
+        }
+    }
+}

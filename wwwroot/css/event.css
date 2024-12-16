@@ -9,28 +9,31 @@
     --anti-flash-white: #EFEFEF;
     --white-smoke: #f5f5f5;
 }
-/*  */
 
+/* Header Styles */
 h3 {
     color: #343a40;
     margin: 0.5em 1em;
-    text-align: center; 
-    font-weight: bold; 
-    font-size: 2.5em; 
+    text-align: center;
+    font-weight: bold;
+    font-size: 2.5em;
     color: black;
     text-shadow: 3px 2px var(--timberwolf);
 }
-h3 span {
-    color: var(--orange);
-}
 
-.task-cards { 
+    h3 span {
+        color: var(--orange);
+    }
+
+/* Event Cards Layout */
+.event-cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5em;
     margin: 1em 0;
 }
-.task-card { 
+
+.event-card {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -40,23 +43,27 @@ h3 span {
     flex-direction: column;
     transition: transform 0.3s ease;
 }
-    .task-header {  
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #ddd;
-    }
-    .task-header h4 {
+
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+    .event-header h4 {
         color: var(--dark-cyan);
         font-size: 1.2em;
         font-weight: bold;
     }
-    .task-header p {
+
+    .event-header p {
         color: #888;
         font-size: 0.9em;
         margin-top: 0.5em;
     }
 
+/* Button Styles */
 .btn {
     margin: 0.5em 0.5em 1em 0;
     border: none;
@@ -65,20 +72,24 @@ h3 span {
     font-weight: bold;
     border-radius: 5px;
 }
-    .btn-done { /* done btn */
-        background-color: var(--dark-cyan);
-        transition: background-color 0.3s;
-    }
-    .btn-primary {
-        background-color: var(--orange);
-        transition: background-color 0.3s;
-    }
-    .btn-secondary {
-        background-color: #7c848f;
-        transition: background-color 0.3s;
-    }
 
-.new-task-modal {
+.btn-done {
+    background-color: var(--dark-cyan);
+    transition: background-color 0.3s;
+}
+
+.btn-primary {
+    background-color: var(--orange);
+    transition: background-color 0.3s;
+}
+
+.btn-secondary {
+    background-color: #7c848f;
+    transition: background-color 0.3s;
+}
+
+/* Modal Styles */
+.new-event-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -92,12 +103,13 @@ h3 span {
     opacity: 0;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
-    .new-task-modal.active {
+
+    .new-event-modal.active {
         visibility: visible;
         opacity: 1;
     }
 
-.new-task-form {
+.new-event-form {
     background-color: var(--white-smoke);
     padding: 1em;
     border-radius: 10px;
@@ -108,6 +120,8 @@ h3 span {
     max-height: 80vh;
     position: relative;
 }
+
+/* Close Modal Button */
 .close-modal-btn {
     position: absolute;
     right: 0.5em;
@@ -118,6 +132,7 @@ h3 span {
     color: var(--orange);
 }
 
+/* Form Input Styles */
 .form-select, .form-input {
     width: 100%;
     padding: 0.6em;
@@ -126,18 +141,39 @@ h3 span {
     border-radius: 5px;
     font-size: 0.9em;
 }
-    h4 {
-        color: var(--orange);
-        margin: 1em 0;
-        font-weight: 600;
-        font-size: 1.5em;
-    }
-    label {
-        font-size: 1em;
-        font-weight: bold;
-        color: var(--davy-gray);
-    }
-    p {
-        font-size: 1em;
-        color: #555;
-    }
+
+/* Label and Text Styles */
+h4 {
+    color: var(--orange);
+    margin: 1em 0;
+    font-weight: 600;
+    font-size: 1.5em;
+}
+
+label {
+    font-size: 1em;
+    font-weight: bold;
+    color: var(--davy-gray);
+}
+
+p {
+    font-size: 1em;
+    color: #555;
+}
+
+/* Modal Form Inputs and Labels */
+.new-event-form input[type="date"],
+.new-event-form input[type="time"],
+.new-event-form select {
+    width: 100%;
+    padding: 0.6em;
+    margin-bottom: 1.5em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Event Card Details */
+.event-card p {
+    font-size: 1em;
+    color: #555;
+}

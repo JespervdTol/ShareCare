@@ -20,12 +20,10 @@ namespace ShareCare.Services
         {
             var query = @"
                 SELECT t.id AS TaskId, tt.name AS TaskType, t.summary AS TaskSummary, t.date AS TaskDate, 
-                       CONCAT(u.firstname, ' ', u.lastname) AS Person,
-                       b.name AS BuildingName, r.name AS RoomName
+                       CONCAT(u.firstname, ' ', u.lastname) AS Person, r.name AS RoomName
                 FROM task t
                 JOIN task_type tt ON t.type_id = tt.id
                 JOIN user u ON t.user_id = u.id
-                LEFT JOIN building b ON t.building_id = b.id
                 LEFT JOIN room r ON t.room_id = r.id
                 WHERE t.date >= CURDATE()";
 
@@ -44,7 +42,6 @@ namespace ShareCare.Services
                     Summary = row["TaskSummary"].ToString(),
                     Date = (DateTime)row["TaskDate"],
                     Person = row["Person"].ToString(),
-                    BuildingName = row["BuildingName"]?.ToString(),
                     RoomName = row["RoomName"]?.ToString()
                 });
             }
@@ -108,7 +105,7 @@ namespace ShareCare.Services
         public async Task<List<Building>> GetBuildingsAsync()
         {
             var query = @"
-                SELECT b.id AS BuildingID, b.name AS BuildingName, 
+                SELECT b.id AS BuildingID, b.address AS BuildingAdrress, 
                        r.id AS RoomID, r.name AS RoomName
                 FROM building b
                 LEFT JOIN room r ON b.id = r.building_id
@@ -129,7 +126,7 @@ namespace ShareCare.Services
                     building = new Building
                     {
                         BuildingID = buildingId,
-                        Name = row["BuildingName"].ToString(),
+                        Address = row["BuildingAdrress"].ToString(),
                         Rooms = new List<Room>()
                     };
                     buildingDictionary[buildingId] = building;
@@ -154,12 +151,10 @@ namespace ShareCare.Services
         {
             var query = @"
                 SELECT t.id AS TaskId, tt.name AS TaskType, t.summary AS TaskSummary, t.date AS TaskDate, 
-                       CONCAT(u.firstname, ' ', u.lastname) AS Person,
-                       b.name AS BuildingName, r.name AS RoomName
+                       CONCAT(u.firstname, ' ', u.lastname) AS Person, r.name AS RoomName
                 FROM task t
                 JOIN task_type tt ON t.type_id = tt.id
                 JOIN user u ON t.user_id = u.id
-                LEFT JOIN building b ON t.building_id = b.id
                 LEFT JOIN room r ON t.room_id = r.id
                 WHERE t.date BETWEEN @StartDate AND @EndDate
                 ORDER BY t.date";
@@ -183,7 +178,6 @@ namespace ShareCare.Services
                     Summary = row["TaskSummary"].ToString(),
                     Date = (DateTime)row["TaskDate"],
                     Person = row["Person"].ToString(),
-                    BuildingName = row["BuildingName"]?.ToString(),
                     RoomName = row["RoomName"]?.ToString()
                 });
             }
