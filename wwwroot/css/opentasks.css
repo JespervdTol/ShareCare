@@ -10,13 +10,11 @@
     --white-smoke: #f5f5f5;
 }
 /*  */
-
 h3 {
     color: #343a40;
-    margin: 0.5em 1em;
     text-align: center; 
     font-weight: bold; 
-    font-size: 2.5em; 
+    font-size: 2em; 
     color: black;
     text-shadow: 3px 2px var(--timberwolf);
 }
@@ -57,16 +55,23 @@ h3 span {
         margin-top: 0.5em;
     }
 
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 4.4em;
+} 
+
 .btn {
-    margin: 0.5em 0.5em 1em 0;
+    margin: 1em 0;
     border: none;
     color: white;
     font-size: 1em;
     font-weight: bold;
     border-radius: 5px;
-}
-    .btn-done { /* done btn */
-        background-color: var(--dark-cyan);
+} 
+
+    .btn-done { 
+        background-color: var(--hooker-green);
         transition: background-color 0.3s;
     }
     .btn-primary {

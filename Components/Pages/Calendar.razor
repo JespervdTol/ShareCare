@@ -4,7 +4,8 @@
 @inject TaskService TaskService
 @using System.Globalization
 
-<h3>Cleaning Schedule</h3>
+<h3>Calendar</h3>
+
 <div class="calendar">
     <div class="navigation">
         <button @onclick="PrevWeek">‹</button>
@@ -19,7 +20,8 @@
                 <div class="date">
                     <strong class="date-day">@day.Date.ToString("dd")</strong>
                     <span class="date-month">@day.Date.ToString("MMM")</span>
-                    <span class="day-of-week">@day.Date.ToString("ddd")</span>
+                    <span class="day-of-week">@day.Date.ToString("ddd").ToUpper()</span>
+
                 </div>
                 <div class="tasks">
                     @if (day.Tasks.Any())

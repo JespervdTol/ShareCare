@@ -7,9 +7,15 @@
 <div class="opentasks-scrollable"> 
     <h3>Open <span>Tasks</span></h3>
 
-    <button class="btn btn-primary" @onclick="ShowTaskFormModal">
-        Add New Task
-    </button>
+    <div class="button-container">
+        <button class="btn btn-primary" @onclick="ShowTaskFormModal">
+            Add New Task
+        </button>
+
+        <button class="btn btn-primary">
+            Completed Tasks
+        </button>
+    </div>
 
     <div class="new-task-modal @modalVisibleClass">
         <div class="new-task-form">
