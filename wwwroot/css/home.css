@@ -15,17 +15,18 @@
     padding-bottom: 1em;
 }
 
-.welcome-section h2 {
-    color: #343a40;
-    text-align: center; 
-    font-weight: bold; 
-    font-size: 2em; 
-    color: black;
-    text-shadow: 3px 2px var(--timberwolf);
-}
-.welcome-section h2 span {
-    color: var(--orange);
-}
+    .welcome-section h2 {
+        color: #343a40;
+        text-align: center; 
+        font-weight: bold; 
+        font-size: 2em; 
+        color: black;
+        text-shadow: 3px 2px var(--timberwolf);
+    }
+    .welcome-section h2 span {
+        color: var(--orange);
+        text-shadow: 3px 2px var(--light-orange);
+    }
 
 .grid-container {
     display: grid;
@@ -38,7 +39,6 @@
     scale: 1.2;
     margin-top: 2.5em; 
 }
-
 .grid-item {
     display: flex;
     flex-direction: column;

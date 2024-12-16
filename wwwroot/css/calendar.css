@@ -29,6 +29,7 @@
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
+
     .navigation button {
         background-color: transparent;
         color: white;
@@ -56,6 +57,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     align-items: center;
 }
+
     .day .date {
         text-align: center;
     }
@@ -73,12 +75,12 @@
             font-weight: 400;
         }
 
-  
     .day .tasks {
         display: flex;
         flex-direction: column;
         padding-left: 0.5em;
     }
+
         .day .tasks p {
             font-size: 0.8em;
             color: #777;
@@ -107,7 +109,6 @@
                 color: var(--davy-gray);
                 white-space: nowrap; 
             }
-
 
 button {
     font-size: 1em;

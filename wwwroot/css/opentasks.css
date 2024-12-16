@@ -38,17 +38,20 @@ h3 span {
     flex-direction: column;
     transition: transform 0.3s ease;
 }
+
     .task-header {  
         display: flex;
         justify-content: space-between;
         align-items: center;
         border-bottom: 1px solid #ddd;
     }
+
     .task-header h4 {
         color: var(--dark-cyan);
         font-size: 1.2em;
         font-weight: bold;
     }
+
     .task-header p {
         color: #888;
         font-size: 0.9em;
@@ -74,10 +77,12 @@ h3 span {
         background-color: var(--hooker-green);
         transition: background-color 0.3s;
     }
+
     .btn-primary {
         background-color: var(--orange);
         transition: background-color 0.3s;
     }
+
     .btn-secondary {
         background-color: #7c848f;
         transition: background-color 0.3s;
@@ -97,6 +102,7 @@ h3 span {
     opacity: 0;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
+
     .new-task-modal.active {
         visibility: visible;
         opacity: 1;
@@ -131,17 +137,20 @@ h3 span {
     border-radius: 5px;
     font-size: 0.9em;
 }
+
     h4 {
         color: var(--orange);
         margin: 1em 0;
         font-weight: 600;
         font-size: 1.5em;
     }
+
     label {
         font-size: 1em;
         font-weight: bold;
         color: var(--davy-gray);
     }
+
     p {
         font-size: 1em;
         color: #555;
