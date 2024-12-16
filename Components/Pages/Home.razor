@@ -4,6 +4,7 @@
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthStateProvider
 
+
     <div class="welcome-section">
         <h2>Welcome <span class="firstname">@FirstName</span>!</h2>
         <p>What do you want to do?</p>
@@ -30,7 +31,7 @@
             <div class="icon">✅</div>
             <div class="text">Tasks</div>
         </div>
-        <div class="grid-item" @onclick="NavigateToCalender">
+        <div class="grid-item" @onclick="NavigateToCalendar">
             <div class="icon">📆</div>
             <div class="text">Calendar</div>
         </div>
@@ -103,7 +104,7 @@
     private void NavigateToEvents() => NavigationManager.NavigateTo("/events");
     private void NavigateToPendingPayments() => NavigationManager.NavigateTo("/pending-payments");
     private void NavigateToOpenTasks() => NavigationManager.NavigateTo("/open-tasks");
-    private void NavigateToCalender() => NavigationManager.NavigateTo("/calendar");
+    private void NavigateToCalendar() => NavigationManager.NavigateTo("/calendar");
 }
 
 

@@ -1,7 +1,7 @@
 .page {
-    flex-direction: column; /* Ensure column layout for consistency */
-    padding: 0;             /* Remove any padding applied globally */
-    margin: 0;
+    flex-direction: column; 
+    padding: 0;             
+    margin-top: 7em;
 }
 
 main {
@@ -10,8 +10,7 @@ main {
     height: 100%;
 }
 
-
-@media (max-width: 640.98px) {
+@media (max-width: 641px) {
     .top-row {
         justify-content: space-between;
     }
