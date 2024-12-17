@@ -74,7 +74,7 @@
     }
 
     .nav-item.log-out ::deep a.active {
-        background-color: var(--peach);
+        background-color: transparent;
         color: black;
         font-weight: normal;
     }
