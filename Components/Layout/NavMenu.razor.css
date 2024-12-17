@@ -73,6 +73,12 @@
         font-weight: bold;
     }
 
+    .nav-item.log-out ::deep a.active {
+        background-color: var(--peach);
+        color: black;
+        font-weight: normal;
+    }
+
 .nav-scrollable {
     display: none;
     background-color: var(--light-orange);
