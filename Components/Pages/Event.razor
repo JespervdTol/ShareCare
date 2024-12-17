@@ -20,14 +20,17 @@
             <label>Summary:</label>
             <input type="text" @bind="eventSummary" class="form-input" placeholder="Enter event summary" />
 
-            <label>Date:</label>
-            <input type="date" @bind="eventDate" class="form-input" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            <!-- Date and Time Inputs in a Column -->
+            <div class="date-time-container">
+                <label>Date:</label>
+                <input type="date" @bind="eventDate" class="form-input" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
 
-            <label>Start Time:</label>
-            <input type="time" @bind="eventStartTime" class="form-input" />
+                <label>Start Time:</label>
+                <input type="time" @bind="eventStartTime" class="form-input" />
 
-            <label>End Time:</label>
-            <input type="time" @bind="eventEndTime" class="form-input" />
+                <label>End Time:</label>
+                <input type="time" @bind="eventEndTime" class="form-input" />
+            </div>
 
             <label>Assign To:</label>
             <select multiple @onchange="OnPersonSelectionChanged" class="form-select">

@@ -18,9 +18,10 @@ h3 {
     color: black;
     text-shadow: 3px 2px var(--timberwolf);
 }
-h3 span {
-    color: var(--orange);
-}
+
+    h3 span {
+        color: var(--orange);
+    }
 
 .task-cards { 
     display: grid;
@@ -63,7 +64,6 @@ h3 span {
     justify-content: center;
     gap: 4.4em;
 } 
-
 .btn {
     margin: 1em 0;
     border: none;
