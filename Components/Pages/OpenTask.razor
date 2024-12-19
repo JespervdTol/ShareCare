@@ -43,7 +43,7 @@
             <input type="text" @bind="taskSummary" class="form-input" placeholder="Enter task summary" />
 
         <label>Date:</label>
-            <input type="date" @bind="taskDate" class="form-input" min="@DateTime.Now.ToString("dd-MM-yyyy")" />
+            <input type="date" @bind="taskDate" class="form-input" min="@DateTime.Now.ToString("dd/MM/yyyy")" />
 
             <label>Assign To:</label>
             <select @bind="selectedPersonId" class="form-select">
@@ -100,7 +100,7 @@ else
                 <div class="task-card">
                     <div class="task-header">
                         <h4>@task.Type</h4>
-                        <p><strong>@task.Date.ToString("yyyy-MM-dd")</strong></p>
+                        <p><strong>@task.Date.ToString("dd/MM/yyyy")</strong></p>
                     </div>
                     <p><strong>Summary:</strong> @task.Summary</p>
                     <p><strong>Assigned to:</strong> @task.Person</p>

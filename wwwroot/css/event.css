@@ -10,7 +10,6 @@
     --white-smoke: #f5f5f5;
 }
 
-
 .event-cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -73,7 +72,7 @@
 
 .new-event-modal {
     position: fixed;
-    top: 0;
+    top: 2em;
     left: 0;
     width: 100%;
     height: 100%;
@@ -105,7 +104,7 @@
 
 .close-modal-btn {
     position: absolute;
-    right: 0.5em;
+    right: 0em;
     top: 0.8em;
     background: none;
     border: none;
@@ -115,20 +114,19 @@
 
 .date-time-container {
     display: flex;
-    flex-direction: column;  /* Stack the inputs vertically */
-    gap: 1.5em;  /* Adds spacing between each input */
-    width: 100%;  /* Ensure it takes up full width */
+    flex-direction: column;  
+    gap: 0.2em;  
+    width: 100%;  
 }
 
 .form-input, .form-select {
-    width: 100%;  /* Make the inputs full-width */
+    width: 100%;  
     padding: 0.6em;
     margin-bottom: 1.5em;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 0.9em;
 }
-
 
     h4 {
         color: var(--orange);

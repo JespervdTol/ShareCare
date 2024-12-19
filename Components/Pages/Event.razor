@@ -10,7 +10,7 @@
     <button class="btn btn-primary" @onclick="ShowEventFormModal">
         Add New Event
     </button>
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
     <div class="new-event-modal @modalVisibleClass">
         <div class="new-event-form">
             <button class="close-modal-btn" @onclick="HideEventFormModal">&times;</button>
@@ -23,7 +23,7 @@
             <!-- Date and Time Inputs in a Column -->
             <div class="date-time-container">
                 <label>Date:</label>
-                <input type="date" @bind="eventDate" class="form-input" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <input type="date" @bind="eventDate" class="form-input" min="@DateTime.Now.ToString("dd/MM/yyyy")" />
 
                 <label>Start Time:</label>
                 <input type="time" @bind="eventStartTime" class="form-input" />
@@ -86,7 +86,7 @@ else
                             <div class="event-card">
                                 <div class="event-header">
                                     <h4>@eventItem.Summary</h4>
-                                    <p><strong>@eventItem.Date.ToString("yyyy-MM-dd")</strong></p>
+                                    <p><strong>@eventItem.Date.ToString("dd/MM/yyyy")</strong></p>
                                     <p><strong>@eventItem.StartTime.ToString("HH:mm") - @eventItem.EndTime.ToString("HH:mm")</strong></p>
                                 </div>
                                 <p><strong>Assigned to:</strong></p>
