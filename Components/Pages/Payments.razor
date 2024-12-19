@@ -1,0 +1,163 @@
+﻿@page "/payments"
+@using ShareCare.Services
+@using ShareCare.Module
+@inject PaymentService PaymentService
+@inject TaskService TaskService
+@inject UserService UserService
+
+<PageTitle>Payments</PageTitle>
+
+<h3>Payments</h3>
+
+<button class="btn btn-primary" @onclick="ShowAddPaymentModal">Add Payment</button>
+
+@if (payments == null)
+{
+    <p>Loading payments...</p>
+}
+else if (payments.Count == 0)
+{
+    <p>No payments available.</p>
+}
+else
+{
+    <div class="payment-cards">
+        @foreach (var payment in payments)
+        {
+            var task = tasks.FirstOrDefault(t => t.TaskID == payment.TaskID);
+            <div class="payment-card">
+                <div class="payment-header">
+                    <h4>@payment.Summary</h4>
+                    <p><strong>Amount:</strong> @payment.Amount</p>
+                    <p><strong>People Amount:</strong> @payment.PeopleAmount</p>
+                </div>
+                <p><strong>Task:</strong></p>
+                <p>@(task != null ? task.Summary : "No task assigned")</p>
+
+                <p><strong>Link:</strong> <a href="@payment.Link" target="_blank" rel="noopener noreferrer">@payment.Link</a></p>
+
+                <div class="payment-actions">
+                    <button class="btn btn-danger" @onclick="() => DeletePayment(payment.PaymentID)">Delete</button>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<div class="modal-overlay @(isAddPaymentModalVisible ? "show" : "")">
+    <div class="modal-content">
+        <button class="close-btn" @onclick="HideAddPaymentModal">&times;</button>
+
+        <h3>Add Payment</h3>
+
+        <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" class="form-control" id="amount" @bind="newPayment.Amount" />
+        </div>
+
+        <div class="form-group">
+            <label for="summary">Summary</label>
+            <input type="text" class="form-control" id="summary" @bind="newPayment.Summary" />
+        </div>
+
+        <div class="form-group">
+            <label for="peopleAmount">People Amount</label>
+            <input type="number" class="form-control" id="peopleAmount" @bind="newPayment.PeopleAmount" />
+        </div>
+
+        <div class="form-group">
+            <label for="link">Link (e.g., Tikkie)</label>
+            <input type="text" class="form-control" id="link" @bind="newPayment.Link" />
+        </div>
+
+        <div class="form-group">
+            <label for="taskId">Task</label>
+            <select class="form-control" id="taskId" @bind="newPayment.TaskID">
+                @if (tasks != null && tasks.Any())
+                {
+                    @foreach (var task in tasks)
+                    {
+                        <option value="@task.TaskID">@task.Summary</option>
+                    }
+                }
+                else
+                {
+                    <option>No tasks available</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="userIds">Select Users</label>
+            <select class="form-control" id="userIds" multiple @onchange="OnUserSelectionChanged">
+                @foreach (var user in users)
+                {
+                    <option value="@user.PersonID">@user.FirstName @user.LastName</option>
+                }
+            </select>
+        </div>
+
+        <button class="btn btn-success" @onclick="AddPayment">Save</button>
+        <button class="btn btn-secondary" @onclick="HideAddPaymentModal">Cancel</button>
+    </div>
+</div>
+
+@code {
+    private List<Payment> payments = new List<Payment>();
+    private List<ShareCare.Module.Task> tasks = new List<ShareCare.Module.Task>();
+    private List<Person> users = new List<Person>();
+    private Payment newPayment = new Payment();
+    private bool isAddPaymentModalVisible = false;
+    private List<int> selectedUserIds = new List<int>();
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        payments = await PaymentService.GetPaymentsAsync() ?? new List<Payment>();
+        tasks = await TaskService.GetOpenTasksAsync() ?? new List<ShareCare.Module.Task>();
+        users = await UserService.GetUsersAsync() ?? new List<Person>();
+    }
+
+    private async System.Threading.Tasks.Task AddPayment()
+    {
+        if (newPayment.TaskID == 0)
+        {
+            return;
+        }
+
+        newPayment.UserIDs = selectedUserIds;
+
+        bool isAdded = await PaymentService.AddPaymentAsync(newPayment);
+
+        if (isAdded)
+        {
+            payments = await PaymentService.GetPaymentsAsync() ?? new List<Payment>();
+            HideAddPaymentModal();
+        }
+    }
+
+    private async System.Threading.Tasks.Task DeletePayment(int paymentId)
+    {
+        bool isDeleted = await PaymentService.DeletePaymentAsync(paymentId);
+
+        if (isDeleted)
+        {
+            payments = await PaymentService.GetPaymentsAsync() ?? new List<Payment>();
+        }
+    }
+
+    private void ShowAddPaymentModal()
+    {
+        isAddPaymentModalVisible = true;
+    }
+
+    private void HideAddPaymentModal()
+    {
+        isAddPaymentModalVisible = false;
+    }
+
+    private void OnUserSelectionChanged(ChangeEventArgs e)
+    {
+        var selectedValues = (string[])e.Value;
+        selectedUserIds = selectedValues.Select(int.Parse).ToList();
+    }
+}

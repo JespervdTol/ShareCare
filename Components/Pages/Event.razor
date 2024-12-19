@@ -129,21 +129,21 @@ else
             persons = await UserService.GetUsersAsync();
             rooms = await EventService.GetRoomsAsync();
 
-            Console.WriteLine($"Loaded {persons?.Count ?? 0} persons, {rooms?.Count ?? 0} rooms.");
+            System.Diagnostics.Debug.WriteLine($"Loaded {persons?.Count ?? 0} persons, {rooms?.Count ?? 0} rooms.");
 
             if (persons == null || persons.Count == 0)
             {
-                Console.WriteLine("No persons found.");
+                System.Diagnostics.Debug.WriteLine("No persons found.");
             }
 
             if (rooms == null || rooms.Count == 0)
             {
-                Console.WriteLine("No rooms found.");
+                System.Diagnostics.Debug.WriteLine("No rooms found.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error during initialization: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Error during initialization: {ex.Message}");
         }
     }
 
@@ -158,12 +158,12 @@ else
             }
             else
             {
-                Console.WriteLine("Failed to delete the event.");
+                System.Diagnostics.Debug.WriteLine("Failed to delete the event.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error removing event: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Error removing event: {ex.Message}");
         }
     }
 
@@ -173,7 +173,7 @@ else
         {
             if (string.IsNullOrWhiteSpace(eventSummary) || !selectedPersonIds.Any() || !selectedRoomIds.Any())
             {
-                Console.WriteLine("Please fill out all fields.");
+                System.Diagnostics.Debug.WriteLine("Please fill out all fields.");
                 return;
             }
 
@@ -181,17 +181,17 @@ else
             if (success)
             {
                 events = await EventService.GetEventsAsync();
-                Console.WriteLine("Event created successfully.");
+                System.Diagnostics.Debug.WriteLine("Event created successfully.");
                 HideEventFormModal();
             }
             else
             {
-                Console.WriteLine("Failed to create the event.");
+                System.Diagnostics.Debug.WriteLine("Failed to create the event.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error creating event: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Error creating event: {ex.Message}");
         }
     }
 
@@ -212,7 +212,7 @@ else
         if (selectedOptions != null)
         {
             selectedPersonIds = selectedOptions.Select(option => int.Parse(option)).ToList();
-            Console.WriteLine($"Selected persons: {string.Join(", ", selectedPersonIds)}");
+            System.Diagnostics.Debug.WriteLine($"Selected persons: {string.Join(", ", selectedPersonIds)}");
         }
     }
 
@@ -223,7 +223,7 @@ else
         if (selectedOptions != null)
         {
             selectedRoomIds = selectedOptions.Select(option => int.Parse(option)).ToList();
-            Console.WriteLine($"Selected rooms: {string.Join(", ", selectedRoomIds)}");
+            System.Diagnostics.Debug.WriteLine($"Selected rooms: {string.Join(", ", selectedRoomIds)}");
         }
     }
 }

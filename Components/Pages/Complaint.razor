@@ -3,37 +3,39 @@
 @using System.Net.Mail
 @using System.Net
 
-<h3>Complaint Form</h3>
+<div class="complaints-page">
+    <h3>Complaint Form</h3>
 
-<EditForm Model="@complaint" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+    <EditForm Model="@complaint" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <div>
-        <label for="subject">Subject:</label>
-        <InputText id="subject" @bind-Value="complaint.Subject" />
-    </div>
-
-    <div>
-        <label for="message">Message:</label>
-        <InputTextArea id="message" @bind-Value="complaint.Message" />
-    </div>
-
-    <div>
-        <button type="submit">Submit</button>
-    </div>
-</EditForm>
-
-@if (showPopup)
-{
-    <div class="popup-overlay">
-        <div class="popup">
-            <h4>Complaint Submitted!</h4>
-            <p>Your complaint has been submitted successfully.</p>
-            <button @onclick="ClosePopup">Close</button>
+        <div>
+            <label for="subject">Subject:</label>
+            <InputText id="subject" @bind-Value="complaint.Subject" />
         </div>
-    </div>
-}
+
+        <div>
+            <label for="message">Message:</label>
+            <InputTextArea id="message" @bind-Value="complaint.Message" />
+        </div>
+
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+    </EditForm>
+
+    @if (showPopup)
+    {
+        <div class="popup-overlay">
+            <div class="popup">
+                <h4>Complaint Submitted!</h4>
+                <p>Your complaint has been submitted successfully.</p>
+                <button @onclick="ClosePopup">Close</button>
+            </div>
+        </div>
+    }
+</div>
 
 @code {
     private ShareCare.Module.Complaint complaint = new ShareCare.Module.Complaint();
@@ -42,7 +44,7 @@
     private async System.Threading.Tasks.Task HandleValidSubmit()
     {
         await SendAnonymousEmailAsync(complaint.Subject, complaint.Message);
-        
+
         showPopup = true;
 
         await System.Threading.Tasks.Task.Delay(500);
@@ -55,24 +57,24 @@
         showPopup = false;
     }
 
-    private async System.Threading.Tasks.Task SendAnonymousEmailAsync(string subject, string message) 
+    private async System.Threading.Tasks.Task SendAnonymousEmailAsync(string subject, string message)
     {
         var emailRecipient = "info.sharecare.test@gmail.com";
 
         var smtpClient = new SmtpClient("smtp.gmail.com")
-        {
-            Port = 587,
-            Credentials = new NetworkCredential("sharecare.complaint@gmail.com", "rtoe mazo cpfg enpz"),
-            EnableSsl = true,
-        };
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("sharecare.complaint@gmail.com", "rtoe mazo cpfg enpz"),
+                EnableSsl = true,
+            };
 
         var mailMessage = new MailMessage
-        {
-            From = new MailAddress("noreply@sharecare.com"),
-            Subject = subject,
-            Body = message,
-            IsBodyHtml = true
-        };
+            {
+                From = new MailAddress("noreply@sharecare.com"),
+                Subject = subject,
+                Body = message,
+                IsBodyHtml = true
+            };
 
         mailMessage.To.Add(emailRecipient);
 
