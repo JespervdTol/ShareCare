@@ -5,13 +5,11 @@
 <div class="container">
     <div class="header">
         <h3 class="page-title">House Rules</h3>
-        <!-- Add Rule Button aligned to the right of the header -->
         <button class="icon-button add-rule-btn" @onclick="OpenAddModal">
             <span>+</span>
         </button>
     </div>
 
-    <!-- List of Rules -->
     <ul class="rules-list">
         @foreach (var rule in rules.Select((value, index) => new { value, index }))
         {
@@ -29,7 +27,6 @@
         }
     </ul>
 
-    <!-- Modal for Adding/Editing Rule -->
     <div class="modal @(isModalVisible ? "active" : "")">
         <div class="modal-content">
             <div class="modal-header">
@@ -73,8 +70,8 @@
 
             if (success)
             {
-                await LoadRulesAsync(); // Reload the rules
-                CloseModal(); // Close the modal
+                await LoadRulesAsync();
+                CloseModal();
             }
             else
             {
@@ -89,7 +86,7 @@
         currentRuleId = rule.RuleId;
         ruleDescription = rule.Description;
         isModalVisible = true;
-        StateHasChanged();  // Trigger re-render
+        StateHasChanged();
     }
 
     private async Task EditRuleAsync()
@@ -106,8 +103,8 @@
 
             if (success)
             {
-                await LoadRulesAsync(); // Reload the rules
-                CloseModal(); // Close the modal
+                await LoadRulesAsync();
+                CloseModal();
             }
             else
             {
@@ -122,7 +119,7 @@
 
         if (success)
         {
-            await LoadRulesAsync(); // Reload the rules after deletion
+            await LoadRulesAsync();
         }
         else
         {
@@ -136,7 +133,7 @@
         isEditMode = false;
         ruleDescription = string.Empty;
         isModalVisible = true;
-        StateHasChanged();  // Trigger re-render
+        StateHasChanged();
     }
 
     private void CloseModal()
