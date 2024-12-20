@@ -49,7 +49,7 @@ namespace ShareCare.Services
                         StartTime = ConvertToTimeOnly(row["EventStartTime"]),
                         EndTime = ConvertToTimeOnly(row["EventEndTime"]),
                         Persons = new List<Person>(),
-                        Rooms = new List<Room>() 
+                        Rooms = new List<Room>()
                     };
                 }
 
@@ -199,17 +199,17 @@ namespace ShareCare.Services
         public async Task<List<Event>> GetEventsForWeekAsync(DateTime startDate)
         {
             var query = @"
-        SELECT e.id AS EventId, e.summary AS EventSummary, e.date AS EventDate, 
-               e.startTime AS EventStartTime, e.endTime AS EventEndTime,
-               u.id AS UserId, u.firstname AS FirstName, u.lastname AS LastName,
-               r.id AS RoomId, r.name AS RoomName, r.building_id AS BuildingID
-        FROM event e
-        LEFT JOIN event_user eu ON e.id = eu.event_id
-        LEFT JOIN user u ON eu.user_id = u.id
-        LEFT JOIN event_room er ON e.id = er.event_id
-        LEFT JOIN room r ON er.room_id = r.id
-        WHERE e.date BETWEEN @StartDate AND @EndDate
-        ORDER BY e.date, e.startTime";
+                SELECT e.id AS EventId, e.summary AS EventSummary, e.date AS EventDate, 
+                       e.startTime AS EventStartTime, e.endTime AS EventEndTime,
+                       u.id AS UserId, u.firstname AS FirstName, u.lastname AS LastName,
+                       r.id AS RoomId, r.name AS RoomName, r.building_id AS BuildingID
+                FROM event e
+                LEFT JOIN event_user eu ON e.id = eu.event_id
+                LEFT JOIN user u ON eu.user_id = u.id
+                LEFT JOIN event_room er ON e.id = er.event_id
+                LEFT JOIN room r ON er.room_id = r.id
+                WHERE e.date BETWEEN @StartDate AND @EndDate
+                ORDER BY e.date, e.startTime";
 
             var parameters = new MySqlParameter[]
             {

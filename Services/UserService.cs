@@ -43,7 +43,7 @@ public class UserService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error fetching persons: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Error fetching persons: {ex.Message}");
             return new List<Person>();
         }
     }
@@ -74,7 +74,7 @@ public class UserService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error during registration: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Error during registration: {ex.Message}");
             return false;
         }
     }
@@ -103,7 +103,7 @@ public class UserService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error during login: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Error during login: {ex.Message}");
             return false;
         }
     }
@@ -117,7 +117,7 @@ public class UserService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error during logout: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Error during logout: {ex.Message}");
             return false;
         }
     }

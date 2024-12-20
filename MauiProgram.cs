@@ -35,6 +35,7 @@ namespace ShareCare
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<TaskService>();
             builder.Services.AddScoped<EventService>();
+            builder.Services.AddScoped<PaymentService>();
 
             return builder.Build();
         }

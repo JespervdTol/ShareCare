@@ -23,7 +23,7 @@
             <div class="icon">🎉</div>
             <div class="text">Events</div>
         </div>
-        <div class="grid-item" @onclick="NavigateToPendingPayments">
+        <div class="grid-item" @onclick="NavigateToPayments">
             <div class="icon">💸</div>
             <div class="text">Payments</div>
         </div>
@@ -102,7 +102,7 @@
     private void NavigateToHouseRules() => NavigationManager.NavigateTo("/house-rules");
     private void NavigateToComplaints() => NavigationManager.NavigateTo("/complaints");
     private void NavigateToEvents() => NavigationManager.NavigateTo("/events");
-    private void NavigateToPendingPayments() => NavigationManager.NavigateTo("/pending-payments");
+    private void NavigateToPayments() => NavigationManager.NavigateTo("/payments");
     private void NavigateToOpenTasks() => NavigationManager.NavigateTo("/open-tasks");
     private void NavigateToCalendar() => NavigationManager.NavigateTo("/calendar");
 }

@@ -145,7 +145,7 @@
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error during initialization: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Error during initialization: {ex.Message}");
         }
     }
 
@@ -160,12 +160,12 @@
             }
             else
             {
-                Console.WriteLine("Failed to delete the task.");
+                System.Diagnostics.Debug.WriteLine("Failed to delete the task.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error removing task: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Error removing task: {ex.Message}");
         }
     }
 
@@ -175,7 +175,7 @@
         {
             if (string.IsNullOrWhiteSpace(taskSummary) || selectedPersonId == 0 || selectedTaskTypeId == 0 || selectedRoomId == 0)
             {
-                Console.WriteLine("Please fill out all fields.");
+                System.Diagnostics.Debug.WriteLine("Please fill out all fields.");
                 return;
             }
 
@@ -183,17 +183,17 @@
             if (success)
             {
                 tasks = await TaskService.GetOpenTasksAsync();
-                Console.WriteLine("Task created successfully.");
+                System.Diagnostics.Debug.WriteLine("Task created successfully.");
                 HideTaskFormModal();
             }
             else
             {
-                Console.WriteLine("Failed to create the task.");
+                System.Diagnostics.Debug.WriteLine("Failed to create the task.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error creating task: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Error creating task: {ex.Message}");
         }
     }
 
