@@ -50,11 +50,17 @@ public class UserService
 
     public async Task<bool> RegisterUser(Account account, Person person)
     {
+        if (!IsPasswordValid(account.Password))
+        {
+            System.Diagnostics.Debug.WriteLine("Password contains invalid characters or does not meet requirements.");
+            return false;
+        }
+
         var hashedPassword = HashPassword(account.Password);
 
         const string query = @"
-        INSERT INTO user (username, email, password, firstname, intersertion, lastname, date_of_birth) 
-        VALUES (@Username, @Email, @Password, @FirstName, @Intersertion, @LastName, @DateOfBirth)";
+                    INSERT INTO user (username, email, password, firstname, intersertion, lastname, date_of_birth) 
+                    VALUES (@Username, @Email, @Password, @FirstName, @Intersertion, @LastName, @DateOfBirth)";
 
         var parameters = new MySqlParameter[]
         {
@@ -167,5 +173,12 @@ public class UserService
     private bool VerifyPassword(string password, string storedHash)
     {
         return BCrypt.Net.BCrypt.Verify(password, storedHash);
+    }
+
+    private bool IsPasswordValid(string password)
+    {
+        var regex = new System.Text.RegularExpressions.Regex(@"^[a-zA-Z0-9!@#$%^&*()_+\-=;:',.<>?/\\|]+$");
+
+        return password.Length >= 3 && regex.IsMatch(password);
     }
 }

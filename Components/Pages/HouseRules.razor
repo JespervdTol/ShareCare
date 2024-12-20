@@ -1,8 +1,151 @@
 ﻿@page "/house-rules"
-<h3>HouseRules</h3>
+@using ShareCare.Services
+@inject RulesService RulesService
 
-Geen feestje vieren op zondag.
+<div class="container">
+    <div class="header">
+        <h3 class="page-title">House Rules</h3>
+        <!-- Add Rule Button aligned to the right of the header -->
+        <button class="icon-button add-rule-btn" @onclick="OpenAddModal">
+            <span>+</span>
+        </button>
+    </div>
+
+    <!-- List of Rules -->
+    <ul class="rules-list">
+        @foreach (var rule in rules.Select((value, index) => new { value, index }))
+        {
+                <li class="rule-item">
+                @($"{rule.index + 1}. {rule.value.Description}")
+                    <div class="rule-actions">
+                        <button class="icon-button" @onclick="() => OpenEditModal(rule.value)">
+                            <span>✏️</span>
+                        </button>
+                        <button class="icon-button" @onclick="() => DeleteRule(rule.value.RuleId)">
+                            <span>🗑️</span>
+                        </button>
+                    </div>
+                </li>
+        }
+    </ul>
+
+    <!-- Modal for Adding/Editing Rule -->
+    <div class="modal @(isModalVisible ? "active" : "")">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>@(isEditMode ? "Edit Rule" : "Add Rule")</h4>
+                <button class="icon-button" @onclick="CloseModal">X</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" value="@ruleDescription" @oninput="UpdateDescription" placeholder="Enter rule description" />
+            </div>
+            <div class="modal-footer">
+                <button class="cancel" @onclick="CloseModal">Cancel</button>
+                <button class="save" @onclick="isEditMode ? EditRuleAsync : AddRuleAsync">@((isEditMode ? "Save Changes" : "Add Rule"))</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
+    private List<ShareCare.Module.Rule> rules = new List<ShareCare.Module.Rule>();
+    private string ruleDescription = string.Empty;
+    private bool isEditMode = false;
+    private int currentRuleId = 0;
+    private bool isModalVisible = false;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadRulesAsync();
+    }
+
+    private async Task LoadRulesAsync()
+    {
+        rules = await RulesService.GetRulesAsync();
+    }
+
+    private async Task AddRuleAsync()
+    {
+        if (!string.IsNullOrEmpty(ruleDescription))
+        {
+            var newRule = new ShareCare.Module.Rule { Description = ruleDescription };
+            var success = await RulesService.AddRuleAsync(newRule);
+
+            if (success)
+            {
+                await LoadRulesAsync(); // Reload the rules
+                CloseModal(); // Close the modal
+            }
+            else
+            {
+                Console.WriteLine("Failed to add rule.");
+            }
+        }
+    }
+
+    private void OpenEditModal(ShareCare.Module.Rule rule)
+    {
+        isEditMode = true;
+        currentRuleId = rule.RuleId;
+        ruleDescription = rule.Description;
+        isModalVisible = true;
+        StateHasChanged();  // Trigger re-render
+    }
+
+    private async Task EditRuleAsync()
+    {
+        if (!string.IsNullOrEmpty(ruleDescription))
+        {
+            var updatedRule = new ShareCare.Module.Rule
+                {
+                    RuleId = currentRuleId,
+                    Description = ruleDescription
+                };
+
+            var success = await RulesService.UpdateRuleAsync(updatedRule);
+
+            if (success)
+            {
+                await LoadRulesAsync(); // Reload the rules
+                CloseModal(); // Close the modal
+            }
+            else
+            {
+                Console.WriteLine("Failed to update rule.");
+            }
+        }
+    }
+
+    private async Task DeleteRule(int ruleId)
+    {
+        var success = await RulesService.DeleteRuleAsync(ruleId);
+
+        if (success)
+        {
+            await LoadRulesAsync(); // Reload the rules after deletion
+        }
+        else
+        {
+            Console.WriteLine("Failed to delete rule.");
+        }
+    }
+
+    private async Task OpenAddModal()
+    {
+        Console.WriteLine("Open Add Modal triggered");
+        isEditMode = false;
+        ruleDescription = string.Empty;
+        isModalVisible = true;
+        StateHasChanged();  // Trigger re-render
+    }
+
+    private void CloseModal()
+    {
+        isModalVisible = false;
+    }
+
+    private void UpdateDescription(ChangeEventArgs e)
+    {
+        ruleDescription = e.Value.ToString();
+    }
 }
