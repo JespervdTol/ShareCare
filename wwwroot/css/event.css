@@ -10,29 +10,16 @@
     --white-smoke: #f5f5f5;
 }
 
-/* Header Styles */
-h3 {
-    color: #343a40;
-    margin: 0.5em 1em;
-    text-align: center;
-    font-weight: bold;
-    font-size: 2.5em;
-    color: black;
-    text-shadow: 3px 2px var(--timberwolf);
+.event-wrapper {
+    padding: 0 1.5em; /* Inner space */
 }
 
-    h3 span {
-        color: var(--orange);
-    }
-
-/* Event Cards Layout */
 .event-cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5em;
     margin: 1em 0;
 }
-
 .event-card {
     background-color: white;
     border-radius: 10px;
@@ -44,28 +31,27 @@ h3 {
     transition: transform 0.3s ease;
 }
 
-.event-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-}
-
-    .event-header h4 {
-        color: var(--dark-cyan);
-        font-size: 1.2em;
-        font-weight: bold;
+    .event-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
     }
 
-    .event-header p {
-        color: #888;
-        font-size: 0.9em;
-        margin-top: 0.5em;
-    }
+        .event-header h4 {
+            color: var(--dark-cyan);
+            font-size: 1.2em;
+            font-weight: bold;
+        }
 
-/* Button Styles */
+        .event-header p {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 0.5em;
+        }
+
 .btn {
-    margin: 0.5em 0.5em 1em 0;
+    margin: 1em 0;
     border: none;
     color: white;
     font-size: 1em;
@@ -73,25 +59,24 @@ h3 {
     border-radius: 5px;
 }
 
-.btn-done {
-    background-color: var(--dark-cyan);
-    transition: background-color 0.3s;
-}
+    .btn-done {
+        background-color: var(--dark-cyan);
+        transition: background-color 0.3s;
+    }
 
-.btn-primary {
-    background-color: var(--orange);
-    transition: background-color 0.3s;
-}
+    .btn-primary {
+        background-color: var(--orange);
+        transition: background-color 0.3s;
+    }
 
-.btn-secondary {
-    background-color: #7c848f;
-    transition: background-color 0.3s;
-}
+    .btn-secondary {
+        background-color: #7c848f;
+        transition: background-color 0.3s;
+    }
 
-/* Modal Styles */
 .new-event-modal {
     position: fixed;
-    top: 0;
+    top: 2em;
     left: 0;
     width: 100%;
     height: 100%;
@@ -121,10 +106,9 @@ h3 {
     position: relative;
 }
 
-/* Close Modal Button */
 .close-modal-btn {
     position: absolute;
-    right: 0.5em;
+    right: 0em;
     top: 0.8em;
     background: none;
     border: none;
@@ -132,9 +116,15 @@ h3 {
     color: var(--orange);
 }
 
-/* Form Input Styles */
-.form-select, .form-input {
-    width: 100%;
+.date-time-container {
+    display: flex;
+    flex-direction: column;  
+    gap: 0.2em;  
+    width: 100%;  
+}
+
+.form-input, .form-select {
+    width: 100%;  
     padding: 0.6em;
     margin-bottom: 1.5em;
     border: 1px solid #ddd;
@@ -142,26 +132,24 @@ h3 {
     font-size: 0.9em;
 }
 
-/* Label and Text Styles */
-h4 {
-    color: var(--orange);
-    margin: 1em 0;
-    font-weight: 600;
-    font-size: 1.5em;
-}
+    h4 {
+        color: var(--orange);
+        margin: 1em 0;
+        font-weight: 600;
+        font-size: 1.5em;
+    }
 
-label {
-    font-size: 1em;
-    font-weight: bold;
-    color: var(--davy-gray);
-}
+    label {
+        font-size: 1em;
+        font-weight: bold;
+        color: var(--davy-gray);
+    }
 
-p {
-    font-size: 1em;
-    color: #555;
-}
+    p {
+        font-size: 1em;
+        color: #555;
+    }
 
-/* Modal Form Inputs and Labels */
 .new-event-form input[type="date"],
 .new-event-form input[type="time"],
 .new-event-form select {
@@ -172,8 +160,7 @@ p {
     border-radius: 5px;
 }
 
-/* Event Card Details */
-.event-card p {
-    font-size: 1em;
-    color: #555;
-}
+    .event-card p {
+        font-size: 1em;
+        color: #555;
+    }

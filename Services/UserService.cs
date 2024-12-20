@@ -70,7 +70,7 @@ public class UserService
             new MySqlParameter("@FirstName", person.FirstName),
             new MySqlParameter("@Intersertion", person.Intersertion),
             new MySqlParameter("@LastName", person.LastName),
-            new MySqlParameter("@DateOfBirth", person.DateOfBirth.ToString("yyyy-MM-dd"))
+            new MySqlParameter("@DateOfBirth", person.DateOfBirth.ToString("dd/MM/yyyy"))
         };
 
         try

@@ -8,29 +8,61 @@
     --light-orange: #FEDABE;
     --anti-flash-white: #EFEFEF;
     --white-smoke: #f5f5f5;
-    --event-color: #FC8425;
-    --task-color: #FDC090;
+    --event-color: #f0ee69; 
+    --task-color: #77e97f;
+} 
+
+/* EXTRA: colorblind patterns */
+
+.legend {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    gap: 1.5rem;
+    font-size: 0.9rem;
 }
-#FDC090
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+    }
+
+    .box {
+        width: 1em; 
+        height: 1em;
+        margin-right: 0.5rem; 
+        display: inline-block;
+    }
+
+        .box.task {
+            background-color: var(--task-color);
+        }
+
+        .box.event {
+            background-color: var(--event-color);
+        }
 
 .calendar {
-    width: 100%;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 1.5em 0;
+    margin: 0 1.5em;
+    
 }
 
 .navigation {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5em;
+    padding: 1em;
     background-color: var(--dark-cyan);
     color: white;
     font-weight: 700;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    
 }
 
     .navigation button {
@@ -43,7 +75,7 @@
     }
 
     .navigation span {
-        font-size: 1.2em;
+        font-size: 1.1em;
         text-align: center;
     }
 
@@ -51,13 +83,14 @@
     display: flex;
     flex-direction: column;
     gap: 1em;
-    padding: 0;
-    max-height: 60vh;
+    padding: 0.5em;
+    max-height: 55vh;
     overflow-y: auto;
 }
 
 .day {
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
     background-color: var(--white-smoke);
     padding: 0.5em;
@@ -66,9 +99,9 @@
 }
 
     .day .date {
-        flex: 0 0;
         text-align: center;
-        margin-right: 1em;
+        margin-bottom: 1em;
+        font-weight: 400;
     }
 
         .day .date .date-day {
@@ -78,22 +111,21 @@
         }
 
         .day .date .date-month {
-            font-size: 1em;
+            font-size: 1.1em;
             color: var(--davy-gray);
         }
 
         .day .date .day-of-week {
             font-size: 1.2em;
-            font-weight: 400;
+            font-weight: 500;
         }
 
 .task, .event {
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 8px;
+    padding: 0.5em;
+    margin-bottom: 1em;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
 }
 
 .task {
@@ -105,13 +137,14 @@
 }
 
     .task p.summary, .event p.summary {
-        font-size: 14px;
+        font-size: 0.8em;
         font-weight: bold;
         margin: 0;
+        color: var(--davy-gray);
     }
 
-    .task span.user, .event p.user {
-        font-size: 12px;
+    .task span.user, .event p.room {
+        font-size: 0.8em;
         color: #666;
     }
 
@@ -125,22 +158,26 @@ button {
     transition: background-color 0.3s;
 }
 
-    button:hover {
-        background-color: var(--orange);
-    }
+.modal-content {
+    background-color: var(--white-smoke); 
+    padding: 1.5em; 
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    width: 90%; 
+    max-width: 30em; 
+    max-height: 80vh; 
+    overflow-y: auto; 
+    position: relative;
+}
 
 .modal {
     display: flex;
     justify-content: center;
     align-items: center;
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5); 
     z-index: 1000;
-    padding: 20px;
+    padding: 1em;
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s, opacity 0.3s ease-in-out;
@@ -151,73 +188,24 @@ button {
         opacity: 1;
     }
 
-.modal-content {
-    background-color: white;
-    border-radius: 10px;
-    padding: 2em;
-    width: 50%;
-    max-width: 600px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
-    overflow-y: auto;
-}
-
     .modal-content h2 {
         font-size: 1.5em;
-        color: var(--dark-cyan);
-        margin-bottom: 1em;
+        font-weight: 600; 
+        margin-bottom: 1.5em;
+        color: var(--orange);
     }
 
     .modal-content p {
         font-size: 1em;
         color: var(--davy-gray);
-        margin-bottom: 0.5em;
     }
 
     .modal-content .close {
         position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 1.5em;
-        color: var(--davy-gray);
-        cursor: pointer;
-        font-weight: bold;
-        background: transparent;
+        right: 0.5em;
+        top: -0.1em;
+        background: none;
         border: none;
-        transition: color 0.3s;
+        font-size: 2em;
+        color: var(--davy-gray);
     }
-
-        .modal-content .close:hover {
-            color: var(--orange);
-        }
-
-@media (max-width: 768px) {
-    .modal-content {
-        width: 80%;
-        padding: 1.5em;
-    }
-
-        .modal-content h2 {
-            font-size: 1.3em;
-        }
-
-    .navigation {
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 1em;
-    }
-
-    .day {
-        flex-direction: column;
-    }
-
-        .day .date {
-            margin-right: 0;
-            margin-bottom: 0.5em;
-        }
-
-    button {
-        font-size: 1.1em;
-        padding: 0.4em 0.8em;
-    }
-}

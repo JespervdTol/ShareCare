@@ -24,7 +24,7 @@
                 <input id="intersertion" class="input-field" @bind="Intersertion" placeholder="Prefix"/>
                 <input id="lastName" class="input-field" @bind="LastName" placeholder="Last name *" required/>
                 <input id="email" class="input-field" @bind="Email" type="email" placeholder="Email *" required/>
-                <input id="dateOfBirth" class="input-field" @bind="DateOfBirth" type="date" max="@DateTime.Today.ToString("yyyy-MM-dd")" required/>
+                <input id="dateOfBirth" class="input-field" @bind="DateOfBirth" type="date" max="@DateTime.Today.ToString("dd/MM/yyyy")" required/>
 
                 <div class="required-field"><a>*This field is required</a></div>
 

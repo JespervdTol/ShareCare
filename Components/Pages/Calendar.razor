@@ -7,10 +7,20 @@
 
 <h3>Calendar</h3>
 
+<div class="legend">
+    <div class="legend-item">
+        <span class="box task"></span>Tasks
+    </div>
+    <div class="legend-item">
+        <span class="box event"></span>Events
+    </div>
+    
+</div>
+
 <div class="calendar">
     <div class="navigation">
         <button @onclick="PrevWeek">‹</button>
-        <span>Week @currentWeek, @startOfWeek.Year</span>
+        <span>WEEK @currentWeek<br> @startOfWeek.Year</span>
         <button @onclick="NextWeek">›</button>
     </div>
 
@@ -19,9 +29,9 @@
         {
             <div class="day">
                 <div class="date">
+                    <span class="day-of-week">@day.Date.ToString("ddd").ToUpper()</span>
                     <strong class="date-day">@day.Date.ToString("dd")</strong>
                     <span class="date-month">@day.Date.ToString("MMM")</span>
-                    <span class="day-of-week">@day.Date.ToString("ddd").ToUpper()</span>
                 </div>
                 <div class="tasks">
                     @if (day.Tasks.Any())
@@ -45,7 +55,7 @@
                         {
                             <div class="event" @onclick="() => OpenEventModal(ev)">
                                 <p class="summary"><strong>@ev.Summary</strong></p>
-                                <p class="user"><strong>Rooms:</strong> @string.Join(", ", ev.Rooms.Select(r => r.Name))</p>
+                                <p class="room"><strong>Rooms:</strong> @string.Join(", ", ev.Rooms.Select(r => r.Name))</p>
                             </div>
                         }
                     }
@@ -67,7 +77,7 @@
             <h2>Task Details</h2>
             <p><strong>Task Type:</strong> @selectedTask.Type</p>
             <p><strong>Summary:</strong> @selectedTask.Summary</p>
-            <p><strong>Date:</strong> @selectedTask.Date.ToString("yyyy-MM-dd")</p>
+            <p><strong>Date:</strong> @selectedTask.Date.ToString("dd/MM/yyyy")</p>
             <p><strong>Assigned Person:</strong> @selectedTask.Person</p>
             <p><strong>Room:</strong> @selectedTask.RoomName</p>
         </div>
@@ -81,9 +91,9 @@
             <button class="close" @onclick="CloseModal">×</button>
             <h2>Event Details</h2>
             <p><strong>Summary:</strong> @selectedEvent.Summary</p>
-            <p><strong>Date:</strong> @selectedEvent.Date.ToString("yyyy-MM-dd")</p>
+            <p><strong>Date:</strong> @selectedEvent.Date.ToString("dd/MM/yyyy")</p>
             <p><strong>Time:</strong> @selectedEvent.StartTime.ToString("HH:mm") - @selectedEvent.EndTime.ToString("HH:mm")</p>
-            <p><strong>People:</strong> @string.Join(", ", selectedEvent.Persons.Select(p => p.FirstName + " " + p.LastName))</p>
+            <p><strong>Host:</strong> @string.Join(", ", selectedEvent.Persons.Select(p => p.FirstName + " " + p.LastName))</p>
             <p><strong>Rooms:</strong> @string.Join(", ", selectedEvent.Rooms.Select(r => r.Name))</p>
         </div>
     </div>
