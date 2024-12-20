@@ -26,8 +26,7 @@ namespace ShareCare
             builder.Logging.AddDebug();
 #endif
 
-            //string connectionString = "Server=192.168.123.167;Port=3306;Database=sharecare;User=Manager;Password=DitIsEenSterkWachtwoord12345!;";
-            string connectionString = "Server=192.168.2.11;Port=3306;Database=sharecare;User=root;Password=jtol5014;";
+            string connectionString = "Server=192.168.123.167;Port=3306;Database=sharecare;User=Manager;Password=DitIsEenSterkWachtwoord12345!;";
 
             builder.Services.AddSingleton(new DatabaseService(connectionString));
             builder.Services.AddScoped<CustomAuthenticationStateProvider>();

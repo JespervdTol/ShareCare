@@ -73,16 +73,13 @@ else
         <div class="form-group">
             <label for="taskId">Task</label>
             <select class="form-control" id="taskId" @bind="newPayment.TaskID">
+                <option value="">-- Select a Task --</option>
                 @if (tasks != null && tasks.Any())
                 {
                     @foreach (var task in tasks)
                     {
                         <option value="@task.TaskID">@task.Summary</option>
                     }
-                }
-                else
-                {
-                    <option>No tasks available</option>
                 }
             </select>
         </div>
@@ -119,7 +116,7 @@ else
 
     private async System.Threading.Tasks.Task AddPayment()
     {
-        if (newPayment.TaskID == 0)
+        if (string.IsNullOrEmpty(newPayment.TaskID.ToString()) || newPayment.TaskID == 0)
         {
             return;
         }
