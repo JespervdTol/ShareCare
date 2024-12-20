@@ -44,7 +44,10 @@
         <MauiIcon Include="Resources\AppIcon\appicon1.svg" Color="#ffffff" />
 
         <!-- Splash Screen -->
-        <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#FEDABE" BaseSize="128,128" />
+        <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#FEDABE" BaseSize="128,128">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </MauiSplashScreen>
+        <MauiSplashScreen Include="Resources\Splash\splashsplashscreen.png" />
 
         <!-- Images -->
         <MauiImage Include="Resources\Images\*" />
@@ -58,6 +61,10 @@
 
     <ItemGroup>
       <Content Remove="wwwroot\sharecarelogo.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\Splash\splashsplashscreen.png" />
     </ItemGroup>
 
     <ItemGroup>
