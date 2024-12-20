@@ -30,52 +30,54 @@
 
 .grid-container {
     display: grid;
-    grid-template-columns: 1fr 1fr; 
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: repeat(6, auto); 
-    width: 100; 
-    border: 0.3em solid var(--light-orange);
-    padding: 0; 
+    border-top: 0.3em solid var(--light-orange);
+    border-bottom: 0.3em solid var(--light-orange);
     box-sizing: border-box;
-    scale: 1.2;
-    margin-top: 2.5em; 
+    z-index: 1;
+    position: relative;
 }
-.grid-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    border: 0.1em solid var(--light-orange); 
-    font-size: 1.2em;
-    padding: 1em;
-    box-sizing: border-box;
-}
-    .icon {
-        font-size: 1.2em; 
-        padding: 5px;
+
+    .grid-item {
+        display: flex;
+        flex-direction: column; 
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        border: 0.1em solid var(--light-orange); 
+        font-size: 1.2em;
+        padding: 1em;
+        box-sizing: border-box;
     }
 
-    .text {
-        font-size: 0.8em;
-        font-weight: 500;
-        color: #333;
-    }
+        .icon {
+            font-size: 1.5em; 
+            padding: 5px;
+        }
+
+        .text {
+            font-size: 0.9em;
+            font-weight: 500;
+            color: #333;
+        }
 
 footer {
     text-align: center;
 }
-footer h3 {
-    color: var(--davy-gray);
-    font-size: 1.3em; 
-    margin: 3em 0 0.5em 0;
-}
-.footer-icons {
-    display: flex; 
-    justify-content: center; 
-    gap: 3em; 
-}
-.footer-icons a {
-    color: var(--davy-gray); 
-    font-size: 1.3em; 
-    text-shadow: 0 0 5px var(--light-orange), 0 0 10px var(--light-orange); 
-}
+
+    footer h3 {
+        color: var(--davy-gray);
+        font-size: 1.3em; 
+        margin: 3em 0 0.5em 0;
+    }
+    .footer-icons {
+        display: flex; 
+        justify-content: center; 
+        gap: 3em; 
+    }
+    .footer-icons a {
+        color: var(--davy-gray); 
+        font-size: 1.3em; 
+        text-shadow: 0 0 5px var(--light-orange), 0 0 10px var(--light-orange); 
+    }

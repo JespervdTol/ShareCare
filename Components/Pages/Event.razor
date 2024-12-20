@@ -4,69 +4,70 @@
 @inject EventService EventService
 @inject UserService UserService
 
-<div class="openevents-scrollable">
-    <h3>Open <span>Events</span></h3>
+<div class="event-wrapper">
+    <div class="openevents-scrollable">
+        <h3>Open <span>Events</span></h3>
 
-    <button class="btn btn-primary" @onclick="ShowEventFormModal">
-        Add New Event
-    </button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-    <div class="new-event-modal @modalVisibleClass">
-        <div class="new-event-form">
-            <button class="close-modal-btn" @onclick="HideEventFormModal">&times;</button>
+        <button class="btn btn-primary" @onclick="ShowEventFormModal">
+            Add New Event
+        </button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+        <div class="new-event-modal @modalVisibleClass">
+            <div class="new-event-form">
+                <button class="close-modal-btn" @onclick="HideEventFormModal">&times;</button>
 
-            <h4>Create New Event</h4>
+                <h4>Create New Event</h4>
 
-            <label>Summary:</label>
-            <input type="text" @bind="eventSummary" class="form-input" placeholder="Enter event summary" />
+                <label>Summary:</label>
+                <input type="text" @bind="eventSummary" class="form-input" placeholder="Enter event summary" />
 
-            <!-- Date and Time Inputs in a Column -->
-            <div class="date-time-container">
-                <label>Date:</label>
-                <input type="date" @bind="eventDate" class="form-input" min="@DateTime.Now.ToString("dd/MM/yyyy")" />
+                <!-- Date and Time Inputs in a Column -->
+                <div class="date-time-container">
+                    <label>Date:</label>
+                    <input type="date" @bind="eventDate" class="form-input" min="@DateTime.Now.ToString("dd/MM/yyyy")" />
 
-                <label>Start Time:</label>
-                <input type="time" @bind="eventStartTime" class="form-input" />
+                    <label>Start Time:</label>
+                    <input type="time" @bind="eventStartTime" class="form-input" />
 
-                <label>End Time:</label>
-                <input type="time" @bind="eventEndTime" class="form-input" />
+                    <label>End Time:</label>
+                    <input type="time" @bind="eventEndTime" class="form-input" />
+                </div>
+
+                <label>Assign To:</label>
+                <select multiple @onchange="OnPersonSelectionChanged" class="form-select">
+                    @if (persons != null && persons.Count > 0)
+                    {
+                        @foreach (var person in persons)
+                        {
+                                    <option value="@person.PersonID">@person.FirstName @person.LastName</option>
+                        }
+                    }
+                    else
+                    {
+                            <option disabled>No persons available</option>
+                    }
+                </select>
+
+                <label>Select Rooms:</label>
+                <select multiple @onchange="OnRoomSelectionChanged" class="form-select">
+                    @if (rooms != null && rooms.Count > 0)
+                    {
+                        @foreach (var room in rooms)
+                        {
+                                    <option value="@room.RoomID">@room.Name</option>
+                        }
+                    }
+                    else
+                    {
+                            <option disabled>No rooms available</option>
+                    }
+                </select>
+
+                <button class="btn btn-primary" @onclick="CreateEvent">Create Event</button>
+                <button class="btn btn-secondary" @onclick="HideEventFormModal">Cancel</button>
             </div>
-
-            <label>Assign To:</label>
-            <select multiple @onchange="OnPersonSelectionChanged" class="form-select">
-                @if (persons != null && persons.Count > 0)
-                {
-                    @foreach (var person in persons)
-                    {
-                                <option value="@person.PersonID">@person.FirstName @person.LastName</option>
-                    }
-                }
-                else
-                {
-                        <option disabled>No persons available</option>
-                }
-            </select>
-
-            <label>Select Rooms:</label>
-            <select multiple @onchange="OnRoomSelectionChanged" class="form-select">
-                @if (rooms != null && rooms.Count > 0)
-                {
-                    @foreach (var room in rooms)
-                    {
-                                <option value="@room.RoomID">@room.Name</option>
-                    }
-                }
-                else
-                {
-                        <option disabled>No rooms available</option>
-                }
-            </select>
-
-            <button class="btn btn-primary" @onclick="CreateEvent">Create Event</button>
-            <button class="btn btn-secondary" @onclick="HideEventFormModal">Cancel</button>
         </div>
     </div>
-</div>
 
 @if (events == null)
 {
@@ -109,6 +110,7 @@ else
         }
         </div>
 }
+</div>
 
 @code {
     private List<ShareCare.Module.Event> events;

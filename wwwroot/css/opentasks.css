@@ -23,6 +23,11 @@ h3 {
         color: var(--orange);
     }
 
+.opentasks-wrapper {
+    padding: 0 1.5em; /* Inner space */
+}
+    
+
 .task-cards { 
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -90,7 +95,7 @@ h3 {
 
 .new-task-modal {
     position: fixed;
-    top: 0;
+    top: 2em;
     left: 0;
     width: 100%;
     height: 100%;
@@ -116,17 +121,17 @@ h3 {
     width: 90%;
     max-width: 30em;
     overflow-y: auto;
-    max-height: 80vh;
+    max-height: 100vh;
     position: relative;
 }
 .close-modal-btn {
     position: absolute;
-    right: 0.5em;
-    top: 0.8em;
+    right: 0;
+    top: 0.4em;
     background: none;
     border: none;
     font-size: 2em;
-    color: var(--orange);
+    color: var(--davy-gray);
 }
 
 .form-select, .form-input {
@@ -139,10 +144,10 @@ h3 {
 }
 
     h4 {
-        color: var(--orange);
-        margin: 1em 0;
-        font-weight: 600;
         font-size: 1.5em;
+        font-weight: 600;        
+        margin-bottom: 1em;
+        color: var(--orange);
     }
 
     label {
@@ -153,5 +158,5 @@ h3 {
 
     p {
         font-size: 1em;
-        color: #555;
+        color: var(--davy-gray);
     }
