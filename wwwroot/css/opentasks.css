@@ -24,10 +24,9 @@ h3 {
     }
 
 .opentasks-wrapper {
-    padding: 0 1.5em; /* Inner space */
+    padding: 0 1.5em;
 }
     
-
 .task-cards { 
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

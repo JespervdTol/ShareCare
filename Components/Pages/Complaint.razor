@@ -4,12 +4,13 @@
 @using System.Net
 
 <div class="complaints-page">
-    <h3>Complaint Form</h3>
+    <h3>Complaint <span>Form</span></h3>
 
     <EditForm Model="@complaint" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
+        <p class="form-subtitle">How can we help you?</p>
         <div>
             <label for="subject">Subject:</label>
             <InputText id="subject" @bind-Value="complaint.Subject" />
@@ -18,7 +19,9 @@
         <div>
             <label for="message">Message:</label>
             <InputTextArea id="message" @bind-Value="complaint.Message" />
+             <p class="disclaimer-privacy">*All complaints are sent anonymously using an email system that maintains privacy. </p>
         </div>
+       
 
         <div>
             <button type="submit">Submit</button>

@@ -55,7 +55,7 @@
                         {
                             <div class="event" @onclick="() => OpenEventModal(ev)">
                                 <p class="summary"><strong>@ev.Summary</strong></p>
-                                <p class="room"><strong>Rooms:</strong> @string.Join(", ", ev.Rooms.Select(r => r.Name))</p>
+                                <p class="room"> @string.Join(", ", ev.Rooms.Select(r => r.Name))</p>
                             </div>
                         }
                     }
