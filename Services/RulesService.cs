@@ -18,7 +18,7 @@ namespace ShareCare.Services
 
         public async Task<List<ShareCare.Module.Rule>> GetRulesAsync()
         {
-            var query = "SELECT id AS RuleId, description AS RuleDescription FROM rules ORDER BY id";
+            var query = "SELECT id AS RuleId, description AS RuleDescription, last_updated AS LastUpdated FROM rules ORDER BY id";
 
             var dataTable = await _databaseService.ExecuteQueryAsync(query);
 
@@ -31,7 +31,8 @@ namespace ShareCare.Services
                     var rule = new ShareCare.Module.Rule
                     {
                         RuleId = row["RuleId"] != DBNull.Value ? (int)row["RuleId"] : 0,
-                        Description = row["RuleDescription"] != DBNull.Value ? row["RuleDescription"].ToString() : string.Empty
+                        Description = row["RuleDescription"] != DBNull.Value ? row["RuleDescription"].ToString() : string.Empty,
+                        LastUpdated = row["LastUpdated"] != DBNull.Value ? (DateTime?)row["LastUpdated"] : null
                     };
 
                     rules.Add(rule);
@@ -50,10 +51,11 @@ namespace ShareCare.Services
         {
             try
             {
-                var query = "INSERT INTO rules (description) VALUES (@Description);";
+                var query = "INSERT INTO rules (description, last_updated) VALUES (@Description, @LastUpdated);";
                 var parameters = new MySqlParameter[]
                 {
-                    new MySqlParameter("@Description", rule.Description)
+                    new MySqlParameter("@Description", rule.Description),
+                    new MySqlParameter("@LastUpdated", DateTime.Now)
                 };
 
                 var rowsAffected = await _databaseService.ExecuteNonQueryAsync(query, parameters);
@@ -90,10 +92,11 @@ namespace ShareCare.Services
         {
             try
             {
-                var query = "UPDATE rules SET description = @Description WHERE id = @RuleId;";
+                var query = "UPDATE rules SET description = @Description, last_updated = @LastUpdated WHERE id = @RuleId;";
                 var parameters = new MySqlParameter[]
                 {
                     new MySqlParameter("@Description", rule.Description),
+                    new MySqlParameter("@LastUpdated", DateTime.Now),
                     new MySqlParameter("@RuleId", rule.RuleId)
                 };
 

@@ -10,5 +10,6 @@ namespace ShareCare.Module
     {
         public int RuleId { get; set; }
         public string Description { get; set; }
+        public DateTime? LastUpdated { get; set; }
     }
 }
