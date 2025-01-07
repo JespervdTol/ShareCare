@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject UserService UserService
 @inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <div id="login-page">
     <div class="design-corner top-right-light"></div>
@@ -49,6 +50,19 @@
     private bool RememberMe;
     private bool IsLoading = false;
 
+    protected override async Task OnInitializedAsync()
+    {
+        // Check if the user selected "Remember Me" in previous session
+        var rememberedUsername = await localStorage.GetItemAsync<string>("username");
+        var rememberedPassword = await localStorage.GetItemAsync<string>("password");
+        if (!string.IsNullOrEmpty(rememberedUsername) && !string.IsNullOrEmpty(rememberedPassword))
+        {
+            Username = rememberedUsername;
+            Password = rememberedPassword;
+            RememberMe = true;
+        }
+    }
+
     private async Task LoginUser()
     {
         if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
@@ -64,7 +78,17 @@
         {
             if (RememberMe)
             {
+                // Store username and password in local storage if "Remember Me" is checked
+                await localStorage.SetItemAsync("username", Username);
+                await localStorage.SetItemAsync("password", Password);
             }
+            else
+            {
+                // Clear credentials from local storage if "Remember Me" is unchecked
+                await localStorage.RemoveItemAsync("username");
+                await localStorage.RemoveItemAsync("password");
+            }
+
             Message = "Login successful!";
             NavigationManager.NavigateTo("/home");
         }

@@ -30,13 +30,26 @@
                     <div class="payment-card">
                         <div class="payment-header">
                             <h4>@payment.Summary</h4>
-                            <p><strong>Amount:</strong> @payment.Amount</p>
                             <p><strong>People Amount:</strong> @payment.PeopleAmount</p>
                         </div>
                         <p><strong>Task:</strong></p>
                         <p>@(task != null ? task.Summary : "No task assigned")</p>
-
-                        <p><strong>Link:</strong> <a href="@payment.Link" target="_blank" rel="noopener noreferrer">@payment.Link</a></p>
+                        <p><strong>Amount:</strong>€@payment.Amount</p>
+                        <p>
+                            @if (!string.IsNullOrEmpty(payment.Link))
+                            {
+                                <span class="payment-link-icon">
+                                    <img src="https://logo.clearbit.com/@GetDomainFromUrl(payment.Link)" alt="Logo" />
+                                </span>
+                                <a href="@payment.Link" target="_blank" rel="noopener noreferrer" class="payment-link">
+                                    @GetDomainFromUrl(payment.Link)
+                                </a>
+                            }
+                            else
+                            {
+                                <span>No link available</span>
+                            }
+                        </p>
 
                         <div class="payment-actions">
                             <button class="btn btn-danger" @onclick="() => DeletePayment(payment.PaymentID)">Delete</button>
@@ -160,5 +173,18 @@
     {
         var selectedValues = (string[])e.Value;
         selectedUserIds = selectedValues.Select(int.Parse).ToList();
+    }
+
+    private string GetDomainFromUrl(string url)
+    {
+        try
+        {
+            var uri = new Uri(url);
+            return uri.Host.Replace("www.", "");
+        }
+        catch
+        {
+            return string.Empty;
+        }
     }
 }

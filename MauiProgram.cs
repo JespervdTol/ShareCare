@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Components.Authorization;
 using ShareCare.Services;
 using Microsoft.Maui.Hosting;
+using Blazored.LocalStorage;
 
 namespace ShareCare
 {
@@ -38,6 +39,7 @@ namespace ShareCare
             builder.Services.AddScoped<EventService>();
             builder.Services.AddScoped<PaymentService>();
             builder.Services.AddScoped<RulesService>();
+            builder.Services.AddBlazoredLocalStorage();
 
             return builder.Build();
         }

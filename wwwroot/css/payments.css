@@ -210,3 +210,31 @@
         color: var(--orange);
         text-decoration: underline;
     }
+
+.payment-link-content {
+    display: inline; /* Ensures the link appears right next to the text */
+}
+
+.payment-link-text {
+    font-size: 1em;
+    color: var(--dark-cyan);
+    font-weight: bold;
+}
+
+.payment-link {
+    color: var(--dark-cyan);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+    .payment-link:hover {
+        color: var(--orange);
+        text-decoration: underline;
+    }
+
+.payment-link-icon img {
+    width: 20px; /* Set the width of the logo */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 5px; /* Space between logo and text */
+}
