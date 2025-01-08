@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Components.Authorization;
 using ShareCare.Services;
 using Microsoft.Maui.Hosting;
+using Blazored.LocalStorage;
 
 namespace ShareCare
 {
@@ -27,6 +28,7 @@ namespace ShareCare
 #endif
 
             string connectionString = "Server=192.168.123.167;Port=3306;Database=sharecare;User=Manager;Password=DitIsEenSterkWachtwoord12345!;";
+            //string connectionString = "Server=10.0.2.2;Port=3306;Database=sharecare;User=root;Password=jtol123;";
 
             builder.Services.AddSingleton(new DatabaseService(connectionString));
             builder.Services.AddScoped<CustomAuthenticationStateProvider>();
@@ -36,6 +38,8 @@ namespace ShareCare
             builder.Services.AddScoped<TaskService>();
             builder.Services.AddScoped<EventService>();
             builder.Services.AddScoped<PaymentService>();
+            builder.Services.AddScoped<RulesService>();
+            builder.Services.AddBlazoredLocalStorage();
 
             return builder.Build();
         }
