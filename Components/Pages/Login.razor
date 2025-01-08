@@ -52,7 +52,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        // Check if the user selected "Remember Me" in previous session
         var rememberedUsername = await localStorage.GetItemAsync<string>("username");
         var rememberedPassword = await localStorage.GetItemAsync<string>("password");
         if (!string.IsNullOrEmpty(rememberedUsername) && !string.IsNullOrEmpty(rememberedPassword))
@@ -78,13 +77,11 @@
         {
             if (RememberMe)
             {
-                // Store username and password in local storage if "Remember Me" is checked
                 await localStorage.SetItemAsync("username", Username);
                 await localStorage.SetItemAsync("password", Password);
             }
             else
             {
-                // Clear credentials from local storage if "Remember Me" is unchecked
                 await localStorage.RemoveItemAsync("username");
                 await localStorage.RemoveItemAsync("password");
             }
