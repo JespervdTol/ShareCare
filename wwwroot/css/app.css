@@ -15,6 +15,7 @@ html, body {
     overflow-y: auto;
     overflow-x: hidden;
     background-color: var(--white-smoke);
+    font-family: 'Helvetica', sans-serif;
 }
 
 .nopadding{

@@ -25,7 +25,7 @@
 
     .legend-item {
         display: flex;
-        align-items: center;
+        align-items: baseline;
     }
 
     .box {
@@ -48,6 +48,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 0 1.5em;
+    padding-bottom: 0.5em;
     
 }
 
@@ -150,7 +151,7 @@
 
 button {
     font-size: 1em;
-    padding: 0.5em 0.8em;
+    padding: 0.5em;
     color: white;
     background-color: var(--dark-cyan);
     border: none;
