@@ -4,30 +4,45 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using ShareCare.Module;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace ShareCare.Services
 {
     public class TaskService
     {
         private readonly DatabaseService _databaseService;
+        private readonly UserService _userService;
+        private readonly CustomAuthenticationStateProvider _authenticationStateProvider;
 
-        public TaskService(DatabaseService databaseService)
+        public TaskService(DatabaseService databaseService, UserService userService, CustomAuthenticationStateProvider authenticationStateProvider)
         {
             _databaseService = databaseService;
+            _userService = userService;
+            _authenticationStateProvider = authenticationStateProvider;
         }
 
         public async Task<List<ShareCare.Module.Task>> GetOpenTasksAsync()
         {
-            var query = @"
-                SELECT t.id AS TaskId, tt.name AS TaskType, t.summary AS TaskSummary, t.date AS TaskDate, 
-                       CONCAT(u.firstname, ' ', u.lastname) AS Person, r.name AS RoomName
-                FROM task t
-                JOIN task_type tt ON t.type_id = tt.id
-                JOIN user u ON t.user_id = u.id
-                LEFT JOIN room r ON t.room_id = r.id
-                WHERE t.date >= CURDATE()";
+            var loggedInUserPersonId = _authenticationStateProvider.GetCurrentUserPersonId();
 
-            var parameters = new List<MySqlParameter>();
+            if (loggedInUserPersonId == 0)
+            {
+                return new List<ShareCare.Module.Task>();
+            }
+
+            var query = @"
+        SELECT t.id AS TaskId, tt.name AS TaskType, t.summary AS TaskSummary, t.date AS TaskDate, 
+               CONCAT(u.firstname, ' ', u.lastname) AS Person, r.name AS RoomName
+        FROM task t
+        JOIN task_type tt ON t.type_id = tt.id
+        JOIN user u ON t.user_id = u.id
+        LEFT JOIN room r ON t.room_id = r.id
+        WHERE t.date >= CURDATE() AND t.user_id = @UserId";
+
+            var parameters = new List<MySqlParameter>
+    {
+        new MySqlParameter("@UserId", loggedInUserPersonId)
+    };
 
             var dataTable = await _databaseService.ExecuteQueryAsync(query, parameters.ToArray());
 

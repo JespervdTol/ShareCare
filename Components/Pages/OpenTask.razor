@@ -3,9 +3,10 @@
 @using ShareCare.Module
 @inject TaskService TaskService
 @inject UserService UserService
+@inject CustomAuthenticationStateProvider AuthStateProvider
 
-<div class="opentasks-wrapper"> <!-- Added wrapper -->
-    <div class="opentasks-scrollable"> 
+<div class="opentasks-wrapper">
+    <div class="opentasks-scrollable">
         <h3>Open <span>Tasks</span></h3>
 
         <div class="button-container">
@@ -23,7 +24,7 @@
                 <button class="close-modal-btn" @onclick="HideTaskFormModal">&times;</button>
 
                 <h4>Create New Task</h4>
-                
+
                 <label>Task Type:</label>
                 <select @bind="selectedTaskTypeId" class="form-select">
                     <option value="0" selected disabled>Select a task type</option>
@@ -44,7 +45,7 @@
                 <input type="text" @bind="taskSummary" class="form-input" placeholder="Enter task summary" />
 
                 <label>Date:</label>
-                <input type="date" @bind="taskDate" class="form-input" min="@DateTime.Now.ToString("dd/MM/yyyy")" />
+                <input type="date" @bind="taskDate" class="form-input" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
 
                 <label>Assign To:</label>
                 <select @bind="selectedPersonId" class="form-select">
@@ -86,7 +87,7 @@
 
     @if (tasks == null)
     {
-        <p><em>Loading...</em></p>
+        <p><em>Loading tasks...</em></p>
     }
     else if (tasks.Count == 0)
     {
@@ -97,19 +98,16 @@
         <div class="task-cards">
             @foreach (var task in tasks)
             {
-                @if (task != null)
-                {
-                    <div class="task-card">
-                        <div class="task-header">
-                            <h4>@task.Type</h4>
-                            <p><strong>@task.Date.ToString("dd/MM/yyyy")</strong></p>
-                        </div>
-                        <p><strong>Summary:</strong> @task.Summary</p>
-                        <p><strong>Assigned to:</strong> @task.Person</p>
-                        <p><strong>Room:</strong> @task.RoomName</p>
-                        <button class="btn btn-done" @onclick="() => RemoveTask(task.TaskID)">Done</button>
+                <div class="task-card">
+                    <div class="task-header">
+                        <h4>@task.Type</h4>
+                        <p><strong>@task.Date.ToString("dd/MM/yyyy")</strong></p>
                     </div>
-                }
+                    <p><strong>Summary:</strong> @task.Summary</p>
+                    <p><strong>Assigned to:</strong> @task.Person</p>
+                    <p><strong>Room:</strong> @task.RoomName</p>
+                    <button class="btn btn-done" @onclick="() => RemoveTask(task.TaskID)">Done</button>
+                </div>
             }
         </div>
     }
@@ -149,6 +147,7 @@
         }
     }
 
+
     private async System.Threading.Tasks.Task RemoveTask(int taskId)
     {
         try
@@ -156,6 +155,7 @@
             var success = await TaskService.DeleteTaskAsync(taskId);
             if (success)
             {
+                var currentUserPersonId = AuthStateProvider.GetCurrentUserPersonId();
                 tasks = await TaskService.GetOpenTasksAsync();
             }
             else
@@ -179,12 +179,15 @@
                 return;
             }
 
+            var currentUserPersonId = AuthStateProvider.GetCurrentUserPersonId();
             var success = await TaskService.AddTaskAsync(selectedTaskTypeId, taskSummary, taskDate, selectedPersonId, selectedRoomId);
+
             if (success)
             {
                 tasks = await TaskService.GetOpenTasksAsync();
                 System.Diagnostics.Debug.WriteLine("Task created successfully.");
                 HideTaskFormModal();
+                ClearForm();
             }
             else
             {
@@ -195,6 +198,15 @@
         {
             System.Diagnostics.Debug.WriteLine($"Error creating task: {ex.Message}");
         }
+    }
+
+    private void ClearForm()
+    {
+        selectedTaskTypeId = 0;
+        taskSummary = string.Empty;
+        taskDate = DateTime.Now;
+        selectedPersonId = 0;
+        selectedRoomId = 0;
     }
 
     private void ShowTaskFormModal()
