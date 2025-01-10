@@ -87,21 +87,24 @@ public class UserService
 
     public async Task<bool> LoginUser(string username, string password)
     {
-        const string query = "SELECT password FROM user WHERE username = @Username";
+        const string query = "SELECT password, id FROM user WHERE username = @Username";
         var parameters = new MySqlParameter[]
         {
-            new MySqlParameter("@Username", username)
+        new MySqlParameter("@Username", username)
         };
 
         try
         {
-            var result = await _databaseService.ExecuteScalarAsync(query, parameters);
-            if (result != null)
+            var dataTable = await _databaseService.ExecuteQueryAsync(query, parameters);
+            if (dataTable.Rows.Count > 0)
             {
-                string storedHash = result.ToString();
+                var row = dataTable.Rows[0];
+                string storedHash = row["password"].ToString();
+                int personId = Convert.ToInt32(row["id"]);
+
                 if (VerifyPassword(password, storedHash))
                 {
-                    _authenticationStateProvider.MarkUserAsAuthenticated(username);
+                    _authenticationStateProvider.MarkUserAsAuthenticated(username, personId);
                     return true;
                 }
             }

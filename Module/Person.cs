@@ -14,6 +14,5 @@ namespace ShareCare.Module
         public string LastName { get; set; }
         public string Email { get; set; }
         public DateOnly DateOfBirth { get; set; }
-        //public List<Event> Events { get; set; } = new List<Event>();
     }
 }
