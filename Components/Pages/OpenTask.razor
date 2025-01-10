@@ -3,9 +3,10 @@
 @using ShareCare.Module
 @inject TaskService TaskService
 @inject UserService UserService
+@inject CustomAuthenticationStateProvider AuthStateProvider
 
-<div class="opentasks-wrapper"> <!-- Added wrapper -->
-    <div class="opentasks-scrollable"> 
+<div class="opentasks-wrapper">
+    <div class="opentasks-scrollable">
         <h3>Open <span>Tasks</span></h3>
 
         <div class="button-container">
@@ -23,7 +24,7 @@
                 <button class="close-modal-btn" @onclick="HideTaskFormModal">&times;</button>
 
                 <h4>Create New Task</h4>
-                
+
                 <label>Task Type:</label>
                 <select @bind="selectedTaskTypeId" class="form-select">
                     <option value="0" selected disabled>Select a task type</option>
@@ -44,11 +45,10 @@
                 <input type="text" @bind="taskSummary" class="form-input" placeholder="Enter task summary" />
 
                 <label>Date:</label>
-                <input type="date" @bind="taskDate" class="form-input" min="@DateTime.Now.ToString("dd/MM/yyyy")" />
+                <input type="date" @bind="taskDate" class="form-input" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
 
                 <label>Assign To:</label>
-                <select @bind="selectedPersonId" class="form-select">
-                    <option value="0" selected disabled>Select a person</option>
+                <select multiple class="form-select" @onchange="HandlePersonSelection">
                     @if (persons != null && persons.Count > 0)
                     {
                         @foreach (var person in persons)
@@ -86,7 +86,7 @@
 
     @if (tasks == null)
     {
-        <p><em>Loading...</em></p>
+        <p><em>Loading tasks...</em></p>
     }
     else if (tasks.Count == 0)
     {
@@ -97,19 +97,31 @@
         <div class="task-cards">
             @foreach (var task in tasks)
             {
-                @if (task != null)
-                {
-                    <div class="task-card">
-                        <div class="task-header">
-                            <h4>@task.Type</h4>
-                            <p><strong>@task.Date.ToString("dd/MM/yyyy")</strong></p>
-                        </div>
-                        <p><strong>Summary:</strong> @task.Summary</p>
-                        <p><strong>Assigned to:</strong> @task.Person</p>
-                        <p><strong>Room:</strong> @task.RoomName</p>
-                        <button class="btn btn-done" @onclick="() => RemoveTask(task.TaskID)">Done</button>
+                <div class="task-card">
+                    <div class="task-header">
+                        <h4>@task.Type</h4>
+                        <p><strong>@task.Date.ToString("dd/MM/yyyy")</strong></p>
                     </div>
-                }
+                    <p><strong>Summary:</strong> @task.Summary</p>
+                    <p>
+                        <strong>Assigned to:</strong>
+                        @if (task.Persons != null && task.Persons.Any())
+                        {
+                            <ul>
+                                @foreach (var person in task.Persons)
+                                {
+                                    <li>@person.FirstName @person.LastName</li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <span>No persons assigned</span>
+                        }
+                    </p>
+                    <p><strong>Room:</strong> @task.RoomName</p>
+                    <button class="btn btn-done" @onclick="() => RemoveTask(task.TaskID)">Finish Task</button>
+                </div>
             }
         </div>
     }
@@ -123,7 +135,7 @@
     private int selectedTaskTypeId = 0;
     private string taskSummary = string.Empty;
     private DateTime taskDate = DateTime.Now;
-    private int selectedPersonId = 0;
+    private List<int> selectedPersonIds = new List<int>();
     private int selectedRoomId = 0;
 
     private bool isTaskFormVisible = false;
@@ -149,6 +161,7 @@
         }
     }
 
+
     private async System.Threading.Tasks.Task RemoveTask(int taskId)
     {
         try
@@ -173,18 +186,20 @@
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(taskSummary) || selectedPersonId == 0 || selectedTaskTypeId == 0 || selectedRoomId == 0)
+            if (string.IsNullOrWhiteSpace(taskSummary) || !selectedPersonIds.Any() || selectedTaskTypeId == 0 || selectedRoomId == 0)
             {
                 System.Diagnostics.Debug.WriteLine("Please fill out all fields.");
                 return;
             }
 
-            var success = await TaskService.AddTaskAsync(selectedTaskTypeId, taskSummary, taskDate, selectedPersonId, selectedRoomId);
+            var success = await TaskService.AddTaskAsync(selectedTaskTypeId, taskSummary, taskDate, selectedPersonIds, selectedRoomId);
+
             if (success)
             {
                 tasks = await TaskService.GetOpenTasksAsync();
                 System.Diagnostics.Debug.WriteLine("Task created successfully.");
                 HideTaskFormModal();
+                ClearForm();
             }
             else
             {
@@ -195,6 +210,25 @@
         {
             System.Diagnostics.Debug.WriteLine($"Error creating task: {ex.Message}");
         }
+    }
+
+    private void HandlePersonSelection(ChangeEventArgs e)
+    {
+        var selectedOptions = e.Value as IEnumerable<string>;
+
+        if (selectedOptions != null)
+        {
+            selectedPersonIds = selectedOptions.Select(int.Parse).ToList();
+        }
+    }
+
+    private void ClearForm()
+    {
+        selectedTaskTypeId = 0;
+        taskSummary = string.Empty;
+        taskDate = DateTime.Now;
+        selectedPersonIds.Clear();
+        selectedRoomId = 0;
     }
 
     private void ShowTaskFormModal()

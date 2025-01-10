@@ -35,7 +35,7 @@
 }
 
 #subject {
-    padding: 0.2em;
+    padding: 0.3em;
     font-size: 1em;
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -46,7 +46,7 @@
 
 .complaints-page textarea {
     width: 100%;
-    padding: 1em;
+    padding: 0.3em;
     font-size: 1em;
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -85,13 +85,14 @@
 }
 
 .complaints-page .popup-overlay {
+    display: flex;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    padding: 0.5em;
     background-color: rgba(0, 0, 0, 0.5); 
-    display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -99,25 +100,15 @@
 
     .complaints-page .popup {
         background-color: white;
-        padding: 20px;
+        padding: 1em;
         border-radius: 8px;
         text-align: center;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-        .complaints-page .popup h4 {
-            margin-bottom: 15px;
-        }
-
         .complaints-page .popup button {
             padding: 10px 20px;
             background-color: #4CAF50;
             color: white;
-            border: none;
             border-radius: 5px;
-            cursor: pointer;
         }
-
-            .complaints-page .popup button:hover {
-                background-color: #45a049;
-            }
