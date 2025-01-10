@@ -11,11 +11,10 @@
 }
 
 html, body {
-    font-family: Arial, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     overflow-y: auto;
     overflow-x: hidden;
     background-color: var(--white-smoke);
-    font-family: 'Helvetica', sans-serif;
 }
 
 .nopadding{
@@ -27,18 +26,80 @@ html, body {
     outline: 1px solid #26b050;
 }
 
-.invalid {
-    outline: 1px solid #e50000;
+    .invalid {
+        outline: 1px solid #e50000;
+    }
+
+    .validation-message {
+        color: #e50000;
+    }
+
+.close-modal-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 0.4em;
+    background: none;
+    border: none;
+    font-size: 2em;
+    color: var(--davy-gray);
 }
 
-.validation-message {
-    color: #e50000;
+.btn {
+    margin: 1em 0;
+    border: none;
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 5px;
 }
+
+    .btn-done {
+        background-color: var(--dark-cyan);
+        transition: background-color 0.3s;
+    }
+
+    .btn-primary {
+        background-color: var(--orange);
+        transition: background-color 0.3s;
+    }
+
+    .btn-secondary {
+        background-color: #f44336;
+        transition: background-color 0.3s;
+    }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     background-color: #FF7518;
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--peach);
 }
+
+.form-select, .form-input {
+    width: 100%;
+    padding: 0.6em;
+    margin-bottom: 1.5em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+    h4 {
+        font-size: 1.5em;
+        font-weight: 600;
+        margin: 1em 0;        
+        color: var(--orange);
+    }
+
+    label {
+        font-size: 1em;
+        font-weight: bold;
+        color: var(--davy-gray);
+    }
+
+    p {
+        font-size: 1em;
+        color: var(--davy-gray);
+    }
 
 #blazor-error-ui {
     background: lightyellow;

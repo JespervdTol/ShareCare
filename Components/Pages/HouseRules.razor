@@ -2,13 +2,12 @@
 @using ShareCare.Services
 @inject RulesService RulesService
 
-<div class="container">
-    <div class="header">
-        <h3 class="page-title">House Rules</h3>
-        <button class="btn btn-primary" @onclick="OpenAddModal">
-            Add Rule
-        </button>
-    </div>
+<div class="house-rules-wrapper">
+    <h3>House <span>Rules</span></h3>
+    <button class="btn btn-primary" @onclick="OpenAddModal">
+        Add Rules
+    </button>
+    
 
     <div class="last-updated-info">
         @if (lastUpdated.HasValue)
@@ -39,18 +38,18 @@
     </ul>
 
     <div class="modal @(isModalVisible ? "active" : "")">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4>@(isEditMode ? "Edit Rule" : "Add Rule")</h4>
-                <button class="icon-button" @onclick="CloseModal">X</button>
-            </div>
-            <div class="modal-body">
-                <input type="text" value="@ruleDescription" @oninput="UpdateDescription" placeholder="Enter rule description" />
-            </div>
-            <div class="modal-footer">
-                <button class="cancel" @onclick="CloseModal">Cancel</button>
-                <button class="save" @onclick="isEditMode ? EditRuleAsync : AddRuleAsync">@((isEditMode ? "Save Changes" : "Add Rule"))</button>
-            </div>
+        <div class="rules-modal">
+            <button class="close-modal-btn" @onclick="CloseModal">&times;</button>
+            
+            <h4>@(isEditMode ? "Edit Rule" : "Add New Rule")</h4>
+            
+            <input type="text" value="@ruleDescription" @oninput="UpdateDescription" placeholder="Enter rule description" />
+            
+            <button class="btn btn-primary" @onclick="isEditMode ? EditRuleAsync : AddRuleAsync">
+                @((isEditMode ? "Save Changes" : "Add Rule"))
+            </button>
+            
+            <button class="btn btn-secondary" @onclick="CloseModal">Cancel</button>
         </div>
     </div>
 </div>

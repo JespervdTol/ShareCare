@@ -10,12 +10,10 @@
     --white-smoke: #f5f5f5;
 }
 
-/* Wrapper to ensure correct padding structure */
 .payments-wrapper {
     padding: 0 1.5em;
 }
 
-/* Header Styles */
 .payments-page h3 {
     color: #343a40;
     margin: 0.5em 1em;
@@ -30,15 +28,14 @@
         color: var(--orange);
     }
 
-/* Payment Cards Layout */
-.payments-page .payment-cards {
+.payment-cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5em;
     margin: 1em 0;
 }
 
-.payments-page .payment-card {
+.payment-card {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -49,63 +46,42 @@
     transition: transform 0.3s ease;
 }
 
-    .payments-page .payment-card:hover {
-        transform: translateY(-5px);
+    .payment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
     }
 
-.payments-page .payment-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-}
+        .payment-header h4 {
+            color: var(--dark-cyan);
+            font-size: 1.2em;
+            font-weight: bold;
+        }
 
-    .payments-page .payment-header h4 {
-        color: var(--dark-cyan);
-        font-size: 1.2em;
+        .payment-header p {
+            color: var(--davy-gray);
+            font-size: 0.9em;
+            margin-top: 0.5em;
+        }
+
+    .payments-page .btn {
+        margin: 1em 0;
+        color: white;
+        font-size: 1em;
         font-weight: bold;
+        border-radius: 5px;
     }
 
-    .payments-page .payment-header p {
-        color: #888;
-        font-size: 0.9em;
-        margin-top: 0.5em;
-    }
-
-/* Button Styles */
-.payments-page .btn {
-    margin: 1em 0;
-    border: none;
-    color: white;
-    font-size: 1em;
-    font-weight: bold;
-    border-radius: 5px;
-}
-
-.payments-page .btn-done {
-    background-color: var(--dark-cyan);
-    transition: background-color 0.3s;
-}
-
-.payments-page .btn-primary {
-    background-color: var(--orange);
-    transition: background-color 0.3s;
-}
-
-.payments-page .btn-secondary {
-    background-color: #7c848f;
-    transition: background-color 0.3s;
-}
-
-/* Modal Styles */
-.payments-page .modal-overlay {
-    display: none;
+    
+.modal-overlay {
     position: fixed;
-    top: 0;
+    top: 2em;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
     justify-content: center;
     align-items: center;
     visibility: hidden;
@@ -113,8 +89,7 @@
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-    .payments-page .modal-overlay.show {
-        display: flex;
+    .modal-overlay.show {
         visibility: visible;
         opacity: 1;
     }
@@ -131,20 +106,8 @@
     position: relative;
 }
 
-/* Close Modal Button */
-.payments-page .close-modal-btn {
-    position: absolute;
-    right: 0.5em;
-    top: 0.8em;
-    background: none;
-    border: none;
-    font-size: 2em;
-    color: var(--orange);
-}
-
-/* Form Input Styles */
 .payments-page .form-select, .payments-page .form-input {
-    width: 100%;
+    width: 100%;  
     padding: 0.6em;
     margin-bottom: 1.5em;
     border: 1px solid #ddd;
@@ -152,32 +115,6 @@
     font-size: 0.9em;
 }
 
-/* Label and Text Styles */
-.payments-page h4 {
-    color: var(--orange);
-    margin: 1em 0;
-    font-weight: 600;
-    font-size: 1.5em;
-}
-
-.payments-page label {
-    font-size: 1em;
-    font-weight: bold;
-    color: var(--davy-gray);
-}
-
-.payments-page p {
-    font-size: 1em;
-    color: #555;
-}
-
-/* Payment Card Details */
-.payments-page .payment-card p {
-    font-size: 1em;
-    color: #555;
-}
-
-/* Payment Card Actions */
 .payments-page .payment-actions {
     display: flex;
     justify-content: flex-end;
@@ -188,7 +125,6 @@
         margin-left: 10px;
     }
 
-/* Modal Form Inputs and Labels */
 .payments-page .modal-content input[type="number"],
 .payments-page .modal-content input[type="text"],
 .payments-page .modal-content select {
@@ -201,40 +137,29 @@
 
 .payments-page a {
     color: var(--dark-cyan);
-    text-decoration: none;
     font-weight: bold;
     transition: color 0.3s ease;
 }
-
-    .payments-page a:hover {
-        color: var(--orange);
-        text-decoration: underline;
-    }
 
 .payment-link-content {
-    display: inline; /* Ensures the link appears right next to the text */
+    display: inline; 
 }
 
-.payment-link-text {
-    font-size: 1em;
-    color: var(--dark-cyan);
-    font-weight: bold;
-}
-
-.payment-link {
-    color: var(--dark-cyan);
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s ease;
-}
-
-    .payment-link:hover {
-        color: var(--orange);
-        text-decoration: underline;
+    .payment-link-text {
+        font-size: 1em;
+        color: var(--dark-cyan);
+        font-weight: bold;
     }
 
-.payment-link-icon img {
-    width: 20px; /* Set the width of the logo */
-    height: auto; /* Maintain aspect ratio */
-    margin-right: 5px; /* Space between logo and text */
-}
+    .payment-link {
+        color: var(--dark-cyan);
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    .payment-link-icon img {
+        width: 20px;
+        height: auto;
+        margin-right: 5px; 
+    }
