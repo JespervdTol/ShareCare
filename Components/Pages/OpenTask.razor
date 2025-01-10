@@ -48,8 +48,7 @@
                 <input type="date" @bind="taskDate" class="form-input" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
 
                 <label>Assign To:</label>
-                <select @bind="selectedPersonId" class="form-select">
-                    <option value="0" selected disabled>Select a person</option>
+                <select multiple class="form-select" @onchange="HandlePersonSelection">
                     @if (persons != null && persons.Count > 0)
                     {
                         @foreach (var person in persons)
@@ -104,9 +103,24 @@
                         <p><strong>@task.Date.ToString("dd/MM/yyyy")</strong></p>
                     </div>
                     <p><strong>Summary:</strong> @task.Summary</p>
-                    <p><strong>Assigned to:</strong> @task.Person</p>
+                    <p>
+                        <strong>Assigned to:</strong>
+                        @if (task.Persons != null && task.Persons.Any())
+                        {
+                            <ul>
+                                @foreach (var person in task.Persons)
+                                {
+                                    <li>@person.FirstName @person.LastName</li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <span>No persons assigned</span>
+                        }
+                    </p>
                     <p><strong>Room:</strong> @task.RoomName</p>
-                    <button class="btn btn-done" @onclick="() => RemoveTask(task.TaskID)">Done</button>
+                    <button class="btn btn-done" @onclick="() => RemoveTask(task.TaskID)">Finish Task</button>
                 </div>
             }
         </div>
@@ -121,7 +135,7 @@
     private int selectedTaskTypeId = 0;
     private string taskSummary = string.Empty;
     private DateTime taskDate = DateTime.Now;
-    private int selectedPersonId = 0;
+    private List<int> selectedPersonIds = new List<int>();
     private int selectedRoomId = 0;
 
     private bool isTaskFormVisible = false;
@@ -155,7 +169,6 @@
             var success = await TaskService.DeleteTaskAsync(taskId);
             if (success)
             {
-                var currentUserPersonId = AuthStateProvider.GetCurrentUserPersonId();
                 tasks = await TaskService.GetOpenTasksAsync();
             }
             else
@@ -173,14 +186,13 @@
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(taskSummary) || selectedPersonId == 0 || selectedTaskTypeId == 0 || selectedRoomId == 0)
+            if (string.IsNullOrWhiteSpace(taskSummary) || !selectedPersonIds.Any() || selectedTaskTypeId == 0 || selectedRoomId == 0)
             {
                 System.Diagnostics.Debug.WriteLine("Please fill out all fields.");
                 return;
             }
 
-            var currentUserPersonId = AuthStateProvider.GetCurrentUserPersonId();
-            var success = await TaskService.AddTaskAsync(selectedTaskTypeId, taskSummary, taskDate, selectedPersonId, selectedRoomId);
+            var success = await TaskService.AddTaskAsync(selectedTaskTypeId, taskSummary, taskDate, selectedPersonIds, selectedRoomId);
 
             if (success)
             {
@@ -200,12 +212,22 @@
         }
     }
 
+    private void HandlePersonSelection(ChangeEventArgs e)
+    {
+        var selectedOptions = e.Value as IEnumerable<string>;
+
+        if (selectedOptions != null)
+        {
+            selectedPersonIds = selectedOptions.Select(int.Parse).ToList();
+        }
+    }
+
     private void ClearForm()
     {
         selectedTaskTypeId = 0;
         taskSummary = string.Empty;
         taskDate = DateTime.Now;
-        selectedPersonId = 0;
+        selectedPersonIds.Clear();
         selectedRoomId = 0;
     }
 

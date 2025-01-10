@@ -12,7 +12,7 @@ namespace ShareCare.Module
         public string Type { get; set; }
         public string Summary { get; set; }
         public DateTime Date { get; set; }
-        public string Person { get; set; }
+        public List<Person> Persons { get; set; }
         public string RoomName { get; set; }
     }
 }
