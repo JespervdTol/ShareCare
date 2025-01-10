@@ -32,12 +32,12 @@
                     {
                         @foreach (var taskType in taskTypes)
                         {
-                            <option value="@taskType.TaskTypeID">@taskType.Name</option>
+                                    <option value="@taskType.TaskTypeID">@taskType.Name</option>
                         }
                     }
                     else
                     {
-                        <option disabled>No task types available</option>
+                            <option disabled>No task types available</option>
                     }
                 </select>
 
@@ -53,12 +53,12 @@
                     {
                         @foreach (var person in persons)
                         {
-                            <option value="@person.PersonID">@person.FirstName @person.LastName</option>
+                                    <option value="@person.PersonID">@person.FirstName @person.LastName</option>
                         }
                     }
                     else
                     {
-                        <option disabled>No persons available</option>
+                            <option disabled>No persons available</option>
                     }
                 </select>
 
@@ -69,12 +69,12 @@
                     {
                         @foreach (var room in rooms)
                         {
-                            <option value="@room.RoomID">@room.Name</option>
+                                    <option value="@room.RoomID">@room.Name</option>
                         }
                     }
                     else
                     {
-                        <option disabled>No rooms available</option>
+                            <option disabled>No rooms available</option>
                     }
                 </select>
 
@@ -86,32 +86,44 @@
 
     @if (tasks == null)
     {
-        <p><em>Loading tasks...</em></p>
+            <p><em>Loading tasks...</em></p>
     }
     else if (tasks.Count == 0)
     {
-        <p>No open tasks available.</p>
+            <p>No open tasks available.</p>
     }
     else
     {
-        <div class="task-cards">
+            <div class="task-cards">
             @foreach (var task in tasks)
             {
-                @if (task != null)
-                {
-                    <div class="task-card">
-                        <div class="task-header">
-                            <h4>@task.Type</h4>
-                            <p><strong>@task.Date.ToString("dd/MM/yyyy")</strong></p>
+                        <div class="task-card">
+                            <div class="task-header">
+                                <h4>@task.Type</h4>
+                                <p><strong>@task.Date.ToString("dd/MM/yyyy")</strong></p>
+                            </div>
+                            <p><strong>Summary:</strong> @task.Summary</p>
+                            <p>
+                                <strong>Assigned to:</strong>
+                        @if (task.Persons != null && task.Persons.Any())
+                        {
+                                        <ul>
+                                @foreach (var person in task.Persons)
+                                {
+                                                    <li>@person.FirstName @person.LastName</li>
+                                }
+                                        </ul>
+                        }
+                        else
+                        {
+                                        <span>No persons assigned</span>
+                        }
+                            </p>
+                            <p><strong>Room:</strong> @task.RoomName</p>
+                            <button class="btn btn-done" @onclick="() => RemoveTask(task.TaskID)">Finish Task</button>
                         </div>
-                        <p><strong>Summary:</strong> @task.Summary</p>
-                        <p><strong>Assigned to:</strong> @task.Person</p>
-                        <p><strong>Room:</strong> @task.RoomName</p>
-                        <button class="btn btn-done" @onclick="() => RemoveTask(task.TaskID)">Done</button>
-                    </div>
-                }
             }
-        </div>
+            </div>
     }
 </div>
 
