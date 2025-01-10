@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace ShareCare.Module
 {
-    public class Account
+    public class Rule
     {
-        public int AccountID { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public int RuleId { get; set; }
+        public string Description { get; set; }
+        public DateTime? LastUpdated { get; set; }
     }
 }
- 

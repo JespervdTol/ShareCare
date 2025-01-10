@@ -1,0 +1,86 @@
+﻿@page "/complaints"
+@using ShareCare.Module
+@using System.Net.Mail
+@using System.Net
+
+<div class="complaints-page">
+    <h3>Complaint <span>Form</span></h3>
+
+    <EditForm Model="@complaint" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <p class="form-subtitle">How can we help you?</p>
+        <div>
+            <label for="subject">Subject:</label>
+            <InputText id="subject" @bind-Value="complaint.Subject" />
+        </div>
+
+        <div>
+            <label for="message">Message:</label>
+            <InputTextArea id="message" @bind-Value="complaint.Message" />
+             <p class="disclaimer-privacy">*All complaints are sent anonymously using an email system that maintains privacy. </p>
+        </div>
+       
+
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+    </EditForm>
+
+    @if (showPopup)
+    {
+        <div class="popup-overlay">
+            <div class="popup">
+                <h4>Complaint Submitted!</h4>
+                <p>Your complaint has been submitted successfully.</p>
+                <button @onclick="ClosePopup">Close</button>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private ShareCare.Module.Complaint complaint = new ShareCare.Module.Complaint();
+    private bool showPopup = false;
+
+    private async System.Threading.Tasks.Task HandleValidSubmit()
+    {
+        await SendAnonymousEmailAsync(complaint.Subject, complaint.Message);
+
+        showPopup = true;
+
+        await System.Threading.Tasks.Task.Delay(500);
+
+        complaint = new ShareCare.Module.Complaint();
+    }
+
+    private void ClosePopup()
+    {
+        showPopup = false;
+    }
+
+    private async System.Threading.Tasks.Task SendAnonymousEmailAsync(string subject, string message)
+    {
+        var emailRecipient = "info.sharecare.test@gmail.com";
+
+        var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("sharecare.complaint@gmail.com", "rtoe mazo cpfg enpz"),
+                EnableSsl = true,
+            };
+
+        var mailMessage = new MailMessage
+            {
+                From = new MailAddress("noreply@sharecare.com"),
+                Subject = subject,
+                Body = message,
+                IsBodyHtml = true
+            };
+
+        mailMessage.To.Add(emailRecipient);
+
+        await smtpClient.SendMailAsync(mailMessage);
+    }
+}

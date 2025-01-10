@@ -43,18 +43,24 @@ public class UserService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error fetching persons: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Error fetching persons: {ex.Message}");
             return new List<Person>();
         }
     }
 
     public async Task<bool> RegisterUser(Account account, Person person)
     {
+        if (!IsPasswordValid(account.Password))
+        {
+            System.Diagnostics.Debug.WriteLine("Password contains invalid characters or does not meet requirements.");
+            return false;
+        }
+
         var hashedPassword = HashPassword(account.Password);
 
         const string query = @"
-        INSERT INTO user (username, email, password, firstname, intersertion, lastname, date_of_birth) 
-        VALUES (@Username, @Email, @Password, @FirstName, @Intersertion, @LastName, @DateOfBirth)";
+                    INSERT INTO user (username, email, password, firstname, intersertion, lastname, date_of_birth) 
+                    VALUES (@Username, @Email, @Password, @FirstName, @Intersertion, @LastName, @DateOfBirth)";
 
         var parameters = new MySqlParameter[]
         {
@@ -64,7 +70,7 @@ public class UserService
             new MySqlParameter("@FirstName", person.FirstName),
             new MySqlParameter("@Intersertion", person.Intersertion),
             new MySqlParameter("@LastName", person.LastName),
-            new MySqlParameter("@DateOfBirth", person.DateOfBirth.ToString("yyyy-MM-dd"))
+            new MySqlParameter("@DateOfBirth", person.DateOfBirth.ToString("dd/MM/yyyy"))
         };
 
         try
@@ -74,7 +80,7 @@ public class UserService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error during registration: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Error during registration: {ex.Message}");
             return false;
         }
     }
@@ -103,7 +109,7 @@ public class UserService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error during login: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Error during login: {ex.Message}");
             return false;
         }
     }
@@ -117,7 +123,7 @@ public class UserService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error during logout: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Error during logout: {ex.Message}");
             return false;
         }
     }
@@ -167,5 +173,12 @@ public class UserService
     private bool VerifyPassword(string password, string storedHash)
     {
         return BCrypt.Net.BCrypt.Verify(password, storedHash);
+    }
+
+    private bool IsPasswordValid(string password)
+    {
+        var regex = new System.Text.RegularExpressions.Regex(@"^[a-zA-Z0-9!@#$%^&*()_+\-=;:',.<>?/\\|]+$");
+
+        return password.Length >= 3 && regex.IsMatch(password);
     }
 }

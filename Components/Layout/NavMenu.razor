@@ -22,7 +22,7 @@
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="complaints-issues">
+            <NavLink class="nav-link" href="complaints">
                 <span class="bi bi-exclamation-circle" aria-hidden="true"></span> Complaints & Issues
             </NavLink>
         </div>
@@ -32,7 +32,7 @@
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pending-payments">
+            <NavLink class="nav-link" href="payments">
                 <span class="bi bi-cash-stack" aria-hidden="true"></span> Pending Payments
             </NavLink>
         </div>
@@ -46,7 +46,7 @@
                 <span class="bi bi-calendar-check" aria-hidden="true"></span> Calendar
             </NavLink>
         </div>
-        <div class="nav-item px-3">
+        <div class="nav-item log-out px-3">
             <NavLink class="nav-link" href="" @onclick="Logout">
                 <span class="bi bi-box-arrow-left" aria-hidden="true"></span> Log out
             </NavLink>
@@ -71,7 +71,7 @@
         }
         else
         {
-            Console.WriteLine("Logout failed.");
+            System.Diagnostics.Debug.WriteLine("Logout failed.");
         }
     }
 }

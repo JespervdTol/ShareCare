@@ -73,15 +73,28 @@
         font-weight: bold;
     }
 
-.nav-scrollable {
-    display: none;
-    background-color: var(--light-orange);
-    margin-top: -2em;
-}
+    .nav-item.log-out ::deep a.active {
+        background-color: transparent;
+        color: var(--dark-cyan);
+        font-weight: 600;
+        text-decoration: underline;
+    }
 
-.navbar-toggler:checked ~ .nav-scrollable {
-    display: block;
-}
+    .nav-scrollable {
+        position: fixed;
+        top: 5rem; 
+        left: 0; 
+        width: 100%;
+        overflow-y: auto; 
+        background-color: var(--light-orange); 
+        display: none; 
+        z-index: 1000;
+    }
+    
+    .navbar-toggler:checked ~ .nav-scrollable {
+        display: block; 
+    }
+    
 
 
 @media (min-width: 641px) {

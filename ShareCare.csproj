@@ -44,7 +44,10 @@
         <MauiIcon Include="Resources\AppIcon\appicon1.svg" Color="#ffffff" />
 
         <!-- Splash Screen -->
-        <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#FEDABE" BaseSize="128,128" />
+        <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#FEDABE" BaseSize="128,128">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </MauiSplashScreen>
+        <MauiSplashScreen Include="Resources\Splash\splashsplashscreen.png" />
 
         <!-- Images -->
         <MauiImage Include="Resources\Images\*" />
@@ -61,7 +64,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="Resources\Splash\splashsplashscreen.png" />
+    </ItemGroup>
+
+    <ItemGroup>
 		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
