@@ -5,11 +5,9 @@
 @inject TaskService TaskService
 @inject UserService UserService
 
-<PageTitle>Payments</PageTitle>
-
 <div class="payments-wrapper">
     <div class="payments-page">
-        <h3>Payments</h3>
+        <h3>Pending <span>Payments</span></h3>
 
         <button class="btn btn-primary" @onclick="ShowAddPaymentModal">Add Payment</button>
 
@@ -30,11 +28,11 @@
                     <div class="payment-card">
                         <div class="payment-header">
                             <h4>@payment.Summary</h4>
-                            <p><strong>People Amount:</strong> @payment.PeopleAmount</p>
+                            <p><strong>People Count:</strong> @payment.PeopleAmount</p>
                         </div>
                         <p><strong>Task:</strong></p>
                         <p>@(task != null ? task.Summary : "No task assigned")</p>
-                        <p><strong>Amount:</strong>€@payment.Amount</p>
+                        <p><strong>Amount: </strong>€@payment.Amount</p>
                         <p>
                             @if (!string.IsNullOrEmpty(payment.Link))
                             {
@@ -61,9 +59,9 @@
 
         <div class="modal-overlay @(isAddPaymentModalVisible ? "show" : "")">
             <div class="modal-content">
-                <button class="close-btn" @onclick="HideAddPaymentModal">&times;</button>
+                <button class="close-modal-btn" @onclick="HideAddPaymentModal">&times;</button>
 
-                <h3>Add Payment</h3>
+                <h4>Add Payment</h4>
 
                 <div class="form-group">
                     <label for="amount">Amount</label>
@@ -109,7 +107,7 @@
                     </select>
                 </div>
 
-                <button class="btn btn-success" @onclick="AddPayment">Save</button>
+                <button class="btn btn-primary" @onclick="AddPayment">Save</button>
                 <button class="btn btn-secondary" @onclick="HideAddPaymentModal">Cancel</button>
             </div>
         </div>

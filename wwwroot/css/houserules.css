@@ -1,41 +1,21 @@
-﻿.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-/* Header Layout */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.page-title {
-    font-size: 24px;
-    margin: 0;
+﻿:root {
+    --dark-cyan: #1f9298;
+    --timberwolf: #cccdc8;
+    --davy-gray: #545455;
+    --hooker-green: #5e8685;
+    --orange: #FC8425;
+    --peach: #FDC090;
+    --light-orange: #FEDABE;
+    --anti-flash-white: #EFEFEF;
+    --white-smoke: #f5f5f5;
 }
 
-.add-rule-btn {
-    font-size: 24px;
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.house-rules-wrapper {
+    padding: 0 1.5em; 
 }
 
-    .add-rule-btn:hover {
-        background-color: #0056b3;
-    }
-/* Modal Styling */
 .modal {
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -48,97 +28,66 @@
     transition: opacity 0.3s ease-in-out;
 }
 
-    .modal.active {
-        display: block;
-        opacity: 1;
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        margin: 10% auto;
+        width: 80%;
+        max-width: 350px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
-.modal-content {
-    background-color: white;
-    padding: 20px;
-    margin: 10% auto;
-    width: 80%;
-    max-width: 350px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.modal-header, .modal-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-    .modal-footer button {
-        padding: 10px 20px;
-        border-radius: 5px;
-        margin-top: 10px;
-        width: 100%;
-    }
-
-        .modal-footer button.cancel {
-            background-color: #f44336;
-            color: white;
+        .modal.active {
+            visibility: visible;
+            opacity: 1;
         }
 
-        .modal-footer button.save {
-            background-color: #4CAF50;
-            color: white;
-        }
+            .rules-modal {
+                background-color: var(--white-smoke);
+                padding: 1em;
+                top: 0;
+                left: 0;
+                width: 100%;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                max-width: 30em;
+                overflow-y: auto;
+                position: relative;
+            }
 
-input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    margin-top: 10px;
-}
-/* Rule List Styling */
+                .rules-modal input[type="text"] {
+                    width: 100%;
+                    padding: 0.6em;
+                    margin-bottom: 1.5em;
+                    border: 1px solid #ddd;
+                    border-radius: 5px;
+                }
+
+                
 .rules-list {
     list-style-type: none;
     padding: 0;
 }
 
-.rule-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 0;
-    font-size: 16px;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
+    .rule-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: start;
+        margin: 10px 0;
+        font-size: 1em;
+        padding: 1em;
+        border-bottom: 1px solid #ddd;
+    }
 
-.rule-actions {
-    display: flex;
-    gap: 10px;
-}
+    .rule-actions {
+        display: flex;
+        gap: 10px;
+    }
 
 .icon-button {
     background: none;
     border: none;
-    cursor: pointer;
-    font-size: 18px;
-    color: #007bff;
-}
-
-    .icon-button:hover {
-        color: #0056b3;
-    }
-/* Mobile Friendly */
-@media (max-width: 600px) {
-    .modal-content {
-        width: 90%;
-        max-width: 95%;
-    }
-
-    .rule-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .rule-actions {
-        justify-content: flex-end;
-    }
+    font-size: 1.1em;
 }
