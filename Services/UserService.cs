@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
 using BCrypt.Net;
-using Org.BouncyCastle.Crypto.Generators;
-using ShareCare.Services;
+using MySql.Data.MySqlClient;
 using ShareCare.Module;
+using ShareCare.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 
 public class UserService
@@ -14,8 +16,23 @@ public class UserService
 
     public UserService(DatabaseService databaseService, CustomAuthenticationStateProvider authenticationStateProvider)
     {
-        _databaseService = databaseService;
-        _authenticationStateProvider = authenticationStateProvider;
+        _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
+        _authenticationStateProvider = authenticationStateProvider ?? throw new ArgumentNullException(nameof(authenticationStateProvider));
+    }
+
+    public UserService(DatabaseService databaseService)
+        : this(databaseService, null)
+    {
+    }
+
+    public UserService(CustomAuthenticationStateProvider authenticationStateProvider)
+        : this(null, authenticationStateProvider)
+    {
+    }
+
+    public UserService()
+        : this(null, null) 
+    {
     }
 
     public async Task<List<Person>> GetUsersAsync()
@@ -27,7 +44,7 @@ public class UserService
             var dataTable = await _databaseService.ExecuteQueryAsync(query);
             var persons = new List<Person>();
 
-            foreach (System.Data.DataRow row in dataTable.Rows)
+            foreach (DataRow row in dataTable.Rows)
             {
                 persons.Add(new Person
                 {
@@ -87,7 +104,7 @@ public class UserService
 
     public async Task<bool> LoginUser(string username, string password)
     {
-        const string query = "SELECT password FROM user WHERE username = @Username";
+        const string query = "SELECT password, id FROM user WHERE username = @Username";
         var parameters = new MySqlParameter[]
         {
             new MySqlParameter("@Username", username)
@@ -95,13 +112,16 @@ public class UserService
 
         try
         {
-            var result = await _databaseService.ExecuteScalarAsync(query, parameters);
-            if (result != null)
+            var dataTable = await _databaseService.ExecuteQueryAsync(query, parameters);
+            if (dataTable.Rows.Count > 0)
             {
-                string storedHash = result.ToString();
+                var row = dataTable.Rows[0];
+                string storedHash = row["password"].ToString();
+                int personId = Convert.ToInt32(row["id"]);
+
                 if (VerifyPassword(password, storedHash))
                 {
-                    _authenticationStateProvider.MarkUserAsAuthenticated(username);
+                    _authenticationStateProvider.MarkUserAsAuthenticated(username, personId);
                     return true;
                 }
             }
@@ -177,8 +197,7 @@ public class UserService
 
     private bool IsPasswordValid(string password)
     {
-        var regex = new System.Text.RegularExpressions.Regex(@"^[a-zA-Z0-9!@#$%^&*()_+\-=;:',.<>?/\\|]+$");
-
+        var regex = new Regex(@"^[a-zA-Z0-9!@#$%^&*()_+\-=;:',.<>?/\\|]+$");
         return password.Length >= 3 && regex.IsMatch(password);
     }
 }

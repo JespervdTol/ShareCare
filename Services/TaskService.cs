@@ -4,30 +4,52 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using ShareCare.Module;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace ShareCare.Services
 {
     public class TaskService
     {
         private readonly DatabaseService _databaseService;
+        private readonly UserService _userService;
+        private readonly CustomAuthenticationStateProvider _authenticationStateProvider;
 
-        public TaskService(DatabaseService databaseService)
+        public TaskService(DatabaseService databaseService, UserService userService, CustomAuthenticationStateProvider authenticationStateProvider)
         {
             _databaseService = databaseService;
+            _userService = userService;
+            _authenticationStateProvider = authenticationStateProvider;
         }
 
         public async Task<List<ShareCare.Module.Task>> GetOpenTasksAsync()
         {
+            var loggedInUserPersonId = _authenticationStateProvider.GetCurrentUserPersonId();
+
+            if (loggedInUserPersonId == 0)
+            {
+                return new List<ShareCare.Module.Task>();
+            }
+
             var query = @"
                 SELECT t.id AS TaskId, tt.name AS TaskType, t.summary AS TaskSummary, t.date AS TaskDate, 
-                       CONCAT(u.firstname, ' ', u.lastname) AS Person, r.name AS RoomName
+                       GROUP_CONCAT(DISTINCT CONCAT(u.firstname, ' ', u.lastname) SEPARATOR ', ') AS Persons, r.name AS RoomName
                 FROM task t
                 JOIN task_type tt ON t.type_id = tt.id
-                JOIN user u ON t.user_id = u.id
+                JOIN task_user tp ON t.id = tp.task_id
+                JOIN user u ON tp.user_id = u.id
                 LEFT JOIN room r ON t.room_id = r.id
-                WHERE t.date >= CURDATE()";
+                WHERE t.date >= CURDATE()
+                AND t.id IN (
+                    SELECT task_id
+                    FROM task_user
+                    WHERE user_id = @UserId
+                )
+                GROUP BY t.id, tt.name, t.summary, t.date, r.name";
 
-            var parameters = new List<MySqlParameter>();
+            var parameters = new List<MySqlParameter>
+    {
+        new MySqlParameter("@UserId", loggedInUserPersonId)
+    };
 
             var dataTable = await _databaseService.ExecuteQueryAsync(query, parameters.ToArray());
 
@@ -41,12 +63,38 @@ namespace ShareCare.Services
                     Type = row["TaskType"].ToString(),
                     Summary = row["TaskSummary"].ToString(),
                     Date = (DateTime)row["TaskDate"],
-                    Person = row["Person"].ToString(),
+                    Persons = ParsePersons(row["Persons"].ToString()),
                     RoomName = row["RoomName"]?.ToString()
                 });
             }
 
             return tasks;
+        }
+
+        private List<Person> ParsePersons(string personsString)
+        {
+            var persons = new List<Person>();
+
+            if (string.IsNullOrEmpty(personsString))
+            {
+                return persons;
+            }
+
+            var personNames = personsString.Split(", ");
+            foreach (var personName in personNames)
+            {
+                var names = personName.Split(' ');
+                if (names.Length >= 2)
+                {
+                    persons.Add(new Person
+                    {
+                        FirstName = names[0],
+                        LastName = names[1]
+                    });
+                }
+            }
+
+            return persons;
         }
 
         public async Task<bool> DeleteTaskAsync(int taskId)
@@ -61,23 +109,54 @@ namespace ShareCare.Services
             return rowsAffected > 0;
         }
 
-        public async Task<bool> AddTaskAsync(int taskTypeId, string summary, DateTime date, int userId, int roomId)
+        public async Task<bool> AddTaskAsync(int taskTypeId, string summary, DateTime date, List<int> personIds, int roomId)
         {
-            var query = @"
-                INSERT INTO task (type_id, summary, date, user_id, room_id) 
-                VALUES (@TaskTypeId, @Summary, @Date, @UserId, @RoomId)";
-
-            var parameters = new MySqlParameter[]
+            try
             {
-                new MySqlParameter("@TaskTypeId", taskTypeId),
-                new MySqlParameter("@Summary", summary),
-                new MySqlParameter("@Date", date),
-                new MySqlParameter("@UserId", userId),
-                new MySqlParameter("@RoomId", roomId)
-            };
+                var addTaskQuery = @"
+                    INSERT INTO task (type_id, summary, date, room_id) 
+                    VALUES (@TaskTypeId, @Summary, @Date, @RoomId);
+                    SELECT LAST_INSERT_ID();";
+                var taskParameters = new MySqlParameter[]
+                {
+                    new MySqlParameter("@TaskTypeId", taskTypeId),
+                    new MySqlParameter("@Summary", summary),
+                    new MySqlParameter("@Date", date),
+                    new MySqlParameter("@RoomId", roomId)
+                };
 
-            var rowsAffected = await _databaseService.ExecuteNonQueryAsync(query, parameters);
-            return rowsAffected > 0;
+                var taskId = await _databaseService.ExecuteScalarAsync(addTaskQuery, taskParameters);
+
+                if (taskId == null)
+                {
+                    return false;
+                }
+
+                if (personIds != null && personIds.Count > 0)
+                {
+                    var addTaskPersonQuery = @"
+                INSERT INTO task_user (task_id, user_id) 
+                VALUES (@TaskId, @UserId)";
+
+                    foreach (var personId in personIds)
+                    {
+                        var taskPersonParameters = new MySqlParameter[]
+                        {
+                    new MySqlParameter("@TaskId", taskId),
+                    new MySqlParameter("@UserId", personId)
+                        };
+
+                        await _databaseService.ExecuteNonQueryAsync(addTaskPersonQuery, taskPersonParameters);
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error adding task: {ex.Message}");
+                return false;
+            }
         }
 
         public async Task<List<TaskType>> GetTaskTypesAsync()
@@ -151,18 +230,19 @@ namespace ShareCare.Services
         {
             var query = @"
                 SELECT t.id AS TaskId, tt.name AS TaskType, t.summary AS TaskSummary, t.date AS TaskDate, 
-                       CONCAT(u.firstname, ' ', u.lastname) AS Person, r.name AS RoomName
+                       GROUP_CONCAT(CONCAT(u.firstname, ' ', u.lastname) SEPARATOR ', ') AS Persons, r.name AS RoomName
                 FROM task t
                 JOIN task_type tt ON t.type_id = tt.id
-                JOIN user u ON t.user_id = u.id
+                JOIN task_user tp ON t.id = tp.task_id
+                JOIN user u ON tp.user_id = u.id
                 LEFT JOIN room r ON t.room_id = r.id
                 WHERE t.date BETWEEN @StartDate AND @EndDate
-                ORDER BY t.date";
+                GROUP BY t.id, tt.name, t.summary, t.date, r.name";
 
             var parameters = new MySqlParameter[]
             {
-                new MySqlParameter("@StartDate", startDate),
-                new MySqlParameter("@EndDate", startDate.AddDays(6))
+        new MySqlParameter("@StartDate", startDate),
+        new MySqlParameter("@EndDate", startDate.AddDays(6))
             };
 
             var dataTable = await _databaseService.ExecuteQueryAsync(query, parameters);
@@ -177,7 +257,7 @@ namespace ShareCare.Services
                     Type = row["TaskType"].ToString(),
                     Summary = row["TaskSummary"].ToString(),
                     Date = (DateTime)row["TaskDate"],
-                    Person = row["Person"].ToString(),
+                    Persons = ParsePersons(row["Persons"].ToString()),
                     RoomName = row["RoomName"]?.ToString()
                 });
             }

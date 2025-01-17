@@ -14,7 +14,6 @@
     <div class="legend-item">
         <span class="box event"></span>Events
     </div>
-    
 </div>
 
 <div class="calendar">
@@ -40,7 +39,8 @@
                         {
                             <div class="task" @onclick="() => OpenTaskModal(task)">
                                 <p class="summary">@task.Summary</p>
-                                <span class="user">@task.Person</span>
+                                <!-- Display multiple assigned persons -->
+                                <span class="user">@string.Join(", ", task.Persons.Select(p => p.FirstName + " " + p.LastName))</span>
                             </div>
                         }
                     }
@@ -78,7 +78,8 @@
             <p><strong>Task Type:</strong> @selectedTask.Type</p>
             <p><strong>Summary:</strong> @selectedTask.Summary</p>
             <p><strong>Date:</strong> @selectedTask.Date.ToString("dd/MM/yyyy")</p>
-            <p><strong>Assigned Person:</strong> @selectedTask.Person</p>
+            <!-- Show list of assigned persons -->
+            <p><strong>Assigned Persons:</strong> @string.Join(", ", selectedTask.Persons.Select(p => p.FirstName + " " + p.LastName))</p>
             <p><strong>Room:</strong> @selectedTask.RoomName</p>
         </div>
     </div>
